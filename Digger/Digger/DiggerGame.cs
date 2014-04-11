@@ -22,13 +22,15 @@ namespace Digger
         SpriteBatch spriteBatch;
 
         Guy guy;
+        public static Field[,] fields;
 
         public DiggerGame()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 112 * 5;
-            graphics.PreferredBackBufferHeight = 112 * 4;
+            graphics.PreferredBackBufferWidth = 50 * 20;
+            graphics.PreferredBackBufferHeight = 50 * 12;
             Content.RootDirectory = "Content";
+            fields = new Field[20, 15];
         }
 
         /// <summary>
@@ -53,8 +55,11 @@ namespace Digger
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-
-            guy = new Guy(graphics, spriteBatch, Vector2.Zero, Content.Load<Texture2D>("guy"), Vector2.Zero, 3, "test");
+            guy = new Guy(graphics, spriteBatch, Vector2.Zero, Content.Load<Texture2D>(Textures.GUY), Vector2.Zero, 3, "test");
+            for (int i = 0; i < 20; i++)
+                for (int j = 0; j < 12; j++)
+                    fields[i, j] = new Field(graphics, spriteBatch, new Vector2(i * 50, j * 50), Content.Load<Texture2D>(Textures.FIELD), false);
+            fields[0, 0].dig();
         }
 
         /// <summary>
@@ -82,7 +87,13 @@ namespace Digger
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.DarkGray);
+
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            for (int i = 0; i < 20; i++)
+                for (int j = 0; j < 12; j++)
+                    fields[i, j].draw(gameTime);
+            spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             guy.draw(gameTime);

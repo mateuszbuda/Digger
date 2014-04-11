@@ -12,25 +12,22 @@ using System.Text;
 
 namespace Digger
 {
-    class Field : GameObject
+    public class Field : GameObject
     {
         private bool digged;
         public void dig()
         {
-            return;
+            digged = true;
+            texture = null;
         }
 
-        public Field(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Vector2 position, Texture2D texture)
+        public Field(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Vector2 position, Texture2D texture, bool digged)
             : base(graphics, spriteBatch, position, texture)
         {
+            this.digged = digged;
         }
 
         public override void update(Microsoft.Xna.Framework.GameTime gameTime)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             throw new NotImplementedException();
         }

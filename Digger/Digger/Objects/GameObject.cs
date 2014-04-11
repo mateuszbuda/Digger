@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Digger
 {
-    abstract class GameObject
+    public abstract class GameObject
     {
         protected GraphicsDeviceManager graphics;
         protected SpriteBatch spriteBatch;
@@ -27,7 +27,8 @@ namespace Digger
         public abstract void update(GameTime gameTime);
         public virtual void draw(GameTime gameTime)
         {
-            spriteBatch.Draw(texture, position, Color.White);
+            if (texture != null)
+                spriteBatch.Draw(texture, position, Color.White);
         }
 
         public GameObject()

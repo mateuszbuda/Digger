@@ -55,26 +55,26 @@ namespace Digger.Objects
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.Left))
                 {
-                    speed.X = -4;
+                    speed.X = -2;
                     speed.Y = 0;
                     moving = true;
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Right))
                 {
-                    speed.X = 4;
+                    speed.X = 2;
                     speed.Y = 0;
                     moving = true;
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Up))
                 {
                     speed.X = 0;
-                    speed.Y = -4;
+                    speed.Y = -2;
                     moving = true;
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
                     speed.X = 0;
-                    speed.Y = 4;
+                    speed.Y = 2;
                     moving = true;
                 }
             }
@@ -111,6 +111,8 @@ namespace Digger.Objects
                 speed.X = speed.Y = 0;
                 moving = false;
             }
+
+            DiggerGame.fields[(int)(position.X / 50), (int)(position.Y / 50)].dig();
         }
 
         public override void draw(GameTime gameTime)
