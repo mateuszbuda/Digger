@@ -23,8 +23,8 @@ namespace Digger
         SpriteBatch spriteBatch;
 
         public static Guy guy;
-        Sergeant sergeant;
-        Texture2D sergeant2D;
+        List<Sergeant> sergeants = new List<Sergeant>();
+        Texture2D sergeant;
         List<Diamond> diamonds = new List<Diamond>();
         Texture2D diamond;
         public static Field[,] fields;
@@ -96,24 +96,21 @@ namespace Digger
                         if (fields[t1, i - 1].digged)
                             fields[t1, i].dig();
                     }
-                    else
-                    {
-                        t1 = r.Next(0, 6);
-                        if (fields[t1, i + 1].digged)
-                            fields[t1, i].dig();
-
-                        t1 = r.Next(6, 12);
-                        if (fields[t1, i + 1].digged)
-                            fields[t1, i].dig();
-
-                        t1 = r.Next(12, 20);
-                        if (fields[t1, i + 1].digged)
-                            fields[t1, i].dig();
-                    }
                 }
             }
+            t1 = r.Next(0, 6);
+            if (fields[t1, 1].digged)
+                fields[t1, 0].dig();
 
-            // diamonds distribution
+            t1 = r.Next(6, 12);
+            if (fields[t1, 1].digged)
+                fields[t1, 0].dig();
+
+            t1 = r.Next(12, 20);
+            if (fields[t1, 1].digged)
+                fields[t1, 0].dig();
+
+            // Diamonds distribution
             diamond = Content.Load<Texture2D>(Textures.DIAMOND);
             int x, y, d = 0;
             while (d < 12)
@@ -127,16 +124,21 @@ namespace Digger
                 }
             }
 
-            // Sergeant
-            x = r.Next(Map.WIDTH);
-            y = (r.Next(Map.HEIGHT / 2) * 2 + 1) % Map.HEIGHT;
-            while (!fields[x, y].digged)
+            // Sergeants
+            sergeant = Content.Load<Texture2D>(Textures.SERGEANT);
+            int s = 0;
+            while (s < 4)
             {
                 x = r.Next(Map.WIDTH);
                 y = (r.Next(Map.HEIGHT / 2) * 2 + 1) % Map.HEIGHT;
+                while (!fields[x, y].digged)
+                {
+                    x = r.Next(Map.WIDTH);
+                    y = (r.Next(Map.HEIGHT / 2) * 2 + 1) % Map.HEIGHT;
+                }
+                sergeants.Add(new Sergeant(graphics, spriteBatch, new Vector2(x * Field.SZ, y * Field.SZ), sergeant, new Vector2(2, 0), 1));
+                s++;
             }
-            sergeant2D = Content.Load<Texture2D>(Textures.SERGEANT);
-            sergeant = new Sergeant(graphics, spriteBatch, new Vector2(x * Field.SZ, y * Field.SZ), sergeant2D, new Vector2(2, 0), 1);
         }
 
         private bool correctDiamondCoords(int x, int y)
@@ -166,7 +168,8 @@ namespace Digger
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            sergeant.update(gameTime);
+            foreach (Sergeant s in sergeants)
+                s.update(gameTime);
             guy.update(gameTime);
             foreach (Diamond d in diamonds)
                 d.update(gameTime);
@@ -192,7 +195,8 @@ namespace Digger
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-            sergeant.draw(gameTime);
+            foreach (Sergeant s in sergeants)
+                s.draw(gameTime);
             guy.draw(gameTime);
             spriteBatch.End();
 
