@@ -35,6 +35,11 @@ namespace Digger
         {
         }
 
+        public virtual Vector2 getPosition()
+        {
+            return position;
+        }
+
         public GameObject(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Vector2 position, Texture2D texture)
         {
             this.graphics = graphics;

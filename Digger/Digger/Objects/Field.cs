@@ -14,7 +14,8 @@ namespace Digger
 {
     public class Field : GameObject
     {
-        private bool digged;
+        public const int SZ = 50;
+        public bool digged;
         public void dig()
         {
             digged = true;

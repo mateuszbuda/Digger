@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Digger.Objects
 {
-    abstract class Character : GameObject
+    public abstract class Character : GameObject
     {
         protected int hp;
         protected Vector2 speed;

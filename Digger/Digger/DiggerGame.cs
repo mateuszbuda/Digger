@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Digger.Objects;
+using Digger.Objects.Artefacts;
 
 namespace Digger
 {
@@ -21,16 +22,18 @@ namespace Digger
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Guy guy;
+        public static Guy guy;
+        List<Diamond> diamonds = new List<Diamond>();
+        Texture2D diamond;
         public static Field[,] fields;
 
         public DiggerGame()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 50 * 20;
-            graphics.PreferredBackBufferHeight = 50 * 12;
+            graphics.PreferredBackBufferWidth = Field.SZ * Map.WIDTH;
+            graphics.PreferredBackBufferHeight = Field.SZ * Map.HEIGHT;
             Content.RootDirectory = "Content";
-            fields = new Field[20, 15];
+            fields = new Field[Map.WIDTH, Map.HEIGHT];
         }
 
         /// <summary>
@@ -55,11 +58,72 @@ namespace Digger
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            //hero
             guy = new Guy(graphics, spriteBatch, Vector2.Zero, Content.Load<Texture2D>(Textures.GUY), Vector2.Zero, 3, "test");
-            for (int i = 0; i < 20; i++)
-                for (int j = 0; j < 12; j++)
-                    fields[i, j] = new Field(graphics, spriteBatch, new Vector2(i * 50, j * 50), Content.Load<Texture2D>(Textures.FIELD), false);
+
+            // raw maze
+            for (int i = 0; i < Map.WIDTH; i++)
+                for (int j = 0; j < Map.HEIGHT; j++)
+                    fields[i, j] = new Field(graphics, spriteBatch, new Vector2(i * Field.SZ, j * Field.SZ), Content.Load<Texture2D>(Textures.FIELD), false);
+
+            // random maze digging
             fields[0, 0].dig();
+            Random r = new Random();
+            int t1, t2;
+            for (int i = 0; i < Map.HEIGHT; i++)
+            {
+                if (i % 2 > 0)
+                {
+                    t2 = r.Next(12, 20);
+                    for (t1 = r.Next(1, 6); t1 < t2; t1++)
+                        fields[t1, i].dig();
+                }
+                else
+                {
+                    if (i > 0)
+                    {
+                        t1 = r.Next(0, 6);
+                        if (fields[t1, i - 1].digged)
+                            fields[t1, i].dig();
+
+                        t1 = r.Next(6, 12);
+                        if (fields[t1, i - 1].digged)
+                            fields[t1, i].dig();
+
+                        t1 = r.Next(12, 20);
+                        if (fields[t1, i - 1].digged)
+                            fields[t1, i].dig();
+                    }
+                    else
+                    {
+                        t1 = r.Next(0, 6);
+                        if (fields[t1, i + 1].digged)
+                            fields[t1, i].dig();
+
+                        t1 = r.Next(6, 12);
+                        if (fields[t1, i + 1].digged)
+                            fields[t1, i].dig();
+
+                        t1 = r.Next(12, 20);
+                        if (fields[t1, i + 1].digged)
+                            fields[t1, i].dig();
+                    }
+                }
+            }
+
+            // diamonds distribution
+            diamond = Content.Load<Texture2D>(Textures.DIAMOND);
+            int x, y, d = 0;
+            while (d < 10)
+            {
+                x = r.Next(Map.WIDTH);
+                y = r.Next(Map.HEIGHT);
+                if (!fields[x, y].digged)
+                {
+                    diamonds.Add(new Diamond(graphics, spriteBatch, new Vector2(x * Field.SZ, y * Field.SZ), diamond, 10, false));
+                    d++;
+                }
+            }
         }
 
         /// <summary>
@@ -79,6 +143,8 @@ namespace Digger
         protected override void Update(GameTime gameTime)
         {
             guy.update(gameTime);
+            foreach (Diamond d in diamonds)
+                d.update(gameTime);
         }
 
         /// <summary>
@@ -93,6 +159,11 @@ namespace Digger
             for (int i = 0; i < 20; i++)
                 for (int j = 0; j < 12; j++)
                     fields[i, j].draw(gameTime);
+            spriteBatch.End();
+
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            foreach (Diamond d in diamonds)
+                d.draw(gameTime);
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);

@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Digger.Objects
 {
-    class Guy : Character
+    public class Guy : Character
     {
         private Vector2 historyPosition;
 
@@ -110,9 +110,9 @@ namespace Digger.Objects
                 historyPosition = position;
                 speed.X = speed.Y = 0;
                 moving = false;
+                DiggerGame.fields[(int)(position.X / 50), (int)(position.Y / 50)].dig();
             }
 
-            DiggerGame.fields[(int)(position.X / 50), (int)(position.Y / 50)].dig();
         }
 
         public override void draw(GameTime gameTime)
