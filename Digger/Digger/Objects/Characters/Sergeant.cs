@@ -21,12 +21,21 @@ namespace Digger.Objects
 
         public override void update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            throw new NotImplementedException();
-        }
+            position += speed;
 
-        public override void draw(Microsoft.Xna.Framework.GameTime gameTime)
-        {
-            throw new NotImplementedException();
+            if (position.X > MaxX)
+            {
+                speed.X *= -1;
+                position.X = MaxX;
+            }
+            else if (position.X < MinX)
+            {
+                speed.X *= -1;
+                position.X = MinX;
+            }
+
+            if ((int)(position.X / Field.SZ) + 1 < Map.WIDTH && (speed.X > 0 && !DiggerGame.fields[(int)(position.X / Field.SZ) + 1, (int)(position.Y / Field.SZ)].digged) || (speed.X <= 0 && !DiggerGame.fields[(int)(position.X / Field.SZ), (int)(position.Y / Field.SZ)].digged))
+                speed.X *= -1;
         }
     }
 }

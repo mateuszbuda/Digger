@@ -23,6 +23,8 @@ namespace Digger
         SpriteBatch spriteBatch;
 
         public static Guy guy;
+        Sergeant sergeant;
+        Texture2D sergeant2D;
         List<Diamond> diamonds = new List<Diamond>();
         Texture2D diamond;
         public static Field[,] fields;
@@ -114,16 +116,38 @@ namespace Digger
             // diamonds distribution
             diamond = Content.Load<Texture2D>(Textures.DIAMOND);
             int x, y, d = 0;
-            while (d < 10)
+            while (d < 12)
             {
                 x = r.Next(Map.WIDTH);
-                y = r.Next(Map.HEIGHT);
-                if (!fields[x, y].digged)
+                y = r.Next(d, d + 1);
+                if (correctDiamondCoords(x, y))
                 {
                     diamonds.Add(new Diamond(graphics, spriteBatch, new Vector2(x * Field.SZ, y * Field.SZ), diamond, 10, false));
                     d++;
                 }
             }
+
+            // Sergeant
+            x = r.Next(Map.WIDTH);
+            y = (r.Next(Map.HEIGHT / 2) * 2 + 1) % Map.HEIGHT;
+            while (!fields[x, y].digged)
+            {
+                x = r.Next(Map.WIDTH);
+                y = (r.Next(Map.HEIGHT / 2) * 2 + 1) % Map.HEIGHT;
+            }
+            sergeant2D = Content.Load<Texture2D>(Textures.SERGEANT);
+            sergeant = new Sergeant(graphics, spriteBatch, new Vector2(x * Field.SZ, y * Field.SZ), sergeant2D, new Vector2(2, 0), 1);
+        }
+
+        private bool correctDiamondCoords(int x, int y)
+        {
+            bool basic = x > 1 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT && !fields[x, y].digged;
+            bool duplicates = true;
+            foreach (Diamond d in diamonds)
+                if (d.getPosition().X == x * Field.SZ && d.getPosition().Y == y * Field.SZ)
+                    duplicates = false;
+
+            return basic && duplicates;
         }
 
         /// <summary>
@@ -142,6 +166,7 @@ namespace Digger
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            sergeant.update(gameTime);
             guy.update(gameTime);
             foreach (Diamond d in diamonds)
                 d.update(gameTime);
@@ -167,6 +192,7 @@ namespace Digger
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            sergeant.draw(gameTime);
             guy.draw(gameTime);
             spriteBatch.End();
 
