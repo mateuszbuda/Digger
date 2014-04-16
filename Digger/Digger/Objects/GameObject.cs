@@ -14,8 +14,6 @@ namespace Digger
 {
     public abstract class GameObject
     {
-        protected GraphicsDeviceManager graphics;
-        protected SpriteBatch spriteBatch;
         protected Vector2 position;
         protected Texture2D texture;
 
@@ -25,31 +23,46 @@ namespace Digger
         protected int MinY;
 
         public abstract void update(GameTime gameTime);
-        public virtual void draw(GameTime gameTime)
+
+        public virtual void draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             if (texture != null)
                 spriteBatch.Draw(texture, position, Color.White);
         }
 
-        public GameObject()
+        public virtual void draw(SpriteBatch spriteBatch, GameTime gameTime, float rotation)
         {
+            if (texture != null)
+            {
+                SpriteEffects flip = SpriteEffects.None;
+                Vector2 origin = Vector2.Zero;
+                if (rotation == MathHelper.Pi)
+                {
+                    flip = SpriteEffects.FlipHorizontally;
+                    rotation = 0;
+                }
+                else if (rotation == MathHelper.PiOver2)
+                {
+                    flip = SpriteEffects.FlipHorizontally;
+                    rotation *= -1;
+                }
+                spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, Field.SZ, Field.SZ), null, Color.White, rotation, origin, flip, 0);
+            }
         }
 
-        public virtual Vector2 getPosition()
+        public Vector2 getPosition()
         {
             return position;
         }
 
-        public GameObject(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Vector2 position, Texture2D texture)
+        public GameObject(Vector2 position, Texture2D texture)
         {
-            this.graphics = graphics;
-            this.spriteBatch = spriteBatch;
             this.position = position;
             this.texture = texture;
 
-            MaxX = graphics.GraphicsDevice.Viewport.Width - texture.Width;
+            MaxX = DiggerGame.GRAPHICS_WIDTH - texture.Width;
             MinX = 0;
-            MaxY = graphics.GraphicsDevice.Viewport.Height - texture.Height;
+            MaxY = DiggerGame.GRAPHICS_HEIGHT - texture.Height;
             MinY = 0;
         }
     }

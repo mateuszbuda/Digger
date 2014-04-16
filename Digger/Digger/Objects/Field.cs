@@ -22,15 +22,15 @@ namespace Digger
             texture = null;
         }
 
-        public Field(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Vector2 position, Texture2D texture, bool digged)
-            : base(graphics, spriteBatch, position, texture)
+        public Field(Vector2 position, Texture2D texture, bool digged = false)
+            : base(position, texture)
         {
             this.digged = digged;
         }
 
-        public override void update(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void update(GameTime gameTime)
         {
-            throw new NotImplementedException();
+            return;
         }
     }
 }

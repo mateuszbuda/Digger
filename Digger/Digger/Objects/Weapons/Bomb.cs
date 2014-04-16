@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace Digger.Objects.Weapons
 {
@@ -9,12 +16,13 @@ namespace Digger.Objects.Weapons
     {
         private int countdown;
 
-        public override void update(Microsoft.Xna.Framework.GameTime gameTime)
+        public Bomb(Vector2 position, Texture2D texture, Vector2 speed, int countdown)
+            : base(position, texture, speed)
         {
-            throw new NotImplementedException();
+            this.countdown = countdown;
         }
 
-        public override void draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             throw new NotImplementedException();
         }

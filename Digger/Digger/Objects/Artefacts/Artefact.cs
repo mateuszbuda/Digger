@@ -12,20 +12,18 @@ using System.Text;
 
 namespace Digger.Objects.Artefacts
 {
-    abstract class Artefact : GameObject
+    public abstract class Artefact : GameObject
     {
         protected int pointBonus;
         protected bool enemySensitive;
 
-        public Artefact()
-        {
-        }
-
-        public Artefact(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive)
-            : base(graphics, spriteBatch, position, texture)
+        public Artefact(Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive)
+            : base(position, texture)
         {
             this.pointBonus = pointBonus;
             this.enemySensitive = enemySensitive;
         }
+
+
     }
 }

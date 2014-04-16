@@ -14,17 +14,12 @@ namespace Digger.Objects
 {
     class Captain : Enemy
     {
-        public Captain(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Vector2 position, Texture2D texture, Vector2 speed, int hp)
-            : base(graphics, spriteBatch, position, texture, speed, hp)
+        public Captain(Vector2 position, Texture2D texture, Vector2 speed, int hp, int bonusPoints, int directionUpdateFreq = 0, bool digger = false)
+            : base(position, texture, speed, hp, bonusPoints, directionUpdateFreq, digger)
         {
         }
 
         public override void update(Microsoft.Xna.Framework.GameTime gameTime)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             throw new NotImplementedException();
         }

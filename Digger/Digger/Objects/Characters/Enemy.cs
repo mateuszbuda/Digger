@@ -12,15 +12,18 @@ using System.Text;
 
 namespace Digger.Objects
 {
-    abstract class Enemy : Character
+    public abstract class Enemy : Character
     {
         protected int bonusPoints;
         private int directionUpdateFreq;
         protected bool digger;
 
-        public Enemy(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Vector2 position, Texture2D texture, Vector2 speed, int hp)
-            : base(graphics, spriteBatch, position, texture, speed, hp)
+        public Enemy(Vector2 position, Texture2D texture, Vector2 speed, int hp, int bonusPoints, int directionUpdateFreq = 0, bool digger = false)
+            : base(position, texture, speed, hp)
         {
+            this.bonusPoints = bonusPoints;
+            this.directionUpdateFreq = directionUpdateFreq;
+            this.digger = digger;
         }
     }
 }

@@ -12,16 +12,12 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Digger.Objects.Weapons
 {
-    abstract class Weapon : GameObject
+    public abstract class Weapon : GameObject
     {
-        private Vector2 speed;
+        protected Vector2 speed;
 
-        public Weapon()
-        {
-        }
-
-        public Weapon(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Vector2 position, Texture2D texture, Vector2 speed)
-            : base(graphics, spriteBatch, position, texture)
+        public Weapon(Vector2 position, Texture2D texture, Vector2 speed)
+            : base(position, texture)
         {
             this.speed = speed;
         }

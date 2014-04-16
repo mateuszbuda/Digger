@@ -16,6 +16,12 @@ namespace Digger.Objects.Artefacts
     {
         private Vector2 speed;
 
+        public GoldBag(Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive, Vector2 speed)
+            : base(position, texture, pointBonus, enemySensitive)
+        {
+            this.speed = speed;
+        }
+
         public override void update(GameTime gameTime)
         {
             throw new NotImplementedException();

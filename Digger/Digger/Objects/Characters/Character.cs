@@ -17,8 +17,8 @@ namespace Digger.Objects
         protected int hp;
         protected Vector2 speed;
 
-        public Character(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Vector2 position, Texture2D texture, Vector2 speed, int hp)
-            : base(graphics, spriteBatch, position, texture)
+        public Character(Vector2 position, Texture2D texture, Vector2 speed, int hp)
+            : base(position, texture)
         {
             this.speed = speed;
             this.hp = hp;

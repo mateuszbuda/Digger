@@ -9,22 +9,27 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Digger.Objects;
+using Digger.Objects.Artefacts;
+using Digger.Objects.Weapons;
 
 namespace Digger.Objects
 {
     public class Guy : Character
     {
-        private Vector2 historyPosition;
+        private Vector2 historyPosition = Vector2.Zero;
 
         private bool moving = false;
         private string username;
         private bool invicloak;
         private int cloakCountdown;
         private int bonusCountdown;
-
+        private Keys lastMoveDirection = Keys.Right;
         public int bombCnt;
         public int invicloackCnt;
-        public int missileCnt;
+        private double lastShoot = 0.0;
+        private int firesCnt = 1000;
+        private List<Fire> fires = new List<Fire>();
         public int points;
 
 
@@ -41,14 +46,66 @@ namespace Digger.Objects
             return;
         }
 
-        public Guy(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Vector2 position, Texture2D texture, Vector2 speed, int hp, string username)
-            : base(graphics, spriteBatch, position, texture, speed, hp)
+        public void addMissile()
+        {
+            firesCnt++;
+        }
+
+        public Guy(Vector2 position, Texture2D texture, Vector2 speed, int hp, string username)
+            : base(position, texture, speed, hp)
         {
             this.username = username;
             this.historyPosition = position;
         }
 
         public override void update(GameTime gameTime)
+        {
+            updateMove();
+            updateFires(gameTime);
+
+        }
+
+        private void updateFires(GameTime gameTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.C) && gameTime.TotalGameTime.TotalSeconds - lastShoot > 1)
+                if (firesCnt > 0)
+                {
+                    firesCnt--;
+                    lastShoot = gameTime.TotalGameTime.TotalSeconds;
+                    bool fired = false;
+                    foreach (Fire f in fires)
+                        if (!f.visible)
+                        {
+                            f.Shoot(position, getFireSpeed());
+                            fired = true;
+                            break;
+                        }
+                    if (!fired)
+                    {
+                        Fire f = new Fire(position, Textures.getFireTex(), Vector2.Zero);
+                        fires.Add(f);
+                        f.Shoot(position, getFireSpeed());
+                    }
+                }
+
+            foreach (Fire f in fires)
+                f.update(gameTime);
+        }
+
+        private Vector2 getFireSpeed()
+        {
+            if (lastMoveDirection == Keys.Right)
+                return new Vector2(5, 0);
+            else if (lastMoveDirection == Keys.Left)
+                return new Vector2(-5, 0);
+            else if (lastMoveDirection == Keys.Down)
+                return new Vector2(0, 5);
+            else if (lastMoveDirection == Keys.Up)
+                return new Vector2(0, -5);
+            return new Vector2(5, 0);
+        }
+
+        private void updateMove()
         {
             position += speed;
             if (!moving)
@@ -58,24 +115,28 @@ namespace Digger.Objects
                     speed.X = -2;
                     speed.Y = 0;
                     moving = true;
+                    lastMoveDirection = Keys.Left;
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Right))
                 {
                     speed.X = 2;
                     speed.Y = 0;
                     moving = true;
+                    lastMoveDirection = Keys.Right;
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Up))
                 {
                     speed.X = 0;
                     speed.Y = -2;
                     moving = true;
+                    lastMoveDirection = Keys.Up;
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
                     speed.X = 0;
                     speed.Y = 2;
                     moving = true;
+                    lastMoveDirection = Keys.Down;
                 }
             }
 
@@ -110,14 +171,15 @@ namespace Digger.Objects
                 historyPosition = position;
                 speed.X = speed.Y = 0;
                 moving = false;
-                DiggerGame.fields[(int)(position.X / 50), (int)(position.Y / 50)].dig();
+                Map.getInstance()[(int)(position.X / 50), (int)(position.Y / 50)].dig();
             }
-
         }
 
-        public override void draw(GameTime gameTime)
+        public override void draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            base.draw(gameTime);
+            base.draw(spriteBatch, gameTime);
+            foreach (Fire f in fires)
+                f.draw(spriteBatch, gameTime);
         }
     }
 }

@@ -14,17 +14,12 @@ namespace Digger.Objects
 {
     class Colonel : Enemy
     {
-        public Colonel(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Vector2 position, Texture2D texture, Vector2 speed, int hp)
-            : base(graphics, spriteBatch, position, texture, speed, hp)
+        public Colonel(Vector2 position, Texture2D texture, Vector2 speed, int hp, int bonusPoints, int directionUpdateFreq = 0, bool digger = false)
+            : base(position, texture, speed, hp, bonusPoints, directionUpdateFreq, digger)
         {
         }
 
-        public override void update(Microsoft.Xna.Framework.GameTime gameTime)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void update(GameTime gameTime)
         {
             throw new NotImplementedException();
         }
