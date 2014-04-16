@@ -34,19 +34,8 @@ namespace Digger
         {
             if (texture != null)
             {
-                SpriteEffects flip = SpriteEffects.None;
-                Vector2 origin = Vector2.Zero;
-                if (rotation == MathHelper.Pi)
-                {
-                    flip = SpriteEffects.FlipHorizontally;
-                    rotation = 0;
-                }
-                else if (rotation == MathHelper.PiOver2)
-                {
-                    flip = SpriteEffects.FlipHorizontally;
-                    rotation *= -1;
-                }
-                spriteBatch.Draw(texture, new Rectangle((int)position.X, (int)position.Y, Field.SZ, Field.SZ), null, Color.White, rotation, origin, flip, 0);
+                Vector2 origin = new Vector2(Field.SZ / 2, Field.SZ / 2);
+                spriteBatch.Draw(texture, new Vector2(position.X + Field.SZ / 2, position.Y + Field.SZ / 2), null, Color.White, rotation, origin, Vector2.One, SpriteEffects.None, 0f);
             }
         }
 

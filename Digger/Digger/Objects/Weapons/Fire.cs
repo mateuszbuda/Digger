@@ -35,17 +35,22 @@ namespace Digger.Objects.Weapons
                 position.Y = MaxY;
             }
 
-            if ((int)(position.X / Field.SZ) + 1 < Map.WIDTH &&
+            if (isOutsideDiggedArea())
+            {
+                visible = false;
+            }
+        }
+
+        private bool isOutsideDiggedArea()
+        {
+            return (int)(position.X / Field.SZ) + 1 < Map.WIDTH &&
                 (speed.X > 0 &&
                 !Map.getInstance()[(int)(position.X / Field.SZ) + 1, (int)(position.Y / Field.SZ)].digged) ||
                 (speed.X <= 0 &&
                 !Map.getInstance()[(int)(position.X / Field.SZ), (int)(position.Y / Field.SZ)].digged) ||
                 (int)(position.Y / Field.SZ) + 1 < Map.HEIGHT &&
                 (speed.Y > 0 &&
-                !Map.getInstance()[(int)(position.X / Field.SZ), (int)(position.Y / Field.SZ) + 1].digged))
-            {
-                visible = false;
-            }
+                !Map.getInstance()[(int)(position.X / Field.SZ), (int)(position.Y / Field.SZ) + 1].digged);
         }
 
         public override void draw(SpriteBatch spriteBatch, GameTime gameTime)
