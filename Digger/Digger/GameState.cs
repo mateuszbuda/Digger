@@ -45,17 +45,15 @@ namespace Digger
 
             // Sergeants
             int s = 0;
-            while (s < 4)
+            while (s < 10)
             {
                 x = r.Next(Map.WIDTH);
                 y = (r.Next(Map.HEIGHT / 2) * 2 + 1) % Map.HEIGHT;
-                while (!Map.getInstance()[x, y].digged)
+                if (areCorrectSergeantCoords(x, y))
                 {
-                    x = r.Next(Map.WIDTH);
-                    y = (r.Next(Map.HEIGHT / 2) * 2 + 1) % Map.HEIGHT;
+                    enemies.Add(new Sergeant(new Vector2(x * Field.SZ, y * Field.SZ), Textures.getSergeantTex(), new Vector2(2, 0), 1, 20));
+                    s++;
                 }
-                enemies.Add(new Sergeant(new Vector2(x * Field.SZ, y * Field.SZ), Textures.getSergeantTex(), new Vector2(2, 0), 1, 20));
-                s++;
             }
         }
 
@@ -90,10 +88,21 @@ namespace Digger
 
         private bool areCorrectDiamondCoords(int x, int y)
         {
-            bool basic = x > 1 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT && !Map.getInstance()[x, y].digged;
+            bool basic = x > 0 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT && !Map.getInstance()[x, y].digged;
             bool duplicates = true;
             foreach (Artefact a in artefacts)
                 if (a.getPosition().X == x * Field.SZ && a.getPosition().Y == y * Field.SZ)
+                    duplicates = false;
+
+            return basic && duplicates;
+        }
+
+        private bool areCorrectSergeantCoords(int x, int y)
+        {
+            bool basic = x > 0 && y > 0 && x < Map.WIDTH && y < Map.HEIGHT && Map.getInstance()[x, y].digged;
+            bool duplicates = true;
+            foreach (Enemy e in enemies)
+                if (e.getPosition().X == x * Field.SZ && e.getPosition().Y == y * Field.SZ)
                     duplicates = false;
 
             return basic && duplicates;

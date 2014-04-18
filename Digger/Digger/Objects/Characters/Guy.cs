@@ -76,7 +76,9 @@ namespace Digger.Objects
                     foreach (Fire f in fires)
                         if (!f.visible)
                         {
-                            f.Shoot(position, getFireSpeed());
+                            Vector2 fireSpeed = getFireSpeed();
+                            Vector2 position = getFirePosition(fireSpeed);
+                            f.Shoot(position, fireSpeed);
                             fired = true;
                             break;
                         }
@@ -90,6 +92,20 @@ namespace Digger.Objects
 
             foreach (Fire f in fires)
                 f.update(gameTime);
+        }
+
+        private Vector2 getFirePosition(Vector2 fireSpeed)
+        {
+            if (fireSpeed.X > 0)
+                return new Vector2(position.X + Field.SZ, position.Y);
+            else if (fireSpeed.X < 0)
+                return new Vector2(position.X - Field.SZ, position.Y);
+            else if (fireSpeed.Y > 0)
+                return new Vector2(position.X, position.Y + Field.SZ);
+            else if (fireSpeed.Y < 0)
+                return new Vector2(position.X, position.Y - Field.SZ);
+            else
+                return new Vector2(position.X + Field.SZ, position.Y);
         }
 
         private Vector2 getFireSpeed()
