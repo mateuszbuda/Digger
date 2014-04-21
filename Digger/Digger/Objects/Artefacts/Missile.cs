@@ -21,7 +21,7 @@ namespace Digger.Objects.Artefacts
 
         public override void update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            throw new NotImplementedException();
+            return;
         }
     }
 }

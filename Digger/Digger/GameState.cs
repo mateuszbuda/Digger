@@ -21,39 +21,33 @@ namespace Digger
         public List<Artefact> artefacts = new List<Artefact>();
         public List<Enemy> enemies = new List<Enemy>();
         private bool running = true;
+        private Random rand = new Random();
+        private int nextBombTime; // in seconds
+        private int nextMissileTime;
 
         public GameState()
         {
-            Random r = new Random();
             // TODO: extract constants
+            nextBombTime = rand.Next(12, 15);
+            nextMissileTime = rand.Next(8, 12);
 
             //hero
             guy = new Guy(Vector2.Zero, Textures.getGuyTex(), Vector2.Zero, 3, "test");
 
             // Diamonds distribution
-            int x, y, d = 0;
+            int d = 0;
             while (d < 12)
             {
-                x = r.Next(Map.WIDTH);
-                y = r.Next(d, d + 1);
-                if (areCorrectDiamondCoords(x, y))
-                {
-                    artefacts.Add(new Diamond(new Vector2(x * Field.SZ, y * Field.SZ), Textures.getDiamondTex(), 10, false));
-                    d++;
-                }
+                artefacts.Add(new Diamond(getDiamondPosition(), Textures.getDiamondTex(), 10, false));
+                d++;
             }
 
             // Sergeants
             int s = 0;
             while (s < 10)
             {
-                x = r.Next(Map.WIDTH);
-                y = (r.Next(Map.HEIGHT / 2) * 2 + 1) % Map.HEIGHT;
-                if (areCorrectSergeantCoords(x, y))
-                {
-                    enemies.Add(new Sergeant(new Vector2(x * Field.SZ, y * Field.SZ), Textures.getSergeantTex(), new Vector2(2, 0), 1, 20));
-                    s++;
-                }
+                enemies.Add(new Sergeant(getSergeantPosition(), Textures.getSergeantTex(), new Vector2(2, 0), 1, 20));
+                s++;
             }
         }
 
@@ -76,7 +70,18 @@ namespace Digger
             foreach (Artefact a in artefacts)
                 a.update(gameTime);
 
+            if ((int)gameTime.TotalGameTime.TotalSeconds == nextBombTime)
+            {
+                artefacts.Add(new Bomb(getBombPosition(), Textures.getBombTex(), 0, false));
+                nextBombTime = (int)gameTime.TotalGameTime.TotalSeconds + rand.Next(12, 15);
+            }
+            if ((int)gameTime.TotalGameTime.TotalSeconds == nextMissileTime)
+            {
+                artefacts.Add(new Missile(getMissilePosition(), Textures.getMissileTex(), 0, false));
+                nextMissileTime = (int)gameTime.TotalGameTime.TotalSeconds + rand.Next(8, 12);
+            }
         }
+
         public void saveGame(string filename)
         {
             return;
@@ -86,26 +91,94 @@ namespace Digger
             return;
         }
 
-        private bool areCorrectDiamondCoords(int x, int y)
+        private Vector2 getBombPosition()
         {
-            bool basic = x > 0 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT && !Map.getInstance()[x, y].digged;
-            bool duplicates = true;
-            foreach (Artefact a in artefacts)
-                if (a.getPosition().X == x * Field.SZ && a.getPosition().Y == y * Field.SZ)
+            int x, y;
+            bool basic, duplicates;
+            while (true)
+            {
+                x = rand.Next(Map.WIDTH);
+                y = rand.Next(Map.HEIGHT);
+
+                basic = x >= 0 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT;
+                duplicates = true;
+                foreach (Artefact a in artefacts)
+                    if (a.getPosition().X == x * Field.SZ && a.getPosition().Y == y * Field.SZ)
+                        duplicates = false;
+                if (guy.getPosition().X == x * Field.SZ && guy.getPosition().Y == y * Field.SZ)
                     duplicates = false;
 
-            return basic && duplicates;
+                if (basic && duplicates)
+                    break;
+            }
+            return new Vector2(x * Field.SZ, y * Field.SZ);
         }
 
-        private bool areCorrectSergeantCoords(int x, int y)
+        private Vector2 getMissilePosition()
         {
-            bool basic = x > 0 && y > 0 && x < Map.WIDTH && y < Map.HEIGHT && Map.getInstance()[x, y].digged;
-            bool duplicates = true;
-            foreach (Enemy e in enemies)
-                if (e.getPosition().X == x * Field.SZ && e.getPosition().Y == y * Field.SZ)
+            int x, y;
+            bool basic, duplicates;
+            while (true)
+            {
+                x = rand.Next(Map.WIDTH);
+                y = rand.Next(Map.HEIGHT);
+
+                basic = x >= 0 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT;
+                duplicates = true;
+                foreach (Artefact a in artefacts)
+                    if (a.getPosition().X == x * Field.SZ && a.getPosition().Y == y * Field.SZ)
+                        duplicates = false;
+                if (guy.getPosition().X == x * Field.SZ && guy.getPosition().Y == y * Field.SZ)
                     duplicates = false;
 
-            return basic && duplicates;
+                if (basic && duplicates)
+                    break;
+            }
+            return new Vector2(x * Field.SZ, y * Field.SZ);
+        }
+
+        private Vector2 getDiamondPosition()
+        {
+            int x, y;
+            bool basic, duplicates;
+            while (true)
+            {
+                x = rand.Next(Map.WIDTH);
+                y = rand.Next(Map.HEIGHT);
+
+                basic = x >= 0 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT && !Map.getInstance()[x, y].digged;
+                duplicates = true;
+                foreach (Artefact a in artefacts)
+                    if (a.getPosition().X == x * Field.SZ && a.getPosition().Y == y * Field.SZ)
+                        duplicates = false;
+                if (guy.getPosition().X == x * Field.SZ && guy.getPosition().Y == y * Field.SZ)
+                    duplicates = false;
+
+                if (basic && duplicates)
+                    break;
+            }
+            return new Vector2(x * Field.SZ, y * Field.SZ);
+        }
+
+        private Vector2 getSergeantPosition()
+        {
+            int x, y;
+            bool basic, duplicates;
+            while (true)
+            {
+                x = rand.Next(Map.WIDTH);
+                y = rand.Next(Map.HEIGHT);
+
+                basic = x >= 0 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT && Map.getInstance()[x, y].digged;
+                duplicates = true;
+                foreach (Enemy e in enemies)
+                    if (e.getPosition().X == x * Field.SZ && e.getPosition().Y == y * Field.SZ)
+                        duplicates = false;
+
+                if (basic && duplicates)
+                    break;
+            }
+            return new Vector2(x * Field.SZ, y * Field.SZ);
         }
     }
 }

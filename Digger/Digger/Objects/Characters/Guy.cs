@@ -67,11 +67,11 @@ namespace Digger.Objects
 
         private void updateFires(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.C) && gameTime.TotalGameTime.TotalSeconds - lastShoot > 1)
+            if (Keyboard.GetState().IsKeyDown(Keys.C) && gameTime.TotalGameTime.TotalMilliseconds - lastShoot > 200)
                 if (firesCnt > 0)
                 {
                     firesCnt--;
-                    lastShoot = gameTime.TotalGameTime.TotalSeconds;
+                    lastShoot = gameTime.TotalGameTime.TotalMilliseconds;
                     bool fired = false;
                     foreach (Fire f in fires)
                         if (!f.visible)
