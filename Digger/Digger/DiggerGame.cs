@@ -77,6 +77,16 @@ namespace Digger
         protected override void Update(GameTime gameTime)
         {
             gameState.update(gameTime);
+            if (GameState.guy.getHp() < 1)
+            {
+                gameState.pause();
+                gameOver();
+            }
+        }
+
+        private void gameOver()
+        {
+            return;
         }
 
         /// <summary>

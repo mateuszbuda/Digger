@@ -25,14 +25,6 @@ namespace Digger.Objects
             if (texture == null)
                 return;
 
-            foreach (Fire f in GameState.guy.fires)
-                if (f.visible)
-                    if (hitTarget(f))
-                    {
-                        texture = null;
-                        f.visible = false;
-                    }
-
             position += speed;
 
             if (position.X > MaxX)

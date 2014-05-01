@@ -32,7 +32,7 @@ namespace Digger
             nextMissileTime = rand.Next(8, 12);
 
             //hero
-            guy = new Guy(Vector2.Zero, Textures.getGuyTex(), Vector2.Zero, 3, "test");
+            guy = new Guy(this, Vector2.Zero, Textures.getGuyTex(), Vector2.Zero, 3, "test");
 
             // Diamonds distribution
             int d = 0;

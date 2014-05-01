@@ -22,7 +22,10 @@ namespace Digger.Objects.Artefacts
         public override void update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             if (GameState.guy.getPosition() == position)
+            {
+                GameState.guy.points += 10;
                 texture = null;
+            }
         }
     }
 }

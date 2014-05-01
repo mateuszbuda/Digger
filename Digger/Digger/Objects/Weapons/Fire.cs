@@ -14,11 +14,13 @@ namespace Digger.Objects.Weapons
 {
     public class Fire : Weapon
     {
+        public GameState gameState;
         public bool visible = false;
 
-        public Fire(Vector2 position, Texture2D texture, Vector2 speed)
-            : base(position, texture, speed)
+        public Fire(Texture2D texture, GameState gameState)
+            : base(Vector2.Zero, texture, Vector2.Zero)
         {
+            this.gameState = gameState;
         }
 
         public override void update(GameTime gameTime)
@@ -36,9 +38,29 @@ namespace Digger.Objects.Weapons
             }
 
             if (isOutsideDiggedArea())
-            {
                 visible = false;
-            }
+
+            Enemy target = null;
+            foreach (Enemy e in gameState.enemies)
+                if (hitTarget(e))
+                {
+                    target = e;
+                    this.visible = false;
+                    break;
+                }
+
+            if (target != null)
+                if (target.damage(1) < 1)
+                {
+                    GameState.guy.points += target.getBonusPoints();
+                    gameState.enemies.Remove(target);
+                }
+        }
+
+        private bool hitTarget(Enemy e)
+        {
+            Vector2 middle = new Vector2(e.getPosition().X + Field.SZ / 2, e.getPosition().Y + Field.SZ / 2);
+            return middle.X >= position.X && middle.X < position.X + Field.SZ && middle.Y >= position.Y && middle.Y < position.Y + Field.SZ;
         }
 
         private bool isOutsideDiggedArea()
@@ -68,7 +90,7 @@ namespace Digger.Objects.Weapons
             }
         }
 
-        public void Shoot(Vector2 position, Vector2 speed)
+        public void shoot(Vector2 position, Vector2 speed)
         {
             this.position = position;
             this.speed = speed;

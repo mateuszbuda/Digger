@@ -18,42 +18,32 @@ namespace Digger.Objects
     public class Guy : Character
     {
         private Vector2 historyPosition = Vector2.Zero;
-
         private bool moving = false;
         private string username;
         private bool invicloak = false;
         private int cloakCountdown;
         private int bonusCountdown;
         private Keys lastMoveDirection = Keys.Right;
-        public int bombCnt;
+        public int bombCnt = 0;
+        private double lastBomb = 0.0;
+        public List<Weapons.Bomb> bombs = new List<Weapons.Bomb>();
         public int invicloackCnt;
+        private double lastEnemyHit = 0.0;
         private double lastShoot = 0.0;
         public int firesCnt = 0;
         public List<Fire> fires = new List<Fire>();
-        public int points;
+        public int points = 0;
+        public GameState gameState;
 
-
-        public void shotMissile()
+        public int getHp()
         {
-            return;
-        }
-        public void setBomb()
-        {
-            return;
-        }
-        public void putOnInvicloak()
-        {
-            return;
+            return hp;
         }
 
-        public void addMissile()
-        {
-            firesCnt++;
-        }
-
-        public Guy(Vector2 position, Texture2D texture, Vector2 speed, int hp, string username)
+        public Guy(GameState gameState, Vector2 position, Texture2D texture, Vector2 speed, int hp, string username)
             : base(position, texture, speed, hp)
         {
+            this.gameState = gameState;
             this.username = username;
             this.historyPosition = position;
         }
@@ -62,7 +52,55 @@ namespace Digger.Objects
         {
             updateMove();
             updateFires(gameTime);
+            updateBombs(gameTime);
+            enemyCollisions(gameTime);
+        }
 
+        private void updateBombs(GameTime gameTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.B) && gameTime.TotalGameTime.TotalMilliseconds - lastBomb > 200)
+                if (bombCnt > 0)
+                {
+                    bombCnt--;
+                    lastBomb = gameTime.TotalGameTime.TotalMilliseconds;
+                    bool set = false;
+                    foreach (Weapons.Bomb b in bombs)
+                        if (!b.visible)
+                        {
+                            b.set(position, gameTime.TotalGameTime.Seconds + Weapons.Bomb.COUNTDOWN);
+                            set = true;
+                            break;
+                        }
+                    if (!set)
+                    {
+                        Weapons.Bomb b = new Weapons.Bomb(Textures.getBombTex(), gameState);
+                        bombs.Add(b);
+                        b.set(position, gameTime.TotalGameTime.Seconds + Weapons.Bomb.COUNTDOWN);
+                    }
+                }
+
+            foreach (Weapons.Bomb b in bombs)
+                b.update(gameTime);
+        }
+
+        private void enemyCollisions(GameTime gameTime)
+        {
+            if (gameTime.TotalGameTime.TotalMilliseconds - lastEnemyHit < 1500)
+                return;
+
+            foreach (Enemy e in gameState.enemies)
+                if (hitEnemy(e))
+                {
+                    this.damage(1);
+                    lastEnemyHit = gameTime.TotalGameTime.TotalMilliseconds;
+                    break;
+                }
+        }
+
+        private bool hitEnemy(Enemy e)
+        {
+            Vector2 middle = new Vector2(e.getPosition().X + Field.SZ / 2, e.getPosition().Y + Field.SZ / 2);
+            return middle.X >= position.X && middle.X < position.X + Field.SZ && middle.Y >= position.Y && middle.Y < position.Y + Field.SZ;
         }
 
         private void updateFires(GameTime gameTime)
@@ -78,15 +116,15 @@ namespace Digger.Objects
                         {
                             Vector2 fireSpeed = getFireSpeed();
                             Vector2 position = getFirePosition(fireSpeed);
-                            f.Shoot(position, fireSpeed);
+                            f.shoot(position, fireSpeed);
                             fired = true;
                             break;
                         }
                     if (!fired)
                     {
-                        Fire f = new Fire(position, Textures.getFireTex(), Vector2.Zero);
+                        Fire f = new Fire(Textures.getFireTex(), gameState);
                         fires.Add(f);
-                        f.Shoot(position, getFireSpeed());
+                        f.shoot(position, getFireSpeed());
                     }
                 }
 
@@ -196,6 +234,8 @@ namespace Digger.Objects
             base.draw(spriteBatch, gameTime);
             foreach (Fire f in fires)
                 f.draw(spriteBatch, gameTime);
+            foreach (Weapons.Bomb b in bombs)
+                b.draw(spriteBatch, gameTime);
         }
     }
 }

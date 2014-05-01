@@ -25,5 +25,10 @@ namespace Digger.Objects
             this.directionUpdateFreq = directionUpdateFreq;
             this.digger = digger;
         }
+
+        public int getBonusPoints()
+        {
+            return bonusPoints;
+        }
     }
 }

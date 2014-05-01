@@ -23,5 +23,13 @@ namespace Digger.Objects
             this.speed = speed;
             this.hp = hp;
         }
+
+        public int damage(int damage)
+        {
+            hp -= damage;
+            if (hp < 0)
+                texture = null;
+            return hp;
+        }
     }
 }

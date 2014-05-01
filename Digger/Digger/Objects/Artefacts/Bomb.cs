@@ -21,6 +21,7 @@ namespace Digger.Objects.Artefacts
 
         public override void update(Microsoft.Xna.Framework.GameTime gameTime)
         {
+            // TODO check enemies
             if (texture != null && GameState.guy.getPosition() == position)
             {
                 GameState.guy.bombCnt++;
