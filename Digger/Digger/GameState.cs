@@ -169,7 +169,7 @@ namespace Digger
                 x = rand.Next(Map.WIDTH);
                 y = rand.Next(Map.HEIGHT);
 
-                basic = x >= 0 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT && Map.getInstance()[x, y].digged;
+                basic = x >= 0 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT && Map.getInstance()[x, y].digged && y % 2 == 1;
                 duplicates = true;
                 foreach (Enemy e in enemies)
                     if (e.getPosition().X == x * Field.SZ && e.getPosition().Y == y * Field.SZ)

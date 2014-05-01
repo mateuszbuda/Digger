@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.Text;
+using Digger.Objects.Weapons;
 
 namespace Digger.Objects
 {
@@ -21,6 +22,17 @@ namespace Digger.Objects
 
         public override void update(Microsoft.Xna.Framework.GameTime gameTime)
         {
+            if (texture == null)
+                return;
+
+            foreach (Fire f in GameState.guy.fires)
+                if (f.visible)
+                    if (hitTarget(f))
+                    {
+                        texture = null;
+                        f.visible = false;
+                    }
+
             position += speed;
 
             if (position.X > MaxX)
@@ -42,6 +54,12 @@ namespace Digger.Objects
             {
                 speed.X *= -1;
             }
+        }
+
+        private bool hitTarget(Fire f)
+        {
+            Vector2 middle = new Vector2(f.getPosition().X + Field.SZ / 2, f.getPosition().Y + Field.SZ / 2);
+            return middle.X >= position.X && middle.X < position.X + Field.SZ && middle.Y >= position.Y && middle.Y < position.Y + Field.SZ;
         }
     }
 }

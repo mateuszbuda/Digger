@@ -21,15 +21,15 @@ namespace Digger.Objects
 
         private bool moving = false;
         private string username;
-        private bool invicloak;
+        private bool invicloak = false;
         private int cloakCountdown;
         private int bonusCountdown;
         private Keys lastMoveDirection = Keys.Right;
         public int bombCnt;
         public int invicloackCnt;
         private double lastShoot = 0.0;
-        private int firesCnt = 1000;
-        private List<Fire> fires = new List<Fire>();
+        public int firesCnt = 0;
+        public List<Fire> fires = new List<Fire>();
         public int points;
 
 

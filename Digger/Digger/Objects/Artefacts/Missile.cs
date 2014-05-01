@@ -21,7 +21,11 @@ namespace Digger.Objects.Artefacts
 
         public override void update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            return;
+            if (texture != null && GameState.guy.getPosition() == position)
+            {
+                GameState.guy.firesCnt++;
+                texture = null;
+            }
         }
     }
 }
