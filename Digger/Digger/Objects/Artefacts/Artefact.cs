@@ -17,8 +17,8 @@ namespace Digger.Objects.Artefacts
         protected int pointBonus;
         protected bool enemySensitive;
 
-        public Artefact(Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive)
-            : base(position, texture)
+        public Artefact(GameState gameState, Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive)
+            : base(gameState, position, texture)
         {
             this.pointBonus = pointBonus;
             this.enemySensitive = enemySensitive;

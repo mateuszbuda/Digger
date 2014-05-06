@@ -14,8 +14,8 @@ namespace Digger.Objects.Artefacts
 {
     class Gold : Artefact
     {
-        public Gold(Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive)
-            : base(position, texture, pointBonus, enemySensitive)
+        public Gold(GameState gameState, Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive)
+            : base(gameState, position, texture, pointBonus, enemySensitive)
         {
         }
 

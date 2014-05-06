@@ -16,9 +16,10 @@ namespace Digger.Objects.Weapons
     {
         protected Vector2 speed;
 
-        public Weapon(Vector2 position, Texture2D texture, Vector2 speed)
-            : base(position, texture)
+        public Weapon(GameState gameState, Vector2 position, Texture2D texture, Vector2 speed)
+            : base(gameState, position, texture)
         {
+            this.gameState = gameState;
             this.speed = speed;
         }
     }

@@ -17,7 +17,7 @@ namespace Digger
     public class GameState
     {
         public Map map;
-        public static Guy guy;
+        public Guy guy;
         public List<Artefact> artefacts = new List<Artefact>();
         public List<Enemy> enemies = new List<Enemy>();
         private bool running = true;
@@ -38,7 +38,7 @@ namespace Digger
             int d = 0;
             while (d < 12)
             {
-                artefacts.Add(new Diamond(getDiamondPosition(), Textures.getDiamondTex(), 10, false));
+                artefacts.Add(new Diamond(this, getDiamondPosition(), Textures.getDiamondTex(), 10, false));
                 d++;
             }
 
@@ -46,7 +46,7 @@ namespace Digger
             int s = 0;
             while (s < 10)
             {
-                enemies.Add(new Sergeant(getSergeantPosition(), Textures.getSergeantTex(), new Vector2(2, 0), 1, 20));
+                enemies.Add(new Sergeant(this, getSergeantPosition(), Textures.getSergeantTex(), new Vector2(2, 0), 1, 20));
                 s++;
             }
         }
@@ -72,12 +72,12 @@ namespace Digger
 
             if ((int)gameTime.TotalGameTime.TotalSeconds == nextBombTime)
             {
-                artefacts.Add(new Bomb(getBombPosition(), Textures.getBombTex(), 0, false));
+                artefacts.Add(new Bomb(this, getBombPosition(), Textures.getBombTex(), 0, false));
                 nextBombTime = (int)gameTime.TotalGameTime.TotalSeconds + rand.Next(12, 15);
             }
             if ((int)gameTime.TotalGameTime.TotalSeconds == nextMissileTime)
             {
-                artefacts.Add(new Missile(getMissilePosition(), Textures.getMissileTex(), 0, false));
+                artefacts.Add(new Missile(this, getMissilePosition(), Textures.getMissileTex(), 0, false));
                 nextMissileTime = (int)gameTime.TotalGameTime.TotalSeconds + rand.Next(8, 12);
             }
         }

@@ -14,11 +14,10 @@ namespace Digger.Objects.Weapons
 {
     public class Fire : Weapon
     {
-        public GameState gameState;
         public bool visible = false;
 
-        public Fire(Texture2D texture, GameState gameState)
-            : base(Vector2.Zero, texture, Vector2.Zero)
+        public Fire(GameState gameState, Texture2D texture)
+            : base(gameState, Vector2.Zero, texture, Vector2.Zero)
         {
             this.gameState = gameState;
         }
@@ -52,12 +51,12 @@ namespace Digger.Objects.Weapons
             if (target != null)
                 if (target.damage(1) < 1)
                 {
-                    GameState.guy.points += target.getBonusPoints();
+                    gameState.guy.points += target.getBonusPoints();
                     gameState.enemies.Remove(target);
                 }
         }
 
-        private bool hitTarget(Enemy e)
+        private bool hitTarget(Character e)
         {
             Vector2 middle = new Vector2(e.getPosition().X + Field.SZ / 2, e.getPosition().Y + Field.SZ / 2);
             return middle.X >= position.X && middle.X < position.X + Field.SZ && middle.Y >= position.Y && middle.Y < position.Y + Field.SZ;

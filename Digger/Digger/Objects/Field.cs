@@ -22,8 +22,8 @@ namespace Digger
             texture = null;
         }
 
-        public Field(Vector2 position, Texture2D texture, bool digged = false)
-            : base(position, texture)
+        public Field(GameState gameState, Vector2 position, Texture2D texture, bool digged = false)
+            : base(gameState, position, texture)
         {
             this.digged = digged;
         }

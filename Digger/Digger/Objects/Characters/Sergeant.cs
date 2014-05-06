@@ -15,8 +15,8 @@ namespace Digger.Objects
 {
     class Sergeant : Enemy
     {
-        public Sergeant(Vector2 position, Texture2D texture, Vector2 speed, int hp, int bonusPoints, int directionUpdateFreq = 0, bool digger = false)
-            : base(position, texture, speed, hp, bonusPoints, directionUpdateFreq, digger)
+        public Sergeant(GameState gameState, Vector2 position, Texture2D texture, Vector2 speed, int hp, int bonusPoints, int directionUpdateFreq = 0, bool digger = false)
+            : base(gameState, position, texture, speed, hp, bonusPoints, directionUpdateFreq, digger)
         {
         }
 
@@ -46,12 +46,6 @@ namespace Digger.Objects
             {
                 speed.X *= -1;
             }
-        }
-
-        private bool hitTarget(Fire f)
-        {
-            Vector2 middle = new Vector2(f.getPosition().X + Field.SZ / 2, f.getPosition().Y + Field.SZ / 2);
-            return middle.X >= position.X && middle.X < position.X + Field.SZ && middle.Y >= position.Y && middle.Y < position.Y + Field.SZ;
         }
     }
 }

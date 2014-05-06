@@ -77,7 +77,7 @@ namespace Digger
         protected override void Update(GameTime gameTime)
         {
             gameState.update(gameTime);
-            if (GameState.guy.getHp() < 1)
+            if (gameState.guy.getHp() < 1)
             {
                 gameState.pause();
                 gameOver();
@@ -111,7 +111,7 @@ namespace Digger
             foreach (Enemy e in gameState.enemies)
                 e.draw(spriteBatch, gameTime);
 
-            GameState.guy.draw(spriteBatch, gameTime);
+            gameState.guy.draw(spriteBatch, gameTime);
             spriteBatch.End();
 
             base.Draw(gameTime);

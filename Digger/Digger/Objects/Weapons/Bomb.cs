@@ -15,25 +15,26 @@ namespace Digger.Objects.Weapons
     public class Bomb : Weapon
     {
         public const int COUNTDOWN = 3;
-        private GameState gameState;
         private int explosionTime;
         public bool visible = false;
 
-        public Bomb(Texture2D texture, GameState gameState)
-            : base(Vector2.Zero, texture, Vector2.Zero)
+        public Bomb(GameState gameState, Texture2D texture)
+            : base(gameState, Vector2.Zero, texture, Vector2.Zero)
         {
-            this.gameState = gameState;
             this.explosionTime = 0;
         }
 
         public override void update(GameTime gameTime)
         {
-            if (gameTime.TotalGameTime.Seconds == explosionTime)
-                explode();
+            if (visible)
+                if (gameTime.TotalGameTime.Seconds >= explosionTime)
+                    explode();
         }
 
         private void explode()
         {
+            visible = false;
+
             List<Enemy> targets = new List<Enemy>();
             foreach (Enemy e in gameState.enemies)
                 if (inRange(e))
@@ -42,11 +43,9 @@ namespace Digger.Objects.Weapons
             foreach (Enemy e in targets)
                 if (e.damage(1) < 1)
                 {
-                    GameState.guy.points += (2 * e.getBonusPoints());
+                    gameState.guy.points += (2 * e.getBonusPoints());
                     gameState.enemies.Remove(e);
                 }
-
-            visible = false;
         }
 
         private bool inRange(Enemy e)

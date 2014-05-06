@@ -33,7 +33,7 @@ namespace Digger
             // raw maze
             for (int i = 0; i < Map.WIDTH; i++)
                 for (int j = 0; j < Map.HEIGHT; j++)
-                    fields[i, j] = new Field(new Vector2(i * Field.SZ, j * Field.SZ), Textures.getFieldTex());
+                    fields[i, j] = new Field(null, new Vector2(i * Field.SZ, j * Field.SZ), Textures.getFieldTex());
 
             // random maze digging
             fields[0, 0].dig();

@@ -14,16 +14,16 @@ namespace Digger.Objects.Artefacts
 {
     class Missile : Artefact
     {
-        public Missile(Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive)
-            : base(position, texture, pointBonus, enemySensitive)
+        public Missile(GameState gameState, Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive)
+            : base(gameState, position, texture, pointBonus, enemySensitive)
         {
         }
 
         public override void update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            if (texture != null && GameState.guy.getPosition() == position)
+            if (texture != null && gameState.guy.getPosition() == position)
             {
-                GameState.guy.firesCnt++;
+                gameState.guy.firesCnt++;
                 texture = null;
             }
         }

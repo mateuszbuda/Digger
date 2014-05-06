@@ -16,8 +16,8 @@ namespace Digger.Objects.Artefacts
     {
         private int timeout;
 
-        public Invicloak(Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive, int timeout)
-            : base(position, texture, pointBonus, enemySensitive)
+        public Invicloak(GameState gameState, Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive, int timeout)
+            : base(gameState, position, texture, pointBonus, enemySensitive)
         {
             this.timeout = timeout;
         }

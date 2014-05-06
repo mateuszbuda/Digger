@@ -14,16 +14,16 @@ namespace Digger.Objects.Artefacts
 {
     class Diamond : Artefact
     {
-        public Diamond(Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive)
-            : base(position, texture, pointBonus, enemySensitive)
+        public Diamond(GameState gameState, Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive)
+            : base(gameState, position, texture, pointBonus, enemySensitive)
         {
         }
 
         public override void update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            if (GameState.guy.getPosition() == position)
+            if (gameState.guy.getPosition() == position)
             {
-                GameState.guy.points += 10;
+                gameState.guy.points += 10;
                 texture = null;
             }
         }

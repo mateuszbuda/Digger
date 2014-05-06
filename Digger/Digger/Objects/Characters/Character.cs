@@ -17,8 +17,8 @@ namespace Digger.Objects
         protected int hp;
         protected Vector2 speed;
 
-        public Character(Vector2 position, Texture2D texture, Vector2 speed, int hp)
-            : base(position, texture)
+        public Character(GameState gameState, Vector2 position, Texture2D texture, Vector2 speed, int hp)
+            : base(gameState, position, texture)
         {
             this.speed = speed;
             this.hp = hp;

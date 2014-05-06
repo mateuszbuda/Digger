@@ -14,8 +14,8 @@ namespace Digger.Objects
 {
     class General : Enemy
     {
-        public General(Vector2 position, Texture2D texture, Vector2 speed, int hp, int bonusPoints, int directionUpdateFreq = 0, bool digger = false)
-            : base(position, texture, speed, hp, bonusPoints, directionUpdateFreq, digger)
+        public General(GameState gameState, Vector2 position, Texture2D texture, Vector2 speed, int hp, int bonusPoints, int directionUpdateFreq = 0, bool digger = false)
+            : base(gameState, position, texture, speed, hp, bonusPoints, directionUpdateFreq, digger)
         {
         }
 

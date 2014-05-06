@@ -14,19 +14,26 @@ namespace Digger.Objects.Artefacts
 {
     class Bomb : Artefact
     {
-        public Bomb(Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive)
-            : base(position, texture, pointBonus, enemySensitive)
+
+        public Bomb(GameState gameState, Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive)
+            : base(gameState, position, texture, pointBonus, enemySensitive)
         {
         }
 
         public override void update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            // TODO check enemies
-            if (texture != null && GameState.guy.getPosition() == position)
+            if (texture == null)
+                return;
+
+            if (gameState.guy.getPosition() == position)
             {
-                GameState.guy.bombCnt++;
+                gameState.guy.bombCnt++;
                 texture = null;
             }
+
+            foreach (Enemy e in gameState.enemies)
+                if (e.getPosition() == position)
+                    texture = null;
         }
     }
 }

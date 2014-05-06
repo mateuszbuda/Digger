@@ -33,7 +33,6 @@ namespace Digger.Objects
         public int firesCnt = 0;
         public List<Fire> fires = new List<Fire>();
         public int points = 0;
-        public GameState gameState;
 
         public int getHp()
         {
@@ -41,9 +40,8 @@ namespace Digger.Objects
         }
 
         public Guy(GameState gameState, Vector2 position, Texture2D texture, Vector2 speed, int hp, string username)
-            : base(position, texture, speed, hp)
+            : base(gameState, position, texture, speed, hp)
         {
-            this.gameState = gameState;
             this.username = username;
             this.historyPosition = position;
         }
@@ -73,7 +71,7 @@ namespace Digger.Objects
                         }
                     if (!set)
                     {
-                        Weapons.Bomb b = new Weapons.Bomb(Textures.getBombTex(), gameState);
+                        Weapons.Bomb b = new Weapons.Bomb(gameState, Textures.getBombTex());
                         bombs.Add(b);
                         b.set(position, gameTime.TotalGameTime.Seconds + Weapons.Bomb.COUNTDOWN);
                     }
@@ -122,7 +120,7 @@ namespace Digger.Objects
                         }
                     if (!fired)
                     {
-                        Fire f = new Fire(Textures.getFireTex(), gameState);
+                        Fire f = new Fire(gameState, Textures.getFireTex());
                         fires.Add(f);
                         f.shoot(position, getFireSpeed());
                     }

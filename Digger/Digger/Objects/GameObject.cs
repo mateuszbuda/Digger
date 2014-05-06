@@ -14,6 +14,7 @@ namespace Digger
 {
     public abstract class GameObject
     {
+        protected GameState gameState;
         protected Vector2 position;
         protected Texture2D texture;
 
@@ -44,8 +45,9 @@ namespace Digger
             return position;
         }
 
-        public GameObject(Vector2 position, Texture2D texture)
+        public GameObject(GameState gameState, Vector2 position, Texture2D texture)
         {
+            this.gameState = gameState;
             this.position = position;
             this.texture = texture;
 

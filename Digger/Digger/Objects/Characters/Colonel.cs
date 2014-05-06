@@ -14,8 +14,8 @@ namespace Digger.Objects
 {
     class Colonel : Enemy
     {
-        public Colonel(Vector2 position, Texture2D texture, Vector2 speed, int hp, int bonusPoints, int directionUpdateFreq = 0, bool digger = false)
-            : base(position, texture, speed, hp, bonusPoints, directionUpdateFreq, digger)
+        public Colonel(GameState gameState, Vector2 position, Texture2D texture, Vector2 speed, int hp, int bonusPoints, int directionUpdateFreq = 0, bool digger = false)
+            : base(gameState, position, texture, speed, hp, bonusPoints, directionUpdateFreq, digger)
         {
         }
 
