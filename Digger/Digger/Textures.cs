@@ -15,6 +15,7 @@ namespace Digger
     public class Textures
     {
         private const string BOMB = "bomb";
+        private const string BOMB_ARTEFACT = "bomb_artefact";
         private const string BONUS_TIME = "bonustime";
         private const string CAPTAIN = "captain";
         private const string COLONEL = "colonel";
@@ -43,6 +44,15 @@ namespace Digger
                 return bombTex;
 
             return bombTex = cm.Load<Texture2D>(BOMB);
+        }
+
+        private static Texture2D bombArtefactTex;
+        public static Texture2D getBombArtefactTex()
+        {
+            if (bombArtefactTex != null)
+                return bombArtefactTex;
+
+            return bombArtefactTex = cm.Load<Texture2D>(BOMB_ARTEFACT);
         }
 
         private static Texture2D bonusTimeTex;

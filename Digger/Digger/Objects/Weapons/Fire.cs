@@ -44,16 +44,20 @@ namespace Digger.Objects.Weapons
                 if (hitTarget(e))
                 {
                     target = e;
-                    this.visible = false;
+                    if (!(target is Colonel))
+                        this.visible = false;
                     break;
                 }
 
-            if (target != null)
+            if (target != null && !(target is Colonel))
                 if (target.damage(1) < 1)
                 {
                     gameState.guy.points += target.getBonusPoints();
                     gameState.enemies.Remove(target);
+                    return;
                 }
+            if (target is Colonel)
+                speed = -speed;
         }
 
         private bool hitTarget(Character e)

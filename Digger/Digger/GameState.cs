@@ -32,7 +32,7 @@ namespace Digger
             nextMissileTime = rand.Next(8, 12);
 
             //hero
-            guy = new Guy(this, Vector2.Zero, Textures.getGuyTex(), Vector2.Zero, 33, "test");
+            guy = new Guy(this, Vector2.Zero, Textures.getGuyTex(), Vector2.Zero, 300, "test");
 
             // Diamonds distribution
             int d = 0;
@@ -60,11 +60,17 @@ namespace Digger
 
             // Majors
             int m = 0;
-            while (m < 10)
+            while (m < 2)
             {
                 enemies.Add(new Major(this, getEnemyPosition(), Textures.getMajorTex(), new Vector2(2, 0), 1, 60, 5));
                 m++;
             }
+
+            // Colonel
+            enemies.Add(new Colonel(this, getEnemyPosition(), Textures.getColonelTex(), new Vector2(2, 0), 1, 80, 2, true));
+
+            // General
+            enemies.Add(new General(this, getEnemyPosition(), Textures.getGeneralTex(), new Vector2(2.5f, 0), 1, 100, 2, true));
         }
 
         public void pause()
@@ -88,7 +94,7 @@ namespace Digger
 
             if ((int)gameTime.TotalGameTime.TotalSeconds == nextBombTime)
             {
-                artefacts.Add(new Bomb(this, getArtefactPosition(), Textures.getBombTex(), 0, false));
+                artefacts.Add(new Bomb(this, getArtefactPosition(), Textures.getBombArtefactTex(), 0, false));
                 nextBombTime = (int)gameTime.TotalGameTime.TotalSeconds + rand.Next(12, 15);
             }
             if ((int)gameTime.TotalGameTime.TotalSeconds == nextMissileTime)

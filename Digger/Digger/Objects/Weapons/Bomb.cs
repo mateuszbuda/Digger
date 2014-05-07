@@ -41,11 +41,12 @@ namespace Digger.Objects.Weapons
                     targets.Add(e);
 
             foreach (Enemy e in targets)
-                if (e.damage(1) < 1)
-                {
-                    gameState.guy.points += (2 * e.getBonusPoints());
-                    gameState.enemies.Remove(e);
-                }
+                if (!(e is General))
+                    if (e.damage(1) < 1)
+                    {
+                        gameState.guy.points += (2 * e.getBonusPoints());
+                        gameState.enemies.Remove(e);
+                    }
         }
 
         private bool inRange(Enemy e)
