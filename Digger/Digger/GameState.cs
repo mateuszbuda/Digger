@@ -32,7 +32,7 @@ namespace Digger
             nextMissileTime = rand.Next(8, 12);
 
             //hero
-            guy = new Guy(this, Vector2.Zero, Textures.getGuyTex(), Vector2.Zero, 3, "test");
+            guy = new Guy(this, Vector2.Zero, Textures.getGuyTex(), Vector2.Zero, 33, "test");
 
             // Diamonds distribution
             int d = 0;
@@ -44,10 +44,26 @@ namespace Digger
 
             // Sergeants
             int s = 0;
-            while (s < 10)
+            while (s < 2)
             {
-                enemies.Add(new Sergeant(this, getSergeantPosition(), Textures.getSergeantTex(), new Vector2(2, 0), 1, 20));
+                enemies.Add(new Sergeant(this, getEnemyPosition(), Textures.getSergeantTex(), new Vector2(2, 0), 1, 20));
                 s++;
+            }
+
+            // Captains
+            int c = 0;
+            while (c < 2)
+            {
+                enemies.Add(new Captain(this, getEnemyPosition(), Textures.getCaptainTex(), new Vector2(2, 0), 1, 40, 5));
+                c++;
+            }
+
+            // Majors
+            int m = 0;
+            while (m < 10)
+            {
+                enemies.Add(new Major(this, getEnemyPosition(), Textures.getMajorTex(), new Vector2(2, 0), 1, 60, 5));
+                m++;
             }
         }
 
@@ -72,12 +88,12 @@ namespace Digger
 
             if ((int)gameTime.TotalGameTime.TotalSeconds == nextBombTime)
             {
-                artefacts.Add(new Bomb(this, getBombPosition(), Textures.getBombTex(), 0, false));
+                artefacts.Add(new Bomb(this, getArtefactPosition(), Textures.getBombTex(), 0, false));
                 nextBombTime = (int)gameTime.TotalGameTime.TotalSeconds + rand.Next(12, 15);
             }
             if ((int)gameTime.TotalGameTime.TotalSeconds == nextMissileTime)
             {
-                artefacts.Add(new Missile(this, getMissilePosition(), Textures.getMissileTex(), 0, false));
+                artefacts.Add(new Missile(this, getArtefactPosition(), Textures.getMissileTex(), 0, false));
                 nextMissileTime = (int)gameTime.TotalGameTime.TotalSeconds + rand.Next(8, 12);
             }
         }
@@ -91,30 +107,8 @@ namespace Digger
             return;
         }
 
-        private Vector2 getBombPosition()
-        {
-            int x, y;
-            bool basic, duplicates;
-            while (true)
-            {
-                x = rand.Next(Map.WIDTH);
-                y = rand.Next(Map.HEIGHT);
-
-                basic = x >= 0 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT;
-                duplicates = true;
-                foreach (Artefact a in artefacts)
-                    if (a.getPosition().X == x * Field.SZ && a.getPosition().Y == y * Field.SZ)
-                        duplicates = false;
-                if (guy.getPosition().X == x * Field.SZ && guy.getPosition().Y == y * Field.SZ)
-                    duplicates = false;
-
-                if (basic && duplicates)
-                    break;
-            }
-            return new Vector2(x * Field.SZ, y * Field.SZ);
-        }
-
-        private Vector2 getMissilePosition()
+        // TODO: refactor get*Position()
+        private Vector2 getArtefactPosition()
         {
             int x, y;
             bool basic, duplicates;
@@ -160,7 +154,7 @@ namespace Digger
             return new Vector2(x * Field.SZ, y * Field.SZ);
         }
 
-        private Vector2 getSergeantPosition()
+        private Vector2 getEnemyPosition()
         {
             int x, y;
             bool basic, duplicates;

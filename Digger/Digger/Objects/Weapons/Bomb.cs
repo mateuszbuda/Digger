@@ -27,7 +27,7 @@ namespace Digger.Objects.Weapons
         public override void update(GameTime gameTime)
         {
             if (visible)
-                if (gameTime.TotalGameTime.Seconds >= explosionTime)
+                if (gameTime.TotalGameTime.TotalSeconds >= explosionTime)
                     explode();
         }
 

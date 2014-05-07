@@ -17,8 +17,6 @@ namespace Digger.Objects
 {
     public class Guy : Character
     {
-        private Vector2 historyPosition = Vector2.Zero;
-        private bool moving = false;
         private string username;
         private bool invicloak = false;
         private int cloakCountdown;
@@ -30,7 +28,7 @@ namespace Digger.Objects
         public int invicloackCnt;
         private double lastEnemyHit = 0.0;
         private double lastShoot = 0.0;
-        public int firesCnt = 0;
+        public int firesCnt = 20;
         public List<Fire> fires = new List<Fire>();
         public int points = 0;
 
@@ -43,7 +41,6 @@ namespace Digger.Objects
             : base(gameState, position, texture, speed, hp)
         {
             this.username = username;
-            this.historyPosition = position;
         }
 
         public override void update(GameTime gameTime)
@@ -65,7 +62,7 @@ namespace Digger.Objects
                     foreach (Weapons.Bomb b in bombs)
                         if (!b.visible)
                         {
-                            b.set(position, gameTime.TotalGameTime.Seconds + Weapons.Bomb.COUNTDOWN);
+                            b.set(position, (int)gameTime.TotalGameTime.TotalSeconds + Weapons.Bomb.COUNTDOWN);
                             set = true;
                             break;
                         }
@@ -73,7 +70,7 @@ namespace Digger.Objects
                     {
                         Weapons.Bomb b = new Weapons.Bomb(gameState, Textures.getBombTex());
                         bombs.Add(b);
-                        b.set(position, gameTime.TotalGameTime.Seconds + Weapons.Bomb.COUNTDOWN);
+                        b.set(position, (int)gameTime.TotalGameTime.TotalSeconds + Weapons.Bomb.COUNTDOWN);
                     }
                 }
 
@@ -218,12 +215,13 @@ namespace Digger.Objects
                 moving = false;
             }
 
-            if (Math.Abs(historyPosition.X - position.X) == texture.Width || Math.Abs(historyPosition.Y - position.Y) == texture.Height)
+            if (Math.Abs(historyPosition.X - position.X) == Field.SZ || Math.Abs(historyPosition.Y - position.Y) == Field.SZ)
+            //if (position.X % Field.SZ == 0 && position.Y % Field.SZ == 0)
             {
                 historyPosition = position;
                 speed.X = speed.Y = 0;
                 moving = false;
-                Map.getInstance()[(int)(position.X / 50), (int)(position.Y / 50)].dig();
+                Map.getInstance()[(int)(position.X / Field.SZ), (int)(position.Y / Field.SZ)].dig();
             }
         }
 

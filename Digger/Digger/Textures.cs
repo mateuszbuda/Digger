@@ -16,6 +16,7 @@ namespace Digger
     {
         private const string BOMB = "bomb";
         private const string BONUS_TIME = "bonustime";
+        private const string CAPTAIN = "captain";
         private const string COLONEL = "colonel";
         private const string DIAMOND = "diamond";
         private const string FIELD = "field";
@@ -51,6 +52,15 @@ namespace Digger
                 return bonusTimeTex;
 
             return bonusTimeTex = cm.Load<Texture2D>(BONUS_TIME);
+        }
+
+        private static Texture2D captainTex;
+        public static Texture2D getCaptainTex()
+        {
+            if (captainTex != null)
+                return captainTex;
+
+            return captainTex = cm.Load<Texture2D>(CAPTAIN);
         }
 
         private static Texture2D colonelTex;
