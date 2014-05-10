@@ -21,7 +21,19 @@ namespace Digger.Objects.Artefacts
 
         public override void update(TimeSpan gameTime)
         {
-            throw new NotImplementedException();
+            if (texture == null)
+                return;
+
+            if (gameState.guy.getPosition() == position)
+            {
+                gameState.guy.points += pointBonus;
+                texture = null;
+                return;
+            }
+
+            foreach (Enemy e in gameState.enemies)
+                if (e.getPosition() == position)
+                    texture = null;
         }
     }
 }

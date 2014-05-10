@@ -44,5 +44,10 @@ namespace Digger.Objects
                 texture = null;
             return hp;
         }
+
+        public Vector2 getSpeed()
+        {
+            return speed;
+        }
     }
 }

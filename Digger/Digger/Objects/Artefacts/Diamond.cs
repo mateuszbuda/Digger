@@ -21,7 +21,7 @@ namespace Digger.Objects.Artefacts
 
         public override void update(TimeSpan gameTime)
         {
-            if (gameState.guy.getPosition() == position)
+            if (texture != null && gameState.guy.getPosition() == position)
             {
                 gameState.guy.points += 10;
                 texture = null;

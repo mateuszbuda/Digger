@@ -107,6 +107,7 @@ namespace Digger
             gameState.update(gameTime.TotalGameTime.Subtract(pauseMilis));
             if (gameState.guy.getHp() < 1)
             {
+                pause = true;
                 gameOver();
             }
         }

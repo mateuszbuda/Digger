@@ -19,20 +19,23 @@ namespace Digger
         public Map map;
         public Guy guy;
         public List<Artefact> artefacts = new List<Artefact>();
+        private List<Artefact> tmpArtefacts = new List<Artefact>();
         public List<Enemy> enemies = new List<Enemy>();
         private Random rand = new Random();
         private int nextBombTime; // in seconds
         private int nextMissileTime;
         private int invicloakTime;
         private int bonusTime;
+        private int nextGoldbagTime;
 
         public GameState()
         {
             // TODO: extract constants
-            nextBombTime = rand.Next(12, 15);
-            nextMissileTime = rand.Next(8, 12);
+            nextBombTime = rand.Next(2, 10);
+            nextMissileTime = rand.Next(2, 10);
             invicloakTime = rand.Next(2, 10);
             bonusTime = rand.Next(2, 10);
+            nextGoldbagTime = rand.Next(2, 10);
 
             //hero
             guy = new Guy(this, Vector2.Zero, Textures.getGuyTex(), Vector2.Zero, 300, "test");
@@ -41,13 +44,13 @@ namespace Digger
             int d = 0;
             while (d < 12)
             {
-                artefacts.Add(new Diamond(this, getDiamondPosition(), Textures.getDiamondTex(), 10, false));
+                artefacts.Add(new Diamond(this, getArtefactPosition(true, false), Textures.getDiamondTex(), 10, false));
                 d++;
             }
 
             // Sergeants
             int s = 0;
-            while (s < 2)
+            while (s < 5)
             {
                 enemies.Add(new Sergeant(this, getEnemyPosition(), Textures.getSergeantTex(), new Vector2(2, 0), 1, 20));
                 s++;
@@ -79,30 +82,42 @@ namespace Digger
         public void update(TimeSpan totalGameTime)
         {
             guy.update(totalGameTime);
+
             foreach (Enemy e in enemies)
                 e.update(totalGameTime);
+            
+            if (tmpArtefacts.Count > 0)
+            {
+                artefacts.AddRange(tmpArtefacts);
+                tmpArtefacts.Clear();
+            }
             foreach (Artefact a in artefacts)
                 a.update(totalGameTime);
 
             if ((int)totalGameTime.TotalSeconds == nextBombTime)
             {
-                artefacts.Add(new Bomb(this, getArtefactPosition(), Textures.getBombArtefactTex(), 0, false));
-                nextBombTime = (int)totalGameTime.TotalSeconds + rand.Next(12, 15);
+                artefacts.Add(new Bomb(this, getArtefactPosition(true, true), Textures.getBombArtefactTex(), 0, false));
+                nextBombTime = (int)totalGameTime.TotalSeconds + rand.Next(2, 10);
             }
             if ((int)totalGameTime.TotalSeconds == nextMissileTime)
             {
-                artefacts.Add(new Missile(this, getArtefactPosition(), Textures.getMissileTex(), 0, false));
-                nextMissileTime = (int)totalGameTime.TotalSeconds + rand.Next(8, 12);
+                artefacts.Add(new Missile(this, getArtefactPosition(true, true), Textures.getMissileTex(), 0, false));
+                nextMissileTime = (int)totalGameTime.TotalSeconds + rand.Next(2, 10);
+            }
+            if ((int)totalGameTime.TotalSeconds == nextGoldbagTime)
+            {
+                artefacts.Add(new GoldBag(this, getArtefactPosition(true, false), Textures.getGoldbagTex(), 0, true, Vector2.Zero));
+                nextGoldbagTime = (int)totalGameTime.TotalSeconds + rand.Next(2, 10);
             }
             if ((int)totalGameTime.TotalSeconds == invicloakTime)
             {
-                artefacts.Add(new Invicloak(this, getArtefactPosition(), Textures.getInvicloakTex(), 0, false, invicloakTime
+                artefacts.Add(new Invicloak(this, getArtefactPosition(true, true), Textures.getInvicloakTex(), 0, false, invicloakTime
 + 10));
                 invicloakTime = 0;
             }
             if ((int)totalGameTime.TotalSeconds == bonusTime)
             {
-                artefacts.Add(new BonusTime(this, getArtefactPosition(), Textures.getBonusTimeTex(), 0, false, 0));
+                artefacts.Add(new BonusTime(this, getArtefactPosition(true, true), Textures.getBonusTimeTex(), 0, false, 0));
                 bonusTime = 0;
             }
         }
@@ -116,31 +131,12 @@ namespace Digger
             return;
         }
 
-        // TODO: refactor get*Position()
-        private Vector2 getArtefactPosition()
+        public void addArtefact(Artefact artefact)
         {
-            int x, y;
-            bool basic, duplicates;
-            while (true)
-            {
-                x = rand.Next(Map.WIDTH);
-                y = rand.Next(Map.HEIGHT);
-
-                basic = x >= 0 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT;
-                duplicates = true;
-                foreach (Artefact a in artefacts)
-                    if (a.getPosition().X == x * Field.SZ && a.getPosition().Y == y * Field.SZ)
-                        duplicates = false;
-                if (guy.getPosition().X == x * Field.SZ && guy.getPosition().Y == y * Field.SZ)
-                    duplicates = false;
-
-                if (basic && duplicates)
-                    break;
-            }
-            return new Vector2(x * Field.SZ, y * Field.SZ);
+            tmpArtefacts.Add(artefact);
         }
 
-        private Vector2 getDiamondPosition()
+        private Vector2 getArtefactPosition(bool digged, bool undigged)
         {
             int x, y;
             bool basic, duplicates;
@@ -149,11 +145,23 @@ namespace Digger
                 x = rand.Next(Map.WIDTH);
                 y = rand.Next(Map.HEIGHT);
 
-                basic = x >= 0 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT && !Map.getInstance()[x, y].digged;
+                if (digged && undigged)
+                    basic = x >= 0 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT;
+                else if (digged)
+                    basic = x >= 0 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT && Map.getInstance()[x, y].digged;
+                else
+                    basic = x >= 0 && y >= 0 && x < Map.WIDTH && y < Map.HEIGHT && !Map.getInstance()[x, y].digged;
+
+                if (!basic)
+                    continue;
+
                 duplicates = true;
                 foreach (Artefact a in artefacts)
                     if (a.getPosition().X == x * Field.SZ && a.getPosition().Y == y * Field.SZ)
+                    {
                         duplicates = false;
+                        break;
+                    }
                 if (guy.getPosition().X == x * Field.SZ && guy.getPosition().Y == y * Field.SZ)
                     duplicates = false;
 
