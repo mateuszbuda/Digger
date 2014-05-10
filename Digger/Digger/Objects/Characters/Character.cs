@@ -40,7 +40,7 @@ namespace Digger.Objects
         public int damage(int damage)
         {
             hp -= damage;
-            if (hp < 0)
+            if (hp <= 0)
                 texture = null;
             return hp;
         }

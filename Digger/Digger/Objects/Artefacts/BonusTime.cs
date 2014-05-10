@@ -14,6 +14,7 @@ namespace Digger.Objects.Artefacts
 {
     class BonusTime : Artefact
     {
+        private const int TIMEOUT = 25;
         private int timeout;
 
         public BonusTime(GameState gameState, Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive, int timeout)
@@ -22,9 +23,14 @@ namespace Digger.Objects.Artefacts
             this.timeout = timeout;
         }
 
-        public override void update(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void update(TimeSpan gameTime)
         {
-            throw new NotImplementedException();
+            if (texture != null && gameState.guy.getPosition() == position)
+            {
+                gameState.guy.bonusTime = true;
+                gameState.guy.bonusCountdown = (int)gameTime.TotalSeconds + TIMEOUT;
+                texture = null;
+            }
         }
     }
 }

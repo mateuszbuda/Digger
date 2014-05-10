@@ -19,10 +19,9 @@ namespace Digger.Objects.Weapons
         public Fire(GameState gameState, Texture2D texture)
             : base(gameState, Vector2.Zero, texture, Vector2.Zero)
         {
-            this.gameState = gameState;
         }
 
-        public override void update(GameTime gameTime)
+        public override void update(TimeSpan totalGameTime)
         {
             if (!visible)
                 return;
@@ -49,14 +48,14 @@ namespace Digger.Objects.Weapons
                     break;
                 }
 
-            if (target != null && !(target is Colonel))
+            if (target != null && !(target is Colonel) && !(target is General))
                 if (target.damage(1) < 1)
                 {
                     gameState.guy.points += target.getBonusPoints();
                     gameState.enemies.Remove(target);
                     return;
                 }
-            if (target is Colonel)
+            if (target is Colonel || target is General)
                 speed = -speed;
         }
 
@@ -78,7 +77,7 @@ namespace Digger.Objects.Weapons
                 !Map.getInstance()[(int)(position.X / Field.SZ), (int)(position.Y / Field.SZ) + 1].digged);
         }
 
-        public override void draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void draw(SpriteBatch spriteBatch)
         {
             if (visible)
             {
@@ -89,7 +88,7 @@ namespace Digger.Objects.Weapons
                     angle = MathHelper.PiOver2;
                 else if (speed.Y < 0)
                     angle = -MathHelper.PiOver2;
-                base.draw(spriteBatch, gameTime, angle);
+                base.draw(spriteBatch, angle);
             }
         }
 

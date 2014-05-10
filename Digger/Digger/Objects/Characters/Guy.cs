@@ -18,14 +18,16 @@ namespace Digger.Objects
     public class Guy : Character
     {
         private string username;
-        private bool invicloak = false;
-        private int cloakCountdown;
-        private int bonusCountdown;
+        public bool invicloak = true;
+        private int cloakCountdown = 0;
+        private int nextBlink = 0;
+        public bool bonusTime = false;
+        public int bonusCountdown = 0;
         private Keys lastMoveDirection = Keys.Right;
-        public int bombCnt = 0;
+        public int bombCnt = 20;
         private double lastBomb = 0.0;
         public List<Weapons.Bomb> bombs = new List<Weapons.Bomb>();
-        public int invicloackCnt;
+        public int invicloackCnt = 0;
         private double lastEnemyHit = 0.0;
         private double lastShoot = 0.0;
         public int firesCnt = 20;
@@ -43,26 +45,59 @@ namespace Digger.Objects
             this.username = username;
         }
 
-        public override void update(GameTime gameTime)
+        public override void update(TimeSpan gameTime)
         {
             updateMove();
             updateFires(gameTime);
             updateBombs(gameTime);
+            updateInvicloak(gameTime);
             enemyCollisions(gameTime);
         }
 
-        private void updateBombs(GameTime gameTime)
+        private void updateInvicloak(TimeSpan gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.B) && gameTime.TotalGameTime.TotalMilliseconds - lastBomb > 200)
+            if (invicloak)
+            {
+                if ((int)gameTime.TotalSeconds >= cloakCountdown)
+                {
+                    invicloak = false;
+                    texture = Textures.getGuyTex();
+                    return;
+                }
+
+                if ((int)gameTime.TotalMilliseconds >= nextBlink)
+                {
+                    if (texture == null)
+                        texture = Textures.getGuyTex();
+                    else
+                        texture = null;
+                    nextBlink += 300;
+                }
+
+                return;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Settings.invclk) && invicloackCnt > 0)
+            {
+                invicloackCnt--;
+                invicloak = true;
+                cloakCountdown = (int)gameTime.TotalSeconds + Invicloak.TIMEOUT;
+                nextBlink = (int)gameTime.TotalMilliseconds + 200;
+            }
+        }
+
+        private void updateBombs(TimeSpan gameTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Settings.bomb) && gameTime.TotalMilliseconds - lastBomb > 200)
                 if (bombCnt > 0)
                 {
                     bombCnt--;
-                    lastBomb = gameTime.TotalGameTime.TotalMilliseconds;
+                    lastBomb = gameTime.TotalMilliseconds;
                     bool set = false;
                     foreach (Weapons.Bomb b in bombs)
                         if (!b.visible)
                         {
-                            b.set(position, (int)gameTime.TotalGameTime.TotalSeconds + Weapons.Bomb.COUNTDOWN);
+                            b.set(setBombPosition(), (int)gameTime.TotalSeconds + Weapons.Bomb.COUNTDOWN);
                             set = true;
                             break;
                         }
@@ -70,7 +105,7 @@ namespace Digger.Objects
                     {
                         Weapons.Bomb b = new Weapons.Bomb(gameState, Textures.getBombTex());
                         bombs.Add(b);
-                        b.set(position, (int)gameTime.TotalGameTime.TotalSeconds + Weapons.Bomb.COUNTDOWN);
+                        b.set(setBombPosition(), (int)gameTime.TotalSeconds + Weapons.Bomb.COUNTDOWN);
                     }
                 }
 
@@ -78,17 +113,49 @@ namespace Digger.Objects
                 b.update(gameTime);
         }
 
-        private void enemyCollisions(GameTime gameTime)
+        private Vector2 setBombPosition()
         {
-            if (gameTime.TotalGameTime.TotalMilliseconds - lastEnemyHit < 1500)
+            Vector2 middle = new Vector2(position.X + Field.SZ / 2, position.Y + Field.SZ / 2);
+            return new Vector2((int)(middle.X / Field.SZ) * Field.SZ, (int)(middle.Y / Field.SZ) * Field.SZ);
+        }
+
+        private void enemyCollisions(TimeSpan gameTime)
+        {
+            if (gameTime.TotalSeconds > bonusCountdown)
+                bonusTime = false;
+
+            if (gameTime.TotalMilliseconds - lastEnemyHit < 1200)
                 return;
 
             foreach (Enemy e in gameState.enemies)
                 if (hitEnemy(e))
                 {
+                    if (e is General)
+                    {
+                        this.damage(1);
+                        lastEnemyHit = gameTime.TotalMilliseconds;
+                        if (bonusTime || invicloak)
+                            lastEnemyHit -= 700;
+                        break;
+                    }
+
+                    if (invicloak)
+                    {
+                        points += 50;
+                        lastEnemyHit = gameTime.TotalMilliseconds - 700;
+                        break;
+                    }
+
+                    if (bonusTime)
+                    {
+                        if (e.damage(1) < 1)
+                            gameState.enemies.Remove(e);
+                        lastEnemyHit = gameTime.TotalMilliseconds - 700;
+                        break;
+                    }
+
                     this.damage(1);
-                    lastEnemyHit = gameTime.TotalGameTime.TotalMilliseconds;
-                    break;
+                    lastEnemyHit = gameTime.TotalMilliseconds;
                 }
         }
 
@@ -98,13 +165,13 @@ namespace Digger.Objects
             return middle.X >= position.X && middle.X < position.X + Field.SZ && middle.Y >= position.Y && middle.Y < position.Y + Field.SZ;
         }
 
-        private void updateFires(GameTime gameTime)
+        private void updateFires(TimeSpan gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.C) && gameTime.TotalGameTime.TotalMilliseconds - lastShoot > 200)
+            if (Keyboard.GetState().IsKeyDown(Settings.fire) && gameTime.TotalMilliseconds - lastShoot > 200)
                 if (firesCnt > 0)
                 {
                     firesCnt--;
-                    lastShoot = gameTime.TotalGameTime.TotalMilliseconds;
+                    lastShoot = gameTime.TotalMilliseconds;
                     bool fired = false;
                     foreach (Fire f in fires)
                         if (!f.visible)
@@ -216,7 +283,6 @@ namespace Digger.Objects
             }
 
             if (Math.Abs(historyPosition.X - position.X) == Field.SZ || Math.Abs(historyPosition.Y - position.Y) == Field.SZ)
-            //if (position.X % Field.SZ == 0 && position.Y % Field.SZ == 0)
             {
                 historyPosition = position;
                 speed.X = speed.Y = 0;
@@ -225,13 +291,13 @@ namespace Digger.Objects
             }
         }
 
-        public override void draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void draw(SpriteBatch spriteBatch)
         {
-            base.draw(spriteBatch, gameTime);
+            base.draw(spriteBatch);
             foreach (Fire f in fires)
-                f.draw(spriteBatch, gameTime);
+                f.draw(spriteBatch);
             foreach (Weapons.Bomb b in bombs)
-                b.draw(spriteBatch, gameTime);
+                b.draw(spriteBatch);
         }
     }
 }

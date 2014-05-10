@@ -18,6 +18,10 @@ namespace Digger
     /// </summary>
     public class DiggerGame : Microsoft.Xna.Framework.Game
     {
+        private TimeSpan pauseMilis = new TimeSpan(0);
+        private TimeSpan lastPause = new TimeSpan(0);
+        private TimeSpan delay = new TimeSpan(0, 0, 0, 0, 200);
+        private bool pause;
         GameState gameState;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -76,10 +80,33 @@ namespace Digger
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            gameState.update(gameTime);
+            if (!pause)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.P))
+                {
+                    if (gameTime.TotalGameTime - lastPause > delay)
+                    {
+                        pause = true;
+                        lastPause = gameTime.TotalGameTime;
+                    }
+                }
+            }
+            else
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.P))
+                {
+                    if (gameTime.TotalGameTime - lastPause > delay)
+                    {
+                        pause = false;
+                        pauseMilis = pauseMilis.Add(gameTime.TotalGameTime.Subtract(lastPause));
+                        lastPause = gameTime.TotalGameTime;
+                    }
+                }
+                return;
+            }
+            gameState.update(gameTime.TotalGameTime.Subtract(pauseMilis));
             if (gameState.guy.getHp() < 1)
             {
-                gameState.pause();
                 gameOver();
             }
         }
@@ -99,19 +126,19 @@ namespace Digger
 
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             foreach (Field f in Map.getInstance())
-                f.draw(spriteBatch, gameTime);
+                f.draw(spriteBatch);
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             foreach (Artefact a in gameState.artefacts)
-                a.draw(spriteBatch, gameTime);
+                a.draw(spriteBatch);
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             foreach (Enemy e in gameState.enemies)
-                e.draw(spriteBatch, gameTime);
+                e.draw(spriteBatch);
 
-            gameState.guy.draw(spriteBatch, gameTime);
+            gameState.guy.draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

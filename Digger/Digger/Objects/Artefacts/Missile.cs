@@ -19,7 +19,7 @@ namespace Digger.Objects.Artefacts
         {
         }
 
-        public override void update(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void update(TimeSpan gameTime)
         {
             if (texture != null && gameState.guy.getPosition() == position)
             {

@@ -20,16 +20,19 @@ namespace Digger
         public Guy guy;
         public List<Artefact> artefacts = new List<Artefact>();
         public List<Enemy> enemies = new List<Enemy>();
-        private bool running = true;
         private Random rand = new Random();
         private int nextBombTime; // in seconds
         private int nextMissileTime;
+        private int invicloakTime;
+        private int bonusTime;
 
         public GameState()
         {
             // TODO: extract constants
             nextBombTime = rand.Next(12, 15);
             nextMissileTime = rand.Next(8, 12);
+            invicloakTime = rand.Next(2, 10);
+            bonusTime = rand.Next(2, 10);
 
             //hero
             guy = new Guy(this, Vector2.Zero, Textures.getGuyTex(), Vector2.Zero, 300, "test");
@@ -73,34 +76,34 @@ namespace Digger
             enemies.Add(new General(this, getEnemyPosition(), Textures.getGeneralTex(), new Vector2(2.5f, 0), 1, 100, 2, true));
         }
 
-        public void pause()
+        public void update(TimeSpan totalGameTime)
         {
-            running = false;
-        }
-        public void resume()
-        {
-            running = true;
-        }
-        public void update(GameTime gameTime)
-        {
-            if (!running)
-                return;
-
-            guy.update(gameTime);
+            guy.update(totalGameTime);
             foreach (Enemy e in enemies)
-                e.update(gameTime);
+                e.update(totalGameTime);
             foreach (Artefact a in artefacts)
-                a.update(gameTime);
+                a.update(totalGameTime);
 
-            if ((int)gameTime.TotalGameTime.TotalSeconds == nextBombTime)
+            if ((int)totalGameTime.TotalSeconds == nextBombTime)
             {
                 artefacts.Add(new Bomb(this, getArtefactPosition(), Textures.getBombArtefactTex(), 0, false));
-                nextBombTime = (int)gameTime.TotalGameTime.TotalSeconds + rand.Next(12, 15);
+                nextBombTime = (int)totalGameTime.TotalSeconds + rand.Next(12, 15);
             }
-            if ((int)gameTime.TotalGameTime.TotalSeconds == nextMissileTime)
+            if ((int)totalGameTime.TotalSeconds == nextMissileTime)
             {
                 artefacts.Add(new Missile(this, getArtefactPosition(), Textures.getMissileTex(), 0, false));
-                nextMissileTime = (int)gameTime.TotalGameTime.TotalSeconds + rand.Next(8, 12);
+                nextMissileTime = (int)totalGameTime.TotalSeconds + rand.Next(8, 12);
+            }
+            if ((int)totalGameTime.TotalSeconds == invicloakTime)
+            {
+                artefacts.Add(new Invicloak(this, getArtefactPosition(), Textures.getInvicloakTex(), 0, false, invicloakTime
++ 10));
+                invicloakTime = 0;
+            }
+            if ((int)totalGameTime.TotalSeconds == bonusTime)
+            {
+                artefacts.Add(new BonusTime(this, getArtefactPosition(), Textures.getBonusTimeTex(), 0, false, 0));
+                bonusTime = 0;
             }
         }
 

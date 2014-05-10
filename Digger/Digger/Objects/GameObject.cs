@@ -23,15 +23,15 @@ namespace Digger
         protected int MaxY;
         protected int MinY;
 
-        public abstract void update(GameTime gameTime);
+        public abstract void update(TimeSpan totalGameTime);
 
-        public virtual void draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public virtual void draw(SpriteBatch spriteBatch)
         {
             if (texture != null)
                 spriteBatch.Draw(texture, position, Color.White);
         }
 
-        public virtual void draw(SpriteBatch spriteBatch, GameTime gameTime, float rotation)
+        public virtual void draw(SpriteBatch spriteBatch, float rotation)
         {
             if (texture != null)
             {
@@ -40,7 +40,7 @@ namespace Digger
             }
         }
 
-        public Vector2 getPosition()
+        public virtual Vector2 getPosition()
         {
             return position;
         }

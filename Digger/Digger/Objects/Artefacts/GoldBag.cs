@@ -22,7 +22,7 @@ namespace Digger.Objects.Artefacts
             this.speed = speed;
         }
 
-        public override void update(GameTime gameTime)
+        public override void update(TimeSpan gameTime)
         {
             throw new NotImplementedException();
         }

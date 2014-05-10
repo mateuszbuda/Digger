@@ -14,7 +14,7 @@ namespace Digger.Objects.Weapons
 {
     public class Bomb : Weapon
     {
-        public const int COUNTDOWN = 3;
+        public const int COUNTDOWN = 2;
         private int explosionTime;
         public bool visible = false;
 
@@ -24,10 +24,10 @@ namespace Digger.Objects.Weapons
             this.explosionTime = 0;
         }
 
-        public override void update(GameTime gameTime)
+        public override void update(TimeSpan totalGameTime)
         {
             if (visible)
-                if (gameTime.TotalGameTime.TotalSeconds >= explosionTime)
+                if (totalGameTime.TotalSeconds >= explosionTime)
                     explode();
         }
 
@@ -51,15 +51,19 @@ namespace Digger.Objects.Weapons
 
         private bool inRange(Enemy e)
         {
+            Vector2 eMidPoint = e.getPosition();
+            eMidPoint.X += Field.SZ / 2;
+            eMidPoint.Y += Field.SZ / 2;
+
             // X
-            if (e.getPosition().Y == position.Y && e.getPosition().X > position.X - 3 * Field.SZ && e.getPosition().X < position.X + 3 * Field.SZ)
+            if (eMidPoint.Y > position.Y && eMidPoint.Y < position.Y + Field.SZ && eMidPoint.X > position.X - 3 * Field.SZ && eMidPoint.X < position.X + 4 * Field.SZ)
                 return true;
             // Y
-            if (e.getPosition().X == position.X && e.getPosition().Y > position.Y - 3 * Field.SZ && e.getPosition().Y < position.Y + 4 * Field.SZ)
+            if (eMidPoint.X > position.X && eMidPoint.X < position.X + Field.SZ && eMidPoint.Y > position.Y - 3 * Field.SZ && eMidPoint.Y < position.Y + 4 * Field.SZ)
                 return true;
 
-            // diag
-            if (e.getPosition().X > position.X - Field.SZ && e.getPosition().X < position.X + Field.SZ && e.getPosition().Y > position.Y - Field.SZ && e.getPosition().Y < position.Y + Field.SZ)
+            // inner square
+            if (eMidPoint.X > position.X - Field.SZ && eMidPoint.X < position.X + 2 * Field.SZ && eMidPoint.Y > position.Y - Field.SZ && eMidPoint.Y < position.Y + 2 * Field.SZ)
                 return true;
 
             return false;
@@ -72,10 +76,10 @@ namespace Digger.Objects.Weapons
             this.explosionTime = explosionTime;
         }
 
-        public override void draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void draw(SpriteBatch spriteBatch)
         {
             if (visible)
-                base.draw(spriteBatch, gameTime);
+                base.draw(spriteBatch);
         }
     }
 }

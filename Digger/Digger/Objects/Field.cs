@@ -28,7 +28,7 @@ namespace Digger
             this.digged = digged;
         }
 
-        public override void update(GameTime gameTime)
+        public override void update(TimeSpan titalGameTime)
         {
             return;
         }

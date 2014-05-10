@@ -17,6 +17,7 @@ namespace Digger.Objects
         protected int bonusPoints;
         protected int directionUpdateFreq;
         protected bool digger;
+        private Random rand;
 
         public Enemy(GameState gameState, Vector2 position, Texture2D texture, Vector2 speed, int hp, int bonusPoints, int directionUpdateFreq = 0, bool digger = false)
             : base(gameState, position, texture, speed, hp)
@@ -24,6 +25,7 @@ namespace Digger.Objects
             this.bonusPoints = bonusPoints;
             this.directionUpdateFreq = directionUpdateFreq;
             this.digger = digger;
+            this.rand = new Random();
         }
 
         public int getBonusPoints()
@@ -34,6 +36,16 @@ namespace Digger.Objects
         protected Direction getDirectionToGuy()
         {
             Vector2 guyPosition = gameState.guy.getPosition();
+            if (gameState.guy.bonusTime)
+            {
+                guyPosition.X = Map.WIDTH * Field.SZ - guyPosition.X;
+                guyPosition.Y = Map.HEIGHT * Field.SZ - guyPosition.Y;
+            }
+            else if (gameState.guy.invicloak)
+            {
+                guyPosition.X = rand.Next();
+                guyPosition.Y = rand.Next();
+            }
 
             if ((Math.Abs(position.X - guyPosition.X) > Math.Abs(position.Y - guyPosition.Y)))
             {

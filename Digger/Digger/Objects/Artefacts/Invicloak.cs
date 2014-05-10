@@ -14,6 +14,7 @@ namespace Digger.Objects.Artefacts
 {
     class Invicloak : Artefact
     {
+        public const int TIMEOUT = 10;
         private int timeout;
 
         public Invicloak(GameState gameState, Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive, int timeout)
@@ -22,9 +23,16 @@ namespace Digger.Objects.Artefacts
             this.timeout = timeout;
         }
 
-        public override void update(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void update(TimeSpan gameTime)
         {
-            throw new NotImplementedException();
+            if (texture != null && gameState.guy.getPosition() == position)
+            {
+                gameState.guy.invicloackCnt++;
+                texture = null;
+            }
+
+            if (timeout < gameTime.TotalSeconds)
+                texture = null;
         }
     }
 }

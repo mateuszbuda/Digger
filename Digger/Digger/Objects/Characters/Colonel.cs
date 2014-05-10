@@ -21,7 +21,7 @@ namespace Digger.Objects
         {
         }
 
-        public override void update(GameTime gameTime)
+        public override void update(TimeSpan gameTime)
         {
             if (texture == null)
                 return;
@@ -30,9 +30,9 @@ namespace Digger.Objects
 
             if (!moving)
             {
-                if (updateTime <= gameTime.TotalGameTime.TotalSeconds)
+                if (updateTime <= gameTime.TotalSeconds)
                 {
-                    updateTime = (int)gameTime.TotalGameTime.TotalSeconds + directionUpdateFreq;
+                    updateTime = (int)gameTime.TotalSeconds + directionUpdateFreq;
                     direction = getDirectionToGuy();
                 }
                 else

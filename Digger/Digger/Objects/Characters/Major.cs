@@ -25,24 +25,24 @@ namespace Digger.Objects
             diggerTime = rand.Next(6, 15);
         }
 
-        public override void update(GameTime gameTime)
+        public override void update(TimeSpan totalGameTime)
         {
             if (texture == null)
                 return;
 
             position += speed;
 
-            if (diggerTime <= gameTime.TotalGameTime.TotalSeconds)
+            if (diggerTime <= totalGameTime.TotalSeconds)
             {
                 digger = !digger;
-                diggerTime = (int)gameTime.TotalGameTime.TotalSeconds + rand.Next(6, 15);
+                diggerTime = (int)totalGameTime.TotalSeconds + rand.Next(6, 15);
             }
 
             if (!moving)
             {
-                if (updateTime <= gameTime.TotalGameTime.TotalSeconds)
+                if (updateTime <= totalGameTime.TotalSeconds)
                 {
-                    updateTime = (int)gameTime.TotalGameTime.TotalSeconds + directionUpdateFreq;
+                    updateTime = (int)totalGameTime.TotalSeconds + directionUpdateFreq;
                     direction = getDirectionToGuy();
                 }
                 else

@@ -20,7 +20,7 @@ namespace Digger.Objects
         {
         }
 
-        public override void update(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void update(TimeSpan totalGameTime)
         {
             if (texture == null)
                 return;
