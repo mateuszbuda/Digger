@@ -18,6 +18,8 @@ namespace Digger
     /// </summary>
     public class DiggerGame : Microsoft.Xna.Framework.Game
     {
+        private IntPtr drawSurface;
+
         private TimeSpan pauseMilis = new TimeSpan(0);
         private TimeSpan lastPause = new TimeSpan(0);
         private TimeSpan delay = new TimeSpan(0, 0, 0, 0, 200);
@@ -31,12 +33,45 @@ namespace Digger
 
         public static Textures textures;
 
-        public DiggerGame()
+        public DiggerGame(IntPtr drawSurface)
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = GRAPHICS_WIDTH;
             graphics.PreferredBackBufferHeight = GRAPHICS_HEIGHT;
             Content.RootDirectory = "Content";
+
+            this.drawSurface = drawSurface;
+            graphics.PreparingDeviceSettings +=
+            new EventHandler<PreparingDeviceSettingsEventArgs>(graphics_PreparingDeviceSettings);
+            System.Windows.Forms.Control.FromHandle((this.Window.Handle)).VisibleChanged +=
+            new EventHandler(Game1_VisibleChanged);
+        }
+
+        /// <summary>
+        /// Event capturing the construction of a draw surface and makes sure this gets redirected to
+        /// a predesignated drawsurface marked by pointer drawSurface
+        /// </summary>
+        ///
+        ///<param name="sender"></param>
+        ///
+        ///<param name="e"></param>
+        void graphics_PreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
+        {
+            e.GraphicsDeviceInformation.PresentationParameters.DeviceWindowHandle =
+            drawSurface;
+        }
+
+        /// <summary>
+        /// Occurs when the original gamewindows' visibility changes and makes sure it stays invisible
+        /// </summary>
+        ///
+        ///<param name="sender"></param>
+        ///
+        ///<param name="e"></param>
+        private void Game1_VisibleChanged(object sender, EventArgs e)
+        {
+            if (System.Windows.Forms.Control.FromHandle((this.Window.Handle)).Visible == true)
+                System.Windows.Forms.Control.FromHandle((this.Window.Handle)).Visible = false;
         }
 
         /// <summary>

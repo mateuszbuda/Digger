@@ -10,10 +10,10 @@ namespace Digger
         /// </summary>
         static void Main(string[] args)
         {
-            using (DiggerGame game = new DiggerGame())
-            {
-                game.Run();
-            }
+            gameForm form = new gameForm();
+            form.Show();
+            DiggerGame game = new DiggerGame(form.getDrawSurface());
+            game.Run();
         }
     }
 #endif
