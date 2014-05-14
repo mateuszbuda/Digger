@@ -82,7 +82,7 @@ namespace Digger
         {
             if (!pause)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.P))
+                if (Keyboard.GetState().IsKeyDown(Settings.pause))
                 {
                     if (gameTime.TotalGameTime - lastPause > delay)
                     {
@@ -93,7 +93,7 @@ namespace Digger
             }
             else
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.P))
+                if (Keyboard.GetState().IsKeyDown(Settings.pause))
                 {
                     if (gameTime.TotalGameTime - lastPause > delay)
                     {
