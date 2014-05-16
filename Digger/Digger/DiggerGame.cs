@@ -18,12 +18,13 @@ namespace Digger
     /// </summary>
     public class DiggerGame : Microsoft.Xna.Framework.Game
     {
+        private GameForm gameForm;
         private IntPtr drawSurface;
 
         private TimeSpan pauseMilis = new TimeSpan(0);
         private TimeSpan lastPause = new TimeSpan(0);
         private TimeSpan delay = new TimeSpan(0, 0, 0, 0, 200);
-        private bool pause;
+        private bool pause = true;
         GameState gameState;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -33,18 +34,21 @@ namespace Digger
 
         public static Textures textures;
 
-        public DiggerGame(IntPtr drawSurface)
+        public DiggerGame(GameForm gameForm)
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = GRAPHICS_WIDTH;
             graphics.PreferredBackBufferHeight = GRAPHICS_HEIGHT;
             Content.RootDirectory = "Content";
 
-            this.drawSurface = drawSurface;
+            this.gameForm = gameForm;
+            this.drawSurface = gameForm.getDrawSurface();
             graphics.PreparingDeviceSettings +=
             new EventHandler<PreparingDeviceSettingsEventArgs>(graphics_PreparingDeviceSettings);
             System.Windows.Forms.Control.FromHandle((this.Window.Handle)).VisibleChanged +=
             new EventHandler(Game1_VisibleChanged);
+
+            gameForm.setGame(this);
         }
 
         /// <summary>
@@ -139,12 +143,37 @@ namespace Digger
                 }
                 return;
             }
+
             gameState.update(gameTime.TotalGameTime.Subtract(pauseMilis));
+            
             if (gameState.guy.getHp() < 1)
             {
                 pause = true;
                 gameOver();
             }
+
+            updateForm();
+        }
+
+        private void updateForm()
+        {
+            gameForm.updateLevel(gameState.level);
+            gameForm.updateGuy(gameState.guy.getHp());
+            gameForm.updatePoints(gameState.guy.points);
+            gameForm.updateMissiles(gameState.guy.firesCnt);
+            gameForm.updateBombs(gameState.guy.bombCnt);
+            gameForm.updateInvicloacks(gameState.guy.invicloackCnt);
+            gameForm.updateBonusTime(gameState.guy.bonusTimeLeft);
+        }
+
+        public void stop()
+        {
+            pause = true;
+        }
+
+        public void start()
+        {
+            pause = false;
         }
 
         private void gameOver()

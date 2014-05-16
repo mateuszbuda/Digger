@@ -17,6 +17,8 @@ namespace Digger
     public class GameState
     {
         public Map map;
+        public int level = 1;
+        public int diamonds;
         public Guy guy;
         public List<Artefact> artefacts = new List<Artefact>();
         private List<Artefact> tmpArtefacts = new List<Artefact>();
@@ -30,53 +32,8 @@ namespace Digger
 
         public GameState()
         {
-            // TODO: extract constants
-            nextBombTime = rand.Next(2, 10);
-            nextMissileTime = rand.Next(2, 10);
-            invicloakTime = rand.Next(2, 10);
-            bonusTime = rand.Next(2, 10);
-            nextGoldbagTime = rand.Next(2, 10);
-
             //hero
-            guy = new Guy(this, Vector2.Zero, Textures.getGuyTex(), Vector2.Zero, 300, "test");
-
-            // Diamonds distribution
-            int d = 0;
-            while (d < 12)
-            {
-                artefacts.Add(new Diamond(this, getArtefactPosition(true, false), Textures.getDiamondTex(), 10, false));
-                d++;
-            }
-
-            // Sergeants
-            int s = 0;
-            while (s < 5)
-            {
-                enemies.Add(new Sergeant(this, getEnemyPosition(), Textures.getSergeantTex(), new Vector2(2, 0), 1, 20));
-                s++;
-            }
-
-            // Captains
-            int c = 0;
-            while (c < 2)
-            {
-                enemies.Add(new Captain(this, getEnemyPosition(), Textures.getCaptainTex(), new Vector2(2, 0), 1, 40, 5));
-                c++;
-            }
-
-            // Majors
-            int m = 0;
-            while (m < 2)
-            {
-                enemies.Add(new Major(this, getEnemyPosition(), Textures.getMajorTex(), new Vector2(2, 0), 1, 60, 5));
-                m++;
-            }
-
-            // Colonel
-            enemies.Add(new Colonel(this, getEnemyPosition(), Textures.getColonelTex(), new Vector2(2, 0), 1, 80, 2, true));
-
-            // General
-            enemies.Add(new General(this, getEnemyPosition(), Textures.getGeneralTex(), new Vector2(2.5f, 0), 1, 100, 2, true));
+            guy = new Guy(this, Vector2.Zero, Textures.getGuyTex(), Vector2.Zero, 300);
         }
 
         public void update(TimeSpan totalGameTime)
@@ -85,7 +42,7 @@ namespace Digger
 
             foreach (Enemy e in enemies)
                 e.update(totalGameTime);
-            
+
             if (tmpArtefacts.Count > 0)
             {
                 artefacts.AddRange(tmpArtefacts);
@@ -120,6 +77,66 @@ namespace Digger
                 artefacts.Add(new BonusTime(this, getArtefactPosition(true, true), Textures.getBonusTimeTex(), 0, false, 0));
                 bonusTime = 0;
             }
+
+            if (diamonds == 0)
+            {
+                artefacts.Clear();
+                enemies.Clear();
+                tmpArtefacts.Clear();
+                Map.newMap();
+                newLevel(totalGameTime);
+                guy.nextLevel();
+                ++level;
+            }
+        }
+
+        private void newLevel(TimeSpan gameTime)
+        {
+            // TODO: extract constants
+            nextBombTime = (int)gameTime.TotalSeconds + rand.Next(2, 10);
+            nextMissileTime = (int)gameTime.TotalSeconds + rand.Next(2, 10);
+            invicloakTime = (int)gameTime.TotalSeconds + rand.Next(2, 10);
+            bonusTime = (int)gameTime.TotalSeconds + rand.Next(2, 10);
+            nextGoldbagTime = (int)gameTime.TotalSeconds + rand.Next(2, 10);
+
+            // Diamonds distribution
+            int d = 0;
+            while (d < 5)
+            {
+                artefacts.Add(new Diamond(this, getArtefactPosition(true, false), Textures.getDiamondTex(), 10, false));
+                d++;
+            }
+            diamonds = d;
+
+            // Sergeants
+            int s = 0;
+            while (s < 5)
+            {
+                enemies.Add(new Sergeant(this, getEnemyPosition(), Textures.getSergeantTex(), new Vector2(2, 0), 1, 20));
+                s++;
+            }
+
+            // Captains
+            int c = 0;
+            while (c < 2)
+            {
+                enemies.Add(new Captain(this, getEnemyPosition(), Textures.getCaptainTex(), new Vector2(2, 0), 1, 40, 5));
+                c++;
+            }
+
+            // Majors
+            int m = 0;
+            while (m < 2)
+            {
+                enemies.Add(new Major(this, getEnemyPosition(), Textures.getMajorTex(), new Vector2(2, 0), 1, 60, 5));
+                m++;
+            }
+
+            // Colonel
+            enemies.Add(new Colonel(this, getEnemyPosition(), Textures.getColonelTex(), new Vector2(2, 0), 1, 80, 2, true));
+
+            // General
+            enemies.Add(new General(this, getEnemyPosition(), Textures.getGeneralTex(), new Vector2(2.5f, 0), 1, 100, 2, true));
         }
 
         public void saveGame(string filename)

@@ -42,26 +42,12 @@
             this.labelBomb = new System.Windows.Forms.Label();
             this.labelInvicloak = new System.Windows.Forms.Label();
             this.labelBonus = new System.Windows.Forms.Label();
-            this.panelMenu = new System.Windows.Forms.Panel();
-            this.labelUser = new System.Windows.Forms.Label();
-            this.buttonContinue = new System.Windows.Forms.Button();
-            this.buttonNewGame = new System.Windows.Forms.Button();
-            this.buttonHighScores = new System.Windows.Forms.Button();
-            this.buttonSettings = new System.Windows.Forms.Button();
-            this.buttonHelp = new System.Windows.Forms.Button();
-            this.buttonExit = new System.Windows.Forms.Button();
-            this.panelLogin = new System.Windows.Forms.Panel();
-            this.labelLoginTitle = new System.Windows.Forms.Label();
-            this.textBoxUsername = new System.Windows.Forms.TextBox();
-            this.buttonLogin = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMissile)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBomb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInvicloak)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBonus)).BeginInit();
-            this.panelMenu.SuspendLayout();
-            this.panelLogin.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox
@@ -195,142 +181,11 @@
             this.labelBonus.TabIndex = 13;
             this.labelBonus.Text = "0";
             // 
-            // panelMenu
-            // 
-            this.panelMenu.Controls.Add(this.panelLogin);
-            this.panelMenu.Controls.Add(this.buttonExit);
-            this.panelMenu.Controls.Add(this.buttonHelp);
-            this.panelMenu.Controls.Add(this.buttonSettings);
-            this.panelMenu.Controls.Add(this.buttonHighScores);
-            this.panelMenu.Controls.Add(this.buttonNewGame);
-            this.panelMenu.Controls.Add(this.buttonContinue);
-            this.panelMenu.Controls.Add(this.labelUser);
-            this.panelMenu.Location = new System.Drawing.Point(12, 12);
-            this.panelMenu.Name = "panelMenu";
-            this.panelMenu.Size = new System.Drawing.Size(860, 537);
-            this.panelMenu.TabIndex = 14;
-            // 
-            // labelUser
-            // 
-            this.labelUser.AutoSize = true;
-            this.labelUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelUser.Location = new System.Drawing.Point(365, 40);
-            this.labelUser.Name = "labelUser";
-            this.labelUser.Size = new System.Drawing.Size(81, 25);
-            this.labelUser.TabIndex = 0;
-            this.labelUser.Text = "Gracz: ";
-            // 
-            // buttonContinue
-            // 
-            this.buttonContinue.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonContinue.Location = new System.Drawing.Point(237, 100);
-            this.buttonContinue.Name = "buttonContinue";
-            this.buttonContinue.Size = new System.Drawing.Size(413, 46);
-            this.buttonContinue.TabIndex = 1;
-            this.buttonContinue.Text = "Kontynuuj grę";
-            this.buttonContinue.UseVisualStyleBackColor = true;
-            this.buttonContinue.Click += new System.EventHandler(this.buttonContinue_Click);
-            // 
-            // buttonNewGame
-            // 
-            this.buttonNewGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonNewGame.Location = new System.Drawing.Point(237, 152);
-            this.buttonNewGame.Name = "buttonNewGame";
-            this.buttonNewGame.Size = new System.Drawing.Size(413, 46);
-            this.buttonNewGame.TabIndex = 2;
-            this.buttonNewGame.Text = "Nowa gra";
-            this.buttonNewGame.UseVisualStyleBackColor = true;
-            this.buttonNewGame.Click += new System.EventHandler(this.buttonNewGame_Click);
-            // 
-            // buttonHighScores
-            // 
-            this.buttonHighScores.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonHighScores.Location = new System.Drawing.Point(237, 204);
-            this.buttonHighScores.Name = "buttonHighScores";
-            this.buttonHighScores.Size = new System.Drawing.Size(413, 46);
-            this.buttonHighScores.TabIndex = 3;
-            this.buttonHighScores.Text = "Najlepsze wyniki";
-            this.buttonHighScores.UseVisualStyleBackColor = true;
-            this.buttonHighScores.Click += new System.EventHandler(this.buttonHighScores_Click);
-            // 
-            // buttonSettings
-            // 
-            this.buttonSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonSettings.Location = new System.Drawing.Point(237, 256);
-            this.buttonSettings.Name = "buttonSettings";
-            this.buttonSettings.Size = new System.Drawing.Size(413, 46);
-            this.buttonSettings.TabIndex = 4;
-            this.buttonSettings.Text = "Opcje";
-            this.buttonSettings.UseVisualStyleBackColor = true;
-            this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
-            // 
-            // buttonHelp
-            // 
-            this.buttonHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonHelp.Location = new System.Drawing.Point(237, 308);
-            this.buttonHelp.Name = "buttonHelp";
-            this.buttonHelp.Size = new System.Drawing.Size(413, 46);
-            this.buttonHelp.TabIndex = 5;
-            this.buttonHelp.Text = "Pomoc";
-            this.buttonHelp.UseVisualStyleBackColor = true;
-            this.buttonHelp.Click += new System.EventHandler(this.buttonHelp_Click);
-            // 
-            // buttonExit
-            // 
-            this.buttonExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonExit.Location = new System.Drawing.Point(237, 360);
-            this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(413, 46);
-            this.buttonExit.TabIndex = 6;
-            this.buttonExit.Text = "Wyjdź";
-            this.buttonExit.UseVisualStyleBackColor = true;
-            this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            // 
-            // panelLogin
-            // 
-            this.panelLogin.Controls.Add(this.buttonLogin);
-            this.panelLogin.Controls.Add(this.textBoxUsername);
-            this.panelLogin.Controls.Add(this.labelLoginTitle);
-            this.panelLogin.Location = new System.Drawing.Point(77, 38);
-            this.panelLogin.Name = "panelLogin";
-            this.panelLogin.Size = new System.Drawing.Size(714, 458);
-            this.panelLogin.TabIndex = 7;
-            // 
-            // labelLoginTitle
-            // 
-            this.labelLoginTitle.AutoSize = true;
-            this.labelLoginTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelLoginTitle.Location = new System.Drawing.Point(288, 111);
-            this.labelLoginTitle.Name = "labelLoginTitle";
-            this.labelLoginTitle.Size = new System.Drawing.Size(119, 25);
-            this.labelLoginTitle.TabIndex = 0;
-            this.labelLoginTitle.Text = "Podaj login";
-            // 
-            // textBoxUsername
-            // 
-            this.textBoxUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxUsername.Location = new System.Drawing.Point(225, 166);
-            this.textBoxUsername.Name = "textBoxUsername";
-            this.textBoxUsername.Size = new System.Drawing.Size(248, 31);
-            this.textBoxUsername.TabIndex = 1;
-            // 
-            // buttonLogin
-            // 
-            this.buttonLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonLogin.Location = new System.Drawing.Point(273, 225);
-            this.buttonLogin.Name = "buttonLogin";
-            this.buttonLogin.Size = new System.Drawing.Size(146, 39);
-            this.buttonLogin.TabIndex = 2;
-            this.buttonLogin.Text = "Potwierdź";
-            this.buttonLogin.UseVisualStyleBackColor = true;
-            this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
-            // 
-            // GameForm
+            // gameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(884, 561);
-            this.Controls.Add(this.panelMenu);
             this.Controls.Add(this.labelBonus);
             this.Controls.Add(this.labelInvicloak);
             this.Controls.Add(this.labelBomb);
@@ -346,9 +201,9 @@
             this.Controls.Add(this.labelUsername);
             this.Controls.Add(this.pictureBox);
             this.MinimumSize = new System.Drawing.Size(900, 600);
-            this.Name = "GameForm";
+            this.Name = "gameForm";
             this.Text = "Digger";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GameForm_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.gameForm_FormClosing);
             this.Load += new System.EventHandler(this.gameForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGuy)).EndInit();
@@ -356,10 +211,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBomb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInvicloak)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBonus)).EndInit();
-            this.panelMenu.ResumeLayout(false);
-            this.panelMenu.PerformLayout();
-            this.panelLogin.ResumeLayout(false);
-            this.panelLogin.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -381,17 +232,5 @@
         private System.Windows.Forms.Label labelBomb;
         private System.Windows.Forms.Label labelInvicloak;
         private System.Windows.Forms.Label labelBonus;
-        private System.Windows.Forms.Panel panelMenu;
-        private System.Windows.Forms.Button buttonExit;
-        private System.Windows.Forms.Button buttonHelp;
-        private System.Windows.Forms.Button buttonSettings;
-        private System.Windows.Forms.Button buttonHighScores;
-        private System.Windows.Forms.Button buttonNewGame;
-        private System.Windows.Forms.Button buttonContinue;
-        private System.Windows.Forms.Label labelUser;
-        private System.Windows.Forms.Panel panelLogin;
-        private System.Windows.Forms.Button buttonLogin;
-        private System.Windows.Forms.TextBox textBoxUsername;
-        private System.Windows.Forms.Label labelLoginTitle;
     }
 }

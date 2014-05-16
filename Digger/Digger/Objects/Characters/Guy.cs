@@ -17,11 +17,11 @@ namespace Digger.Objects
 {
     public class Guy : Character
     {
-        private string username;
         public bool invicloak = true;
         private int cloakCountdown = 0;
         private int nextBlink = 0;
         public bool bonusTime = false;
+        public int bonusTimeLeft = 0;
         public int bonusCountdown = 0;
         private Keys lastMoveDirection = Keys.Right;
         public int bombCnt = 20;
@@ -39,10 +39,9 @@ namespace Digger.Objects
             return hp;
         }
 
-        public Guy(GameState gameState, Vector2 position, Texture2D texture, Vector2 speed, int hp, string username)
+        public Guy(GameState gameState, Vector2 position, Texture2D texture, Vector2 speed, int hp)
             : base(gameState, position, texture, speed, hp)
         {
-            this.username = username;
         }
 
         public override void update(TimeSpan gameTime)
@@ -52,6 +51,15 @@ namespace Digger.Objects
             updateBombs(gameTime);
             updateInvicloak(gameTime);
             enemyCollisions(gameTime);
+            bonusTimeLeft = (bonusCountdown - (int)gameTime.TotalSeconds) < 0 ? 0 : bonusCountdown - (int)gameTime.TotalSeconds;
+        }
+
+        public void nextLevel()
+        {
+            historyPosition = Vector2.Zero;
+            position = Vector2.Zero;
+            lastMoveDirection = Keys.Right;
+            speed = Vector2.Zero;
         }
 
         private void updateInvicloak(TimeSpan gameTime)

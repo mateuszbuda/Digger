@@ -24,6 +24,7 @@ namespace Digger.Objects.Artefacts
             if (texture != null && gameState.guy.getPosition() == position)
             {
                 gameState.guy.points += 10;
+                --gameState.diamonds;
                 texture = null;
             }
         }

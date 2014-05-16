@@ -71,6 +71,7 @@ namespace Digger.Objects.Artefacts
 
             if (Math.Abs(historyPosition.X - position.X) == Field.SZ || Math.Abs(historyPosition.Y - position.Y) == Field.SZ)
             {
+                int x = (int)(position.X / Field.SZ), y = (int)(position.Y / Field.SZ);
                 historyPosition = position;
                 speed.X = speed.Y = 0;
                 moving = false;
@@ -101,7 +102,7 @@ namespace Digger.Objects.Artefacts
         private bool hitCharacter(Character e)
         {
             float x = e.getPosition().X, y = e.getPosition().Y;
-            return x < position.X + Field.SZ && x + Field.SZ > position.X && y < position.Y + Field.SZ && y > position.Y;
+            return x < position.X + Field.SZ && x + Field.SZ > position.X && y < position.Y + Field.SZ / 2 && y > position.Y;
         }
 
         private void setYSpeed()
@@ -110,7 +111,7 @@ namespace Digger.Objects.Artefacts
             if (y + 1 < Map.HEIGHT && Map.getInstance()[x, y + 1].digged)
             {
                 speed.X = 0;
-                speed.Y = 2;
+                speed.Y = 1;
                 moving = true;
                 h++;
             }

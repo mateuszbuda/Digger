@@ -10,9 +10,9 @@ namespace Digger
         /// </summary>
         static void Main(string[] args)
         {
-            gameForm form = new gameForm();
+            GameForm form = new GameForm();
             form.Show();
-            DiggerGame game = new DiggerGame(form.getDrawSurface());
+            DiggerGame game = new DiggerGame(form);
             game.Run();
         }
     }
