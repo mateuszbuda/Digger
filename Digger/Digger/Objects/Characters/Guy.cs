@@ -39,6 +39,11 @@ namespace Digger.Objects
             return hp;
         }
 
+        public void addHp(int hp)
+        {
+            this.hp += hp;
+        }
+
         public Guy(GameState gameState, Vector2 position, Texture2D texture, Vector2 speed, int hp)
             : base(gameState, position, texture, speed, hp)
         {

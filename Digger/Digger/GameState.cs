@@ -23,7 +23,7 @@ namespace Digger
         public List<Artefact> artefacts = new List<Artefact>();
         private List<Artefact> tmpArtefacts = new List<Artefact>();
         public List<Enemy> enemies = new List<Enemy>();
-        private int enemiesLimit = 10;
+        private int enemiesLimit;
         private Random rand = new Random();
         private int nextBombTime; // in seconds
         private int nextMissileTime;
@@ -65,13 +65,15 @@ namespace Digger
                 newLevel(totalGameTime);
                 guy.nextLevel();
                 guy.points += 300 * level;
+                if (((double)(10 * (1 + level / 11)) / (double)(enemiesLimit + enemies.Count)) <= 0.1d)
+                    guy.addHp(1);
                 ++level;
             }
         }
 
         private void updateEnemies(TimeSpan totalGameTime)
         {
-            if (enemies.Count < 3 * (1 + level / 11))
+            if (enemies.Count < 3 * (1 + level / 11) && enemiesLimit > 0)
             {
                 if (level < 6)
                 {
@@ -98,6 +100,8 @@ namespace Digger
                     else
                         enemies.Add(new General(this, getEnemyPosition(), Textures.getGeneralTex(), new Vector2(2.5f, 0), 1, 100, 2, true));
                 }
+
+                enemiesLimit--;
             }
         }
 
@@ -133,7 +137,7 @@ namespace Digger
 
         private void newLevel(TimeSpan gameTime)
         {
-            enemiesLimit = 10 * (1 + level / 11);
+            enemiesLimit = (10 * (1 + level / 11)) - (3 * (1 + level / 11));
 
             // TODO: extract constants
             nextBombTime = (int)gameTime.TotalSeconds + rand.Next(4, 10);
@@ -238,7 +242,7 @@ namespace Digger
         private Vector2 getEnemyPosition()
         {
             int x, y;
-            bool basic, duplicates;
+            bool basic, duplicates, guy;
             while (true)
             {
                 x = rand.Next(Map.WIDTH);
@@ -248,9 +252,14 @@ namespace Digger
                 duplicates = true;
                 foreach (Enemy e in enemies)
                     if (e.getPosition().X == x * Field.SZ && e.getPosition().Y == y * Field.SZ)
+                    {
                         duplicates = false;
+                        break;
+                    }
 
-                if (basic && duplicates)
+                guy = Math.Abs(x - this.guy.getPosition().X / Field.SZ) > 4 && Math.Abs(y - this.guy.getPosition().Y / Field.SZ) > 4;
+
+                if (basic && duplicates && guy)
                     break;
             }
             return new Vector2(x * Field.SZ, y * Field.SZ);
