@@ -24,13 +24,13 @@ namespace Digger.Objects
         public int bonusTimeLeft = 0;
         public int bonusCountdown = 0;
         private Keys lastMoveDirection = Keys.Right;
-        public int bombCnt = 20;
+        public int bombCnt = 0;
         private double lastBomb = 0.0;
         public List<Weapons.Bomb> bombs = new List<Weapons.Bomb>();
         public int invicloackCnt = 0;
         private double lastEnemyHit = 0.0;
         private double lastShoot = 0.0;
-        public int firesCnt = 20;
+        public int firesCnt = 0;
         public List<Fire> fires = new List<Fire>();
         public int points = 0;
 

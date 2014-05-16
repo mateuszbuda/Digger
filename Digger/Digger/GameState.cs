@@ -23,6 +23,7 @@ namespace Digger
         public List<Artefact> artefacts = new List<Artefact>();
         private List<Artefact> tmpArtefacts = new List<Artefact>();
         public List<Enemy> enemies = new List<Enemy>();
+        private int enemiesLimit = 10;
         private Random rand = new Random();
         private int nextBombTime; // in seconds
         private int nextMissileTime;
@@ -33,7 +34,8 @@ namespace Digger
         public GameState()
         {
             //hero
-            guy = new Guy(this, Vector2.Zero, Textures.getGuyTex(), Vector2.Zero, 300);
+            guy = new Guy(this, Vector2.Zero, Textures.getGuyTex(), Vector2.Zero, 3);
+
         }
 
         public void update(TimeSpan totalGameTime)
@@ -51,6 +53,56 @@ namespace Digger
             foreach (Artefact a in artefacts)
                 a.update(totalGameTime);
 
+            updateArtefacts(totalGameTime);
+            updateEnemies(totalGameTime);
+
+            if (diamonds == 0)
+            {
+                artefacts.Clear();
+                enemies.Clear();
+                tmpArtefacts.Clear();
+                Map.newMap();
+                newLevel(totalGameTime);
+                guy.nextLevel();
+                guy.points += 300 * level;
+                ++level;
+            }
+        }
+
+        private void updateEnemies(TimeSpan totalGameTime)
+        {
+            if (enemies.Count < 3 * (1 + level / 11))
+            {
+                if (level < 6)
+                {
+                    if (totalGameTime.TotalSeconds % 2 == 0)
+                        enemies.Add(new Sergeant(this, getEnemyPosition(), Textures.getSergeantTex(), new Vector2(2, 0), 1, 20));
+                    else
+                        enemies.Add(new Captain(this, getEnemyPosition(), Textures.getCaptainTex(), new Vector2(2, 0), 1, 40, 5));
+                }
+                else if (level >= 6 && level < 11)
+                {
+                    enemies.Add(new Captain(this, getEnemyPosition(), Textures.getCaptainTex(), new Vector2(2, 0), 1, 40, 5));
+                }
+                else if (level >= 11 && level < 16)
+                {
+                    if (totalGameTime.TotalSeconds % 2 == 0)
+                        enemies.Add(new Major(this, getEnemyPosition(), Textures.getMajorTex(), new Vector2(2, 0), 1, 60, 5));
+                    else
+                        enemies.Add(new Colonel(this, getEnemyPosition(), Textures.getColonelTex(), new Vector2(2, 0), 1, 80, 2, true));
+                }
+                else if (level >= 16)
+                {
+                    if (totalGameTime.TotalSeconds % 2 == 0)
+                        enemies.Add(new Colonel(this, getEnemyPosition(), Textures.getColonelTex(), new Vector2(2, 0), 1, 80, 2, true));
+                    else
+                        enemies.Add(new General(this, getEnemyPosition(), Textures.getGeneralTex(), new Vector2(2.5f, 0), 1, 100, 2, true));
+                }
+            }
+        }
+
+        private void updateArtefacts(TimeSpan totalGameTime)
+        {
             if ((int)totalGameTime.TotalSeconds == nextBombTime)
             {
                 artefacts.Add(new Bomb(this, getArtefactPosition(true, true), Textures.getBombArtefactTex(), 0, false));
@@ -77,66 +129,61 @@ namespace Digger
                 artefacts.Add(new BonusTime(this, getArtefactPosition(true, true), Textures.getBonusTimeTex(), 0, false, 0));
                 bonusTime = 0;
             }
-
-            if (diamonds == 0)
-            {
-                artefacts.Clear();
-                enemies.Clear();
-                tmpArtefacts.Clear();
-                Map.newMap();
-                newLevel(totalGameTime);
-                guy.nextLevel();
-                ++level;
-            }
         }
 
         private void newLevel(TimeSpan gameTime)
         {
+            enemiesLimit = 10 * (1 + level / 11);
+
             // TODO: extract constants
-            nextBombTime = (int)gameTime.TotalSeconds + rand.Next(2, 10);
-            nextMissileTime = (int)gameTime.TotalSeconds + rand.Next(2, 10);
-            invicloakTime = (int)gameTime.TotalSeconds + rand.Next(2, 10);
-            bonusTime = (int)gameTime.TotalSeconds + rand.Next(2, 10);
-            nextGoldbagTime = (int)gameTime.TotalSeconds + rand.Next(2, 10);
+            nextBombTime = (int)gameTime.TotalSeconds + rand.Next(4, 10);
+            nextMissileTime = (int)gameTime.TotalSeconds + rand.Next(4, 10);
+            invicloakTime = (int)gameTime.TotalSeconds + rand.Next(6, 15);
+            bonusTime = (int)gameTime.TotalSeconds + rand.Next(6, 15);
+            nextGoldbagTime = (int)gameTime.TotalSeconds + rand.Next(6, 12);
 
             // Diamonds distribution
-            int d = 0;
-            while (d < 5)
+            int d = diamonds = 10 + level / 5;
+            while (d > 0)
             {
                 artefacts.Add(new Diamond(this, getArtefactPosition(true, false), Textures.getDiamondTex(), 10, false));
-                d++;
+                d--;
             }
-            diamonds = d;
 
             // Sergeants
-            int s = 0;
-            while (s < 5)
+            int ser = level < 6 ? 2 : 1;
+            while (ser > 0)
             {
                 enemies.Add(new Sergeant(this, getEnemyPosition(), Textures.getSergeantTex(), new Vector2(2, 0), 1, 20));
-                s++;
+                ser--;
             }
 
             // Captains
-            int c = 0;
-            while (c < 2)
+            int cap = level < 6 ? 1 : 2;
+            while (cap > 0)
             {
                 enemies.Add(new Captain(this, getEnemyPosition(), Textures.getCaptainTex(), new Vector2(2, 0), 1, 40, 5));
-                c++;
+                cap--;
             }
 
             // Majors
-            int m = 0;
-            while (m < 2)
+            if (level > 10)
             {
-                enemies.Add(new Major(this, getEnemyPosition(), Textures.getMajorTex(), new Vector2(2, 0), 1, 60, 5));
-                m++;
+                int maj = level < 16 ? 2 : 1;
+                while (maj > 0)
+                {
+                    enemies.Add(new Major(this, getEnemyPosition(), Textures.getMajorTex(), new Vector2(2, 0), 1, 60, 5));
+                    maj--;
+                }
             }
 
             // Colonel
-            enemies.Add(new Colonel(this, getEnemyPosition(), Textures.getColonelTex(), new Vector2(2, 0), 1, 80, 2, true));
+            if (level > 10)
+                enemies.Add(new Colonel(this, getEnemyPosition(), Textures.getColonelTex(), new Vector2(2, 0), 1, 80, 2, true));
 
             // General
-            enemies.Add(new General(this, getEnemyPosition(), Textures.getGeneralTex(), new Vector2(2.5f, 0), 1, 100, 2, true));
+            if (level > 15)
+                enemies.Add(new General(this, getEnemyPosition(), Textures.getGeneralTex(), new Vector2(2.5f, 0), 1, 100, 2, true));
         }
 
         public void saveGame(string filename)
