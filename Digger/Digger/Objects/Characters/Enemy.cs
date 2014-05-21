@@ -12,13 +12,39 @@ using System.Text;
 
 namespace Digger.Objects
 {
+    /// <summary>
+    /// Klasa bazowa wszystkich przeciwników w grze.
+    /// </summary>
     public abstract class Enemy : Character
     {
+        /// <summary>
+        /// Ilość punktów jakie dostaje gracz za zabicie danego przeciwnika
+        /// </summary>
         protected int bonusPoints;
+        /// <summary>
+        /// Okres aktualizacji kierunku ruchu w kierunku bohatera w sekundach
+        /// </summary>
         protected int directionUpdateFreq;
+        /// <summary>
+        /// Zmienna informująca czy dany przeciwnik może odkopywać pola
+        /// </summary>
         protected bool digger;
+        /// <summary>
+        /// Obiekt nadający czynnik losowy w ruchu postaci. Stosowany w szególnej sytuacji, kiedy bohater uzył peleryny niewidki.
+        /// </summary>
         private Random rand;
 
+        /// <summary>
+        /// Konstruktor przeciwnika
+        /// </summary>
+        /// <param name="gameState">Obiekt stanu gry</param>
+        /// <param name="position">Początkowa pozycja obiektu</param>
+        /// <param name="texture">Tekstura obiektu</param>
+        /// <param name="speed">Początkowa prędkość obiektu</param>
+        /// <param name="hp">Początkowa ilość żyć przeciwnika</param>
+        /// <param name="bonusPoints">Ilość punktów jakie dostaje gracz za zabicie danego przeciwnika</param>
+        /// <param name="directionUpdateFreq">Okres aktualizacji kierunku ruchu w kierunku bohatera w sekundach</param>
+        /// <param name="digger">Informacja czy dany przeciwnik może odkopywać pola</param>
         public Enemy(GameState gameState, Vector2 position, Texture2D texture, Vector2 speed, int hp, int bonusPoints, int directionUpdateFreq = 0, bool digger = false)
             : base(gameState, position, texture, speed, hp)
         {
@@ -28,11 +54,19 @@ namespace Digger.Objects
             this.rand = new Random();
         }
 
+        /// <summary>
+        /// Metoda udostępniająca ilość punktów za zabicie danego przeciwnika
+        /// </summary>
+        /// <returns>Ilość punktów za zabicie postaci w normalnym trybie</returns>
         public int getBonusPoints()
         {
             return bonusPoints;
         }
 
+        /// <summary>
+        /// Wyznacza kierunek w którym jest bohater
+        /// </summary>
+        /// <returns>Kierunek ruchu</returns>
         protected Direction getDirectionToGuy()
         {
             Vector2 guyPosition = gameState.guy.getPosition();
@@ -65,6 +99,11 @@ namespace Digger.Objects
             return getDirection();
         }
 
+        /// <summary>
+        /// Metoda wyznaczająca ogólny keirunek ruchu przeciwników. Dla niektórych z nich uwzględnia ruchy pocisków i ucieka od nich.
+        /// Dla pozostałych przeciwników stara się utrzymać zwrot ruchu, następnie kierunek.
+        /// </summary>
+        /// <returns>Wyznaczony kierunek ruchu dla postaci</returns>
         protected Direction getDirection()
         {
             // Majors and Generals avoid fires

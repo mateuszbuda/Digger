@@ -12,13 +12,28 @@ using System.Text;
 
 namespace Digger
 {
+    /// <summary>
+    /// Singleton udostepniający aktualną mapę
+    /// </summary>
     public class Map
     {
+        /// <summary>
+        /// Szerokość mapy w polach
+        /// </summary>
         public const int WIDTH = 20;
+        /// <summary>
+        /// wysokość mapy w polach
+        /// </summary>
         public const int HEIGHT = 12;
+        /// <summary>
+        /// Tablica pól składających się na mapę
+        /// </summary>
         private static Field[,] fields;
 
-
+        /// <summary>
+        /// Metoda dostępu do aktualnej instancji mapy
+        /// </summary>
+        /// <returns>Tablicę z polami</returns>
         public static Field[,] getInstance()
         {
             if (fields == null)
@@ -27,6 +42,10 @@ namespace Digger
             return fields;
         }
 
+        /// <summary>
+        /// Generuje nową mapę
+        /// </summary>
+        /// <returns>Wygenerowaną mapę jako tablicę z polami</returns>
         public static Field[,] newMap()
         {
             fields = new Field[Map.WIDTH, Map.HEIGHT];

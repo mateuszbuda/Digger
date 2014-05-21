@@ -14,23 +14,71 @@ using Digger.Objects.Artefacts;
 
 namespace Digger
 {
+    /// <summary>
+    /// Klasa aktualnego stanu gry zawierająca informacje o wszystkich mapie, wszystkich postaciach i artefaktach.
+    /// </summary>
     public class GameState
     {
+        /// <summary>
+        /// Aktualna mapa
+        /// </summary>
         public Map map;
-        public int level = 1;
+        /// <summary>
+        /// Aktualny poziom
+        /// </summary>
+        public int level = 0;
+        /// <summary>
+        /// Liczba diamentów na mapie
+        /// </summary>
         public int diamonds;
+        /// <summary>
+        /// Główny bohater
+        /// </summary>
         public Guy guy;
+        /// <summary>
+        /// Lista artefaktów na mapie
+        /// </summary>
         public List<Artefact> artefacts = new List<Artefact>();
+        /// <summary>
+        /// Tymczasowa lista artefaktów dodana przez inne artefakty lub obiekty w grze
+        /// </summary>
         private List<Artefact> tmpArtefacts = new List<Artefact>();
+        /// <summary>
+        /// Lista przeciwników na mapie
+        /// </summary>
         public List<Enemy> enemies = new List<Enemy>();
+        /// <summary>
+        /// Aktualny dla poziomu limit przeciwników
+        /// </summary>
         private int enemiesLimit;
+        /// <summary>
+        /// Obiekt wpływający na losowość zdarzeń w grze
+        /// </summary>
         private Random rand = new Random();
+        /// <summary>
+        /// Czas gry w sekundach po którym pojawi się kolejna bomba do zebrania
+        /// </summary>
         private int nextBombTime; // in seconds
+        /// <summary>
+        /// Czas gry w sekundach po którym pojawi się kolejny pocisk do zebrania
+        /// </summary>
         private int nextMissileTime;
+        /// <summary>
+        /// Czas gry w sekundach po którym pojawi się peleryna do zebrania
+        /// </summary>
         private int invicloakTime;
+        /// <summary>
+        /// Czas gry w sekundach po którym pojawi się czas bonusowy do zebrania
+        /// </summary>
         private int bonusTime;
+        /// <summary>
+        /// Czas gry w sekundach po którym pojawi się kolejny worek ze złotem
+        /// </summary>
         private int nextGoldbagTime;
 
+        /// <summary>
+        /// Domyślny konstruktor tworzący obiekt głównego bohatera
+        /// </summary>
         public GameState()
         {
             //hero
@@ -38,6 +86,10 @@ namespace Digger
 
         }
 
+        /// <summary>
+        /// Metoda aktualizująca stan gry
+        /// </summary>
+        /// <param name="totalGameTime">Czas gry</param>
         public void update(TimeSpan totalGameTime)
         {
             guy.update(totalGameTime);
@@ -71,6 +123,10 @@ namespace Digger
             }
         }
 
+        /// <summary>
+        /// Metoda dodająca przeciwników, jeśli nie został przekroczny limit dla poziomu
+        /// </summary>
+        /// <param name="totalGameTime">Czas gry</param>
         private void updateEnemies(TimeSpan totalGameTime)
         {
             if (enemies.Count < 3 * (1 + level / 11) && enemiesLimit > 0)
@@ -105,6 +161,10 @@ namespace Digger
             }
         }
 
+        /// <summary>
+        /// Metoda dodająza artefakty
+        /// </summary>
+        /// <param name="totalGameTime">Czas gry</param>
         private void updateArtefacts(TimeSpan totalGameTime)
         {
             if ((int)totalGameTime.TotalSeconds == nextBombTime)
@@ -130,16 +190,19 @@ namespace Digger
             }
             if ((int)totalGameTime.TotalSeconds == bonusTime)
             {
-                artefacts.Add(new BonusTime(this, getArtefactPosition(true, true), Textures.getBonusTimeTex(), 0, false, 0));
+                artefacts.Add(new BonusTime(this, getArtefactPosition(true, true), Textures.getBonusTimeTex(), 0, false));
                 bonusTime = 0;
             }
         }
 
+        /// <summary>
+        /// Matoda odpowiedzialna za przejście do następnego poziomu
+        /// </summary>
+        /// <param name="gameTime">Czas gry</param>
         private void newLevel(TimeSpan gameTime)
         {
             enemiesLimit = (10 * (1 + level / 11)) - (3 * (1 + level / 11));
 
-            // TODO: extract constants
             nextBombTime = (int)gameTime.TotalSeconds + rand.Next(4, 10);
             nextMissileTime = (int)gameTime.TotalSeconds + rand.Next(4, 10);
             invicloakTime = (int)gameTime.TotalSeconds + rand.Next(6, 15);
@@ -190,20 +253,38 @@ namespace Digger
                 enemies.Add(new General(this, getEnemyPosition(), Textures.getGeneralTex(), new Vector2(2.5f, 0), 1, 100, 2, true));
         }
 
+        /// <summary>
+        /// Metoda zapisujące grę
+        /// </summary>
+        /// <param name="filename">Nazwa pliku do zapisu</param>
         public void saveGame(string filename)
         {
             return;
         }
+        /// <summary>
+        /// Ładuje sapisany stan gry
+        /// </summary>
+        /// <param name="filename">Nazwa pliku do odczytu stanu gry</param>
         public void loadGame(string filename)
         {
             return;
         }
 
+        /// <summary>
+        /// Dodaje artefakt na mapie
+        /// </summary>
+        /// <param name="artefact">Artefakt do dodania</param>
         public void addArtefact(Artefact artefact)
         {
             tmpArtefacts.Add(artefact);
         }
 
+        /// <summary>
+        /// Metoda zwracająca poprawną pozycję dla nowego artefaktu
+        /// </summary>
+        /// <param name="digged">Informacja czy artefakt może się znajdować na odkopanym polu</param>
+        /// <param name="undigged">Informacja czy artefakt może się znajdować na zakopanym polu</param>
+        /// <returns>Pozycja dla nowego artefaktu</returns>
         private Vector2 getArtefactPosition(bool digged, bool undigged)
         {
             int x, y;
@@ -239,6 +320,10 @@ namespace Digger
             return new Vector2(x * Field.SZ, y * Field.SZ);
         }
 
+        /// <summary>
+        /// Metoda podająca prawidłową pozycję nowego przeciwnika na mapie
+        /// </summary>
+        /// <returns>Pozycja dla nowego przeciwnika</returns>
         private Vector2 getEnemyPosition()
         {
             int x, y;
@@ -257,7 +342,7 @@ namespace Digger
                         break;
                     }
 
-                guy = Math.Abs(x - this.guy.getPosition().X / Field.SZ) > 4 && Math.Abs(y - this.guy.getPosition().Y / Field.SZ) > 4;
+                guy = Math.Abs(x - this.guy.getPosition().X / Field.SZ) > 3 && Math.Abs(y - this.guy.getPosition().Y / Field.SZ) > 3;
 
                 if (basic && duplicates && guy)
                     break;

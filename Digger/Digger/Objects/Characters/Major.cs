@@ -12,12 +12,35 @@ using System.Text;
 
 namespace Digger.Objects
 {
+    /// <summary>
+    /// Przeciwnik Major. Co jakieś czas aktualizuje swoją pozycję w keirunku bohatera. Co losowy czas może drążyć nowe korytarze. Tego przeciwnika jest trudno zestrzelić, ponieważ unika on lecących pocisków i ucieka od nich.
+    /// </summary>
     class Major : Enemy
     {
+        /// <summary>
+        /// Obiekt odpowiadający za losowość czasu przez jaki Major ma możliwość drążenia korytarzy
+        /// </summary>
         private Random rand;
+        /// <summary>
+        /// Czas gry przy którym postać zaktualizuje swój kierunek ruchu, żeby poruszać się w stronę bohatera
+        /// </summary>
         private int updateTime = 0;
+        /// <summary>
+        /// Czas gry po którym Major zyska / straci możliwość drążenia korytarzy
+        /// </summary>
         private int diggerTime;
 
+        /// <summary>
+        /// Konstruktor Majora
+        /// </summary>
+        /// <param name="gameState">Obiekt stanu gry</param>
+        /// <param name="position">Początkowa pozycja obiektu</param>
+        /// <param name="texture">Tekstura obiektu</param>
+        /// <param name="speed">Początkowa prędkość obiektu</param>
+        /// <param name="hp">Początkowa ilość żyć przeciwnika</param>
+        /// <param name="bonusPoints">Ilość punktów jakie dostaje gracz za zabicie danego przeciwnika</param>
+        /// <param name="directionUpdateFreq">Okres aktualizacji kierunku ruchu w kierunku bohatera w sekundach</param>
+        /// <param name="digger">Informacja czy dany przeciwnik może odkopywać pola</param>
         public Major(GameState gameState, Vector2 position, Texture2D texture, Vector2 speed, int hp, int bonusPoints, int directionUpdateFreq = 0, bool digger = false)
             : base(gameState, position, texture, speed, hp, bonusPoints, directionUpdateFreq, digger)
         {
@@ -25,6 +48,10 @@ namespace Digger.Objects
             diggerTime = rand.Next(6, 15);
         }
 
+        /// <summary>
+        /// Implementacja aktualizacji stanu przez Generala
+        /// </summary>
+        /// <param name="totalGameTime">Czas gry</param>
         public override void update(TimeSpan totalGameTime)
         {
             if (texture == null)

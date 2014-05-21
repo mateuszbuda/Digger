@@ -12,18 +12,39 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Digger.Objects.Weapons
 {
+    /// <summary>
+    /// Bomba to szególna broń, ponieważ zabicie przeciwnika za jej pomocą daje dwa razy więcej punktów niż inna metodą. Zasię bomby to trzy pola w każdym keirunku oraz jedno pole dookoła bomby. Bomba wybucha z pewnym opóźnieniem od jej zastawienia.
+    /// </summary>
     public class Bomb : Weapon
     {
+        /// <summary>
+        /// Opóźnienie wybuchu bomby
+        /// </summary>
         public const int COUNTDOWN = 2;
+        /// <summary>
+        /// Czas wybuchu bomby
+        /// </summary>
         private int explosionTime;
+        /// <summary>
+        /// Zmienna informująca czy bomba jest widoczna na mapię
+        /// </summary>
         public bool visible = false;
 
+        /// <summary>
+        /// Konstruktor obiektu bomby
+        /// </summary>
+        /// <param name="gameState">Obiekt stanu gry</param>
+        /// <param name="texture">Tekstura bomby</param>
         public Bomb(GameState gameState, Texture2D texture)
             : base(gameState, Vector2.Zero, texture, Vector2.Zero)
         {
             this.explosionTime = 0;
         }
 
+        /// <summary>
+        /// Implementacja metody aktualizującej stan bomby
+        /// </summary>
+        /// <param name="totalGameTime">Czas gry</param>
         public override void update(TimeSpan totalGameTime)
         {
             if (visible)
@@ -31,6 +52,9 @@ namespace Digger.Objects.Weapons
                     explode();
         }
 
+        /// <summary>
+        /// Metoda zabierająca życia trafionym przez eksplocję przeciwnikom
+        /// </summary>
         private void explode()
         {
             visible = false;
@@ -49,6 +73,11 @@ namespace Digger.Objects.Weapons
                     }
         }
 
+        /// <summary>
+        /// Metoda sprawdzająca czy przeciwnik znajdował się w zasięgu eksplocji bomby
+        /// </summary>
+        /// <param name="e">Spradzany przeciwnik</param>
+        /// <returns>Informacja czy jest w zasięgu</returns>
         private bool inRange(Enemy e)
         {
             Vector2 eMidPoint = e.getPosition();
@@ -69,6 +98,11 @@ namespace Digger.Objects.Weapons
             return false;
         }
 
+        /// <summary>
+        /// Metoda zastawiająca bombę w podanej pozycji i ustawiająca czas wybuchu zastawianej bomby
+        /// </summary>
+        /// <param name="position">Pozycja zastawienia bomby</param>
+        /// <param name="explosionTime">Czas wybuchu bomby</param>
         public void set(Vector2 position, int explosionTime)
         {
             visible = true;
@@ -76,6 +110,10 @@ namespace Digger.Objects.Weapons
             this.explosionTime = explosionTime;
         }
 
+        /// <summary>
+        /// Metoda rysująca obiekt widocznej bomby na mapie
+        /// </summary>
+        /// <param name="spriteBatch">Kontekst rysowanego obiektu</param>
         public override void draw(SpriteBatch spriteBatch)
         {
             if (visible)

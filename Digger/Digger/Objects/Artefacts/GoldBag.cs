@@ -12,14 +12,41 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Digger.Objects.Artefacts
 {
+    /// <summary>
+    /// Artefakt worka ze złotem. Spada pod wpływem grawitacji, jeśli nie stoi na zakopanym polu. Jeśli spadnie na jakąs postać, zadaje jej obrażenia. Jesli spadnie z wysokości większej niż jedno pole, zamienia się w złoto. Spadający worek jest jedynym sposobem na zabicie Generala.
+    /// </summary>
     class GoldBag : Artefact
     {
+        /// <summary>
+        /// Odległość na jaką postać musi się zbliżyć do worka, żeby go przesunąć
+        /// </summary>
         private const int EPS = 5;
+        /// <summary>
+        /// Aktualna prędkość worka
+        /// </summary>
         private Vector2 speed;
+        /// <summary>
+        /// Zmienna informująca czy worek akturlnie się porusza
+        /// </summary>
         private bool moving;
+        /// <summary>
+        /// Pspółrzędna ostatniego pola na jakim znajdował się worek
+        /// </summary>
         private Vector2 historyPosition;
+        /// <summary>
+        /// Wysokość jaką pokonał worek podczas ostatniego spadku
+        /// </summary>
         private int h = 0;
 
+        /// <summary>
+        /// Kostruktor worka ze złotem
+        /// </summary>
+        /// <param name="gameState">Obiekt stanu gry</param>
+        /// <param name="position">Początkowa pozycja obiektu</param>
+        /// <param name="texture">Tekstura obiektu</param>
+        /// <param name="pointBonus">Ilość punktów za zebranie artefaktu</param>
+        /// <param name="enemySensitive">Czy przeciwnicy mogą zebrać dany artefakt</param>
+        /// <param name="speed">Początkowa prędkość worka</param>
         public GoldBag(GameState gameState, Vector2 position, Texture2D texture, int pointBonus, bool enemySensitive, Vector2 speed)
             : base(gameState, position, texture, pointBonus, enemySensitive)
         {
@@ -28,6 +55,10 @@ namespace Digger.Objects.Artefacts
             this.historyPosition = position;
         }
 
+        /// <summary>
+        /// Implementacja aktualizacji stanu worka ze złotem
+        /// </summary>
+        /// <param name="gameTime">Czas gry</param>
         public override void update(TimeSpan gameTime)
         {
             if (texture == null)
@@ -78,6 +109,9 @@ namespace Digger.Objects.Artefacts
             }
         }
 
+        /// <summary>
+        /// Sprawdza kolizje z postaciami na mapie
+        /// </summary>
         private void collisions()
         {
             if (speed.Y > 0)
@@ -99,12 +133,20 @@ namespace Digger.Objects.Artefacts
             }
         }
 
+        /// <summary>
+        /// Sprzawdza czy dana postać została trafiona przez spadający worek
+        /// </summary>
+        /// <param name="e">Postać, z którą sprawdzana jest kolizja</param>
+        /// <returns>Informacja czy postać przycina drogą spadającego worka</returns>
         private bool hitCharacter(Character e)
         {
             float x = e.getPosition().X, y = e.getPosition().Y;
             return x < position.X + Field.SZ && x + Field.SZ > position.X && y < position.Y + Field.SZ / 2 && y > position.Y;
         }
 
+        /// <summary>
+        /// Ustawia aktualną prędkość w kierunku osi Y dla worka 
+        /// </summary>
         private void setYSpeed()
         {
             int x = (int)(position.X / Field.SZ), y = (int)(position.Y / Field.SZ);
@@ -126,6 +168,9 @@ namespace Digger.Objects.Artefacts
             }
         }
 
+        /// <summary>
+        /// Ustawia aktualną prędkość w kierunku osi X dla worka
+        /// </summary>
         private void setXSpeed()
         {
             Vector2 p;

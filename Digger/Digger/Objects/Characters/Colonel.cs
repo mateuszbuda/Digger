@@ -12,15 +12,36 @@ using System.Text;
 
 namespace Digger.Objects
 {
+    /// <summary>
+    /// Przeciwnik Colonel. Postać pojawiająca się na wyższych poziomach. Co jakiś czas aktualizuje kierunek ruchu i porusza sięw stronę bohatera. Ma też możliwość drązenia korytarzy, ale podczas odkopywania porusza się wolniej niż normalnie. Jest to też przeciwnik odporny na strzały, które odbija od siebie.
+    /// </summary>
     class Colonel : Enemy
     {
+        /// <summary>
+        /// Czas gry przy którym postać zaktualizuje swój kierunek ruchu, żeby poruszać się w stronę bohatera.
+        /// </summary>
         private int updateTime = 0;
 
+        /// <summary>
+        /// Konstruktor Colonela
+        /// </summary>
+        /// <param name="gameState">Obiekt stanu gry</param>
+        /// <param name="position">Początkowa pozycja obiektu</param>
+        /// <param name="texture">Tekstura obiektu</param>
+        /// <param name="speed">Początkowa prędkość obiektu</param>
+        /// <param name="hp">Początkowa ilość żyć przeciwnika</param>
+        /// <param name="bonusPoints">Ilość punktów jakie dostaje gracz za zabicie danego przeciwnika</param>
+        /// <param name="directionUpdateFreq">Okres aktualizacji kierunku ruchu w kierunku bohatera w sekundach</param>
+        /// <param name="digger">Informacja czy dany przeciwnik może odkopywać pola</param>
         public Colonel(GameState gameState, Vector2 position, Texture2D texture, Vector2 speed, int hp, int bonusPoints, int directionUpdateFreq = 0, bool digger = false)
             : base(gameState, position, texture, speed, hp, bonusPoints, directionUpdateFreq, digger)
         {
         }
 
+        /// <summary>
+        /// Implementacja aktualizacji stanu przez Colonela
+        /// </summary>
+        /// <param name="gameTime">Czas gry</param>
         public override void update(TimeSpan gameTime)
         {
             if (texture == null)

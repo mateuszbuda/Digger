@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -14,26 +14,66 @@ using Digger.Objects.Artefacts;
 namespace Digger
 {
     /// <summary>
-    /// This is the main type for your game
+    /// Głowny obiekt gry
     /// </summary>
     public class DiggerGame : Microsoft.Xna.Framework.Game
     {
+        /// <summary>
+        /// Referencja na From w którym wyświetlana jest gra
+        /// </summary>
         private GameForm gameForm;
+        /// <summary>
+        /// Referencja na obiekt, na którym rysowana jest gra
+        /// </summary>
         private IntPtr drawSurface;
 
+        /// <summary>
+        /// Czas w milisekundach przez jaki gra była zatrzymana
+        /// </summary>
         private TimeSpan pauseMilis = new TimeSpan(0);
+        /// <summary>
+        /// Czas ostatniej pausy w grze
+        /// </summary>
         private TimeSpan lastPause = new TimeSpan(0);
+        /// <summary>
+        /// Minimalny czas zatrzymania i wznowienia gry
+        /// </summary>
         private TimeSpan delay = new TimeSpan(0, 0, 0, 0, 200);
+        /// <summary>
+        /// Zmienna informująca czy gra jest zatrzymana czy też toczy się normalnie
+        /// </summary>
         private bool pause = true;
+        /// <summary>
+        /// Obiekt aktualnego stanu gry
+        /// </summary>
         GameState gameState;
+        /// <summary>
+        /// Obiekt obsługujący urządzenie graficzne
+        /// </summary>
         GraphicsDeviceManager graphics;
+        /// <summary>
+        /// Obiekt umożliwiający rysowanie grupy obiektów z tymi samymi ustawieniami
+        /// </summary>
         SpriteBatch spriteBatch;
 
+        /// <summary>
+        /// Szerokość mapy
+        /// </summary>
         public const int GRAPHICS_WIDTH = Field.SZ * Map.WIDTH;
+        /// <summary>
+        /// Wysokość mapy
+        /// </summary>
         public const int GRAPHICS_HEIGHT = Field.SZ * Map.HEIGHT;
 
+        /// <summary>
+        /// Obiekt udostępniający tekstury
+        /// </summary>
         public static Textures textures;
 
+        /// <summary>
+        /// Konstruktor przekazujący referencje na froma w którym wyświetlana jest gra
+        /// </summary>
+        /// <param name="gameForm">Referencja na form gry</param>
         public DiggerGame(GameForm gameForm)
         {
             graphics = new GraphicsDeviceManager(this);
@@ -52,13 +92,10 @@ namespace Digger
         }
 
         /// <summary>
-        /// Event capturing the construction of a draw surface and makes sure this gets redirected to
-        /// a predesignated drawsurface marked by pointer drawSurface
+        /// Zdarzenie informujące o tym, że panel do rysowania rozgrywki został utworzony.
         /// </summary>
-        ///
-        ///<param name="sender"></param>
-        ///
-        ///<param name="e"></param>
+        ///<param name="sender">Nadawca zdarzenia</param>
+        ///<param name="e">Argumenty zdarzenia</param>
         void graphics_PreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
         {
             e.GraphicsDeviceInformation.PresentationParameters.DeviceWindowHandle =
@@ -66,12 +103,10 @@ namespace Digger
         }
 
         /// <summary>
-        /// Occurs when the original gamewindows' visibility changes and makes sure it stays invisible
+        /// Zdarzenie informujące o pojawieniu się wtyginalnego okna z grą
         /// </summary>
-        ///
-        ///<param name="sender"></param>
-        ///
-        ///<param name="e"></param>
+        ///<param name="sender">Nadawca zdarzenia</param>
+        ///<param name="e">Argumenty zdarzenia</param>
         private void Game1_VisibleChanged(object sender, EventArgs e)
         {
             if (System.Windows.Forms.Control.FromHandle((this.Window.Handle)).Visible == true)
@@ -79,21 +114,7 @@ namespace Digger
         }
 
         /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
-        protected override void Initialize()
-        {
-            // TODO: Add your initialization logic here
-
-            base.Initialize();
-        }
-
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
+        /// Ładowanie zasobów i grafiki.
         /// </summary>
         protected override void LoadContent()
         {
@@ -104,17 +125,9 @@ namespace Digger
         }
 
         /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
-        protected override void UnloadContent()
-        {
-            // TODO: Unload any non ContentManager content here
-        }
-
-        /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
+        /// Główna metoda logiki gry, aktualizująca jej stan i sprawdzająca różne sytuacje wyjątkowe jak śmierć bohatera czy przejśc do następnego poziomu
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
@@ -145,16 +158,18 @@ namespace Digger
             }
 
             gameState.update(gameTime.TotalGameTime.Subtract(pauseMilis));
-            
+
             if (gameState.guy.getHp() < 1)
             {
                 pause = true;
-                gameOver();
             }
 
             updateForm();
         }
 
+        /// <summary>
+        /// Metoda aktualizująca stan gry wyświetlnay na formie gry
+        /// </summary>
         private void updateForm()
         {
             gameForm.updateLevel(gameState.level);
@@ -166,25 +181,26 @@ namespace Digger
             gameForm.updateBonusTime(gameState.guy.bonusTimeLeft);
         }
 
+        /// <summary>
+        /// Zatrzymuje grę
+        /// </summary>
         public void stop()
         {
             pause = true;
         }
 
+        /// <summary>
+        /// Wznawia zatrzymaną grę
+        /// </summary>
         public void start()
         {
             pause = false;
         }
 
-        private void gameOver()
-        {
-            return;
-        }
-
         /// <summary>
-        /// This is called when the game should draw itself.
+        /// Główna metoda rysujaza aktualny stan gry
         /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        /// <param name="gameTime">Czas gry</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DarkGray);

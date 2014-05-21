@@ -15,40 +15,111 @@ using Digger.Objects.Weapons;
 
 namespace Digger.Objects
 {
+    /// <summary>
+    /// Klasa bohatera Guya. Zawira ona informacje o dostępnych broniach i stanach w jakich się znajduje (czas bonsuwy, peleryna niewidka). Przechowuje też informacje o ilości punktów, jakie dotychcasz zebrał.
+    /// </summary>
     public class Guy : Character
     {
-        public bool invicloak = true;
+        /// <summary>
+        /// Zmienna informująca czy bohater ma na sobie pelerynę
+        /// </summary>
+        public bool invicloak = false;
+        /// <summary>
+        /// Czas gry po jakim uzyta peleryna przestanie działać
+        /// </summary>
         private int cloakCountdown = 0;
+        /// <summary>
+        /// Czas gry po jakim bohater, który użył peleryny niewidki pojawi się lub zniknie.
+        /// </summary>
         private int nextBlink = 0;
+        /// <summary>
+        /// Zmienna informująca czy bohater jest w trybie czasu bonusowego
+        /// </summary>
         public bool bonusTime = false;
+        /// <summary>
+        /// Ilość sekund pozostała do końca czasu bonusowego
+        /// </summary>
         public int bonusTimeLeft = 0;
+        /// <summary>
+        /// Czas po którym czas bonusowy przestanie działać
+        /// </summary>
         public int bonusCountdown = 0;
-        private Keys lastMoveDirection = Keys.Right;
+        /// <summary>
+        /// Ostatnio użyty klawisz ruchu bohatera. Na jego podstawie wyznaczany jest kierunek wystrzału pocisku
+        /// </summary>
+        private Keys lastMoveDirection = Settings.right;
+        /// <summary>
+        /// Ilość bomb do dyspozycji
+        /// </summary>
         public int bombCnt = 0;
+        /// <summary>
+        /// Czas gry kiedy ostatnio została zastawiona bomba. Zapobiega zastawianiu kilku bomb na raz
+        /// </summary>
         private double lastBomb = 0.0;
+        /// <summary>
+        /// Lista bomb, które może zastawiać bohater
+        /// </summary>
         public List<Weapons.Bomb> bombs = new List<Weapons.Bomb>();
+        /// <summary>
+        /// Ilość dostępnych peleryn
+        /// </summary>
         public int invicloackCnt = 0;
+        /// <summary>
+        /// Czas gry, kiedy bohater ostatnio zetknął się z przeciwnikiem. Zapobiega utracie wszystkich żyć, przy jednym zetknięciu się z przeciwnikiem i daje czas na ucieczkę
+        /// </summary>
         private double lastEnemyHit = 0.0;
+        /// <summary>
+        /// Czas gry kiedy bohater ostatnio wystrzelił pocisk. Zapobieka wystrzeleniu wielu pocisków na raz
+        /// </summary>
         private double lastShoot = 0.0;
+        /// <summary>
+        /// Ilość dostępnych pocisków
+        /// </summary>
         public int firesCnt = 0;
+        /// <summary>
+        /// Lista pocisków, które wystrzela bohater
+        /// </summary>
         public List<Fire> fires = new List<Fire>();
+        /// <summary>
+        /// Ilość punktów, które dotychczas zebrał bohater
+        /// </summary>
         public int points = 0;
 
+        /// <summary>
+        /// Metoda udostępniająca ilość zyć bohatera
+        /// </summary>
+        /// <returns>Ilość żyć pozostałych bohaterowi</returns>
         public int getHp()
         {
             return hp;
         }
 
+        /// <summary>
+        /// Metoda zwiększająca ilość żyć bohatera
+        /// </summary>
+        /// <param name="hp">ilość zyć do dodania</param>
         public void addHp(int hp)
         {
             this.hp += hp;
         }
 
+        /// <summary>
+        /// Konstruktor bohatera
+        /// </summary>
+        /// <param name="gameState">Obiekt stanu gry</param>
+        /// <param name="position">Początkowa pozycja bohatera</param>
+        /// <param name="texture">Tekstura bohatera</param>
+        /// <param name="speed">Początkowa prędkość bohatera</param>
+        /// <param name="hp">Początkowa ilość życia bohatera</param>
         public Guy(GameState gameState, Vector2 position, Texture2D texture, Vector2 speed, int hp)
             : base(gameState, position, texture, speed, hp)
         {
         }
 
+        /// <summary>
+        /// Implementacja aktualizacji stanu przez bohatera
+        /// </summary>
+        /// <param name="gameTime">Czas gry</param>
         public override void update(TimeSpan gameTime)
         {
             updateMove();
@@ -59,14 +130,21 @@ namespace Digger.Objects
             bonusTimeLeft = (bonusCountdown - (int)gameTime.TotalSeconds) < 0 ? 0 : bonusCountdown - (int)gameTime.TotalSeconds;
         }
 
+        /// <summary>
+        /// Metoda przenosząca bohatera do kolejnego poziomu
+        /// </summary>
         public void nextLevel()
         {
             historyPosition = Vector2.Zero;
             position = Vector2.Zero;
-            lastMoveDirection = Keys.Right;
+            lastMoveDirection = Settings.right;
             speed = Vector2.Zero;
         }
 
+        /// <summary>
+        /// Aktualizacja stanu bohatera w momencie kiedy ma założoną pelerynę niewidkę. Wtedy bohater mruga i odliczany jest czas działania peleryny
+        /// </summary>
+        /// <param name="gameTime">Czas gry</param>
         private void updateInvicloak(TimeSpan gameTime)
         {
             if (invicloak)
@@ -99,6 +177,10 @@ namespace Digger.Objects
             }
         }
 
+        /// <summary>
+        /// Obsługa bomb - zarówno ich zastawienia jak i wybuchu w odpowiednim momencie.
+        /// </summary>
+        /// <param name="gameTime">Czas gry</param>
         private void updateBombs(TimeSpan gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Settings.bomb) && gameTime.TotalMilliseconds - lastBomb > 200)
@@ -110,7 +192,7 @@ namespace Digger.Objects
                     foreach (Weapons.Bomb b in bombs)
                         if (!b.visible)
                         {
-                            b.set(setBombPosition(), (int)gameTime.TotalSeconds + Weapons.Bomb.COUNTDOWN);
+                            b.set(getBombPosition(), (int)gameTime.TotalSeconds + Weapons.Bomb.COUNTDOWN);
                             set = true;
                             break;
                         }
@@ -118,7 +200,7 @@ namespace Digger.Objects
                     {
                         Weapons.Bomb b = new Weapons.Bomb(gameState, Textures.getBombTex());
                         bombs.Add(b);
-                        b.set(setBombPosition(), (int)gameTime.TotalSeconds + Weapons.Bomb.COUNTDOWN);
+                        b.set(getBombPosition(), (int)gameTime.TotalSeconds + Weapons.Bomb.COUNTDOWN);
                     }
                 }
 
@@ -126,12 +208,20 @@ namespace Digger.Objects
                 b.update(gameTime);
         }
 
-        private Vector2 setBombPosition()
+        /// <summary>
+        /// Metoda podające pozycję, na której zastawiona ma być bomba. Pozycja ta jest zawsze pozycją któregoś pola, dzięki temu bomba zawsze jest zastawiona w całości na jednym polu
+        /// </summary>
+        /// <returns>Pozycja na której będzie zastawiona bomba</returns>
+        private Vector2 getBombPosition()
         {
             Vector2 middle = new Vector2(position.X + Field.SZ / 2, position.Y + Field.SZ / 2);
             return new Vector2((int)(middle.X / Field.SZ) * Field.SZ, (int)(middle.Y / Field.SZ) * Field.SZ);
         }
 
+        /// <summary>
+        /// Metoda sprawdzająca kolizje z przeciwnikami na mapie
+        /// </summary>
+        /// <param name="gameTime">Czas gry</param>
         private void enemyCollisions(TimeSpan gameTime)
         {
             if (gameTime.TotalSeconds > bonusCountdown)
@@ -172,12 +262,21 @@ namespace Digger.Objects
                 }
         }
 
+        /// <summary>
+        /// Test kolizji z przeciwnikiem
+        /// </summary>
+        /// <param name="e">Przeciwnik, z którym sprawdzana jest kolicja</param>
+        /// <returns>Informacja czy kolicja nastąpiła</returns>
         private bool hitEnemy(Enemy e)
         {
             Vector2 middle = new Vector2(e.getPosition().X + Field.SZ / 2, e.getPosition().Y + Field.SZ / 2);
             return middle.X >= position.X && middle.X < position.X + Field.SZ && middle.Y >= position.Y && middle.Y < position.Y + Field.SZ;
         }
 
+        /// <summary>
+        /// Metoda obsługująca strzały pocisków i propagująca aktualizację wstrzelonych wcześniej.
+        /// </summary>
+        /// <param name="gameTime">Czas gry</param>
         private void updateFires(TimeSpan gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Settings.fire) && gameTime.TotalMilliseconds - lastShoot > 200)
@@ -207,6 +306,11 @@ namespace Digger.Objects
                 f.update(gameTime);
         }
 
+        /// <summary>
+        /// Metoda podająca pozycję początkową aktualnie wystrzelanaego, nowego pocisku.
+        /// </summary>
+        /// <param name="fireSpeed">Prędkość z jaką będzie wystrzelony pocisk. Definiuje ona równierz kierunek na podstawie którego wyzanczana jest pozycja początkowa</param>
+        /// <returns>Pozycja początkowa pocisku</returns>
         private Vector2 getFirePosition(Vector2 fireSpeed)
         {
             if (fireSpeed.X > 0)
@@ -221,51 +325,58 @@ namespace Digger.Objects
                 return new Vector2(position.X + Field.SZ, position.Y);
         }
 
+        /// <summary>
+        /// Metoda podająca początkową prędkość strzału na podstawie ostatniego kierunku ruchu bohatera
+        /// </summary>
+        /// <returns>Początkową prędkość pocisku</returns>
         private Vector2 getFireSpeed()
         {
-            if (lastMoveDirection == Keys.Right)
+            if (lastMoveDirection == Settings.right)
                 return new Vector2(5, 0);
-            else if (lastMoveDirection == Keys.Left)
+            else if (lastMoveDirection == Settings.left)
                 return new Vector2(-5, 0);
-            else if (lastMoveDirection == Keys.Down)
+            else if (lastMoveDirection == Settings.down)
                 return new Vector2(0, 5);
-            else if (lastMoveDirection == Keys.Up)
+            else if (lastMoveDirection == Settings.up)
                 return new Vector2(0, -5);
             return new Vector2(5, 0);
         }
 
+        /// <summary>
+        /// Metoda odpowiedzialna za aktualizację ruchu bohatera. Aktualizuje prędkość bohatera w zależności od wybranego rpzez gracza kierunku oraz utrzymuje gracza w granicach mapy.
+        /// </summary>
         private void updateMove()
         {
             position += speed;
             if (!moving)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                if (Keyboard.GetState().IsKeyDown(Settings.left))
                 {
                     speed.X = -2;
                     speed.Y = 0;
                     moving = true;
-                    lastMoveDirection = Keys.Left;
+                    lastMoveDirection = Settings.left;
                 }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                else if (Keyboard.GetState().IsKeyDown(Settings.right))
                 {
                     speed.X = 2;
                     speed.Y = 0;
                     moving = true;
-                    lastMoveDirection = Keys.Right;
+                    lastMoveDirection = Settings.right;
                 }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                else if (Keyboard.GetState().IsKeyDown(Settings.up))
                 {
                     speed.X = 0;
                     speed.Y = -2;
                     moving = true;
-                    lastMoveDirection = Keys.Up;
+                    lastMoveDirection = Settings.up;
                 }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                else if (Keyboard.GetState().IsKeyDown(Settings.down))
                 {
                     speed.X = 0;
                     speed.Y = 2;
                     moving = true;
-                    lastMoveDirection = Keys.Down;
+                    lastMoveDirection = Settings.down;
                 }
             }
 
@@ -304,6 +415,10 @@ namespace Digger.Objects
             }
         }
 
+        /// <summary>
+        /// Implementacja bohatera rysująca najpierw jego samego a następnie pociski przez niego wystrzelone i bomby, które zastawił.
+        /// </summary>
+        /// <param name="spriteBatch">Kontekst rysowanego obiektu</param>
         public override void draw(SpriteBatch spriteBatch)
         {
             base.draw(spriteBatch);

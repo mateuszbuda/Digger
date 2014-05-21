@@ -43,17 +43,17 @@
             this.labelInvicloak = new System.Windows.Forms.Label();
             this.labelBonus = new System.Windows.Forms.Label();
             this.panelMenu = new System.Windows.Forms.Panel();
-            this.labelUser = new System.Windows.Forms.Label();
-            this.buttonContinue = new System.Windows.Forms.Button();
-            this.buttonNewGame = new System.Windows.Forms.Button();
-            this.buttonHighScores = new System.Windows.Forms.Button();
-            this.buttonSettings = new System.Windows.Forms.Button();
-            this.buttonHelp = new System.Windows.Forms.Button();
-            this.buttonExit = new System.Windows.Forms.Button();
             this.panelLogin = new System.Windows.Forms.Panel();
-            this.labelLoginTitle = new System.Windows.Forms.Label();
-            this.textBoxUsername = new System.Windows.Forms.TextBox();
             this.buttonLogin = new System.Windows.Forms.Button();
+            this.textBoxUsername = new System.Windows.Forms.TextBox();
+            this.labelLoginTitle = new System.Windows.Forms.Label();
+            this.buttonExit = new System.Windows.Forms.Button();
+            this.buttonHelp = new System.Windows.Forms.Button();
+            this.buttonSettings = new System.Windows.Forms.Button();
+            this.buttonHighScores = new System.Windows.Forms.Button();
+            this.buttonNewGame = new System.Windows.Forms.Button();
+            this.buttonContinue = new System.Windows.Forms.Button();
+            this.labelUser = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMissile)).BeginInit();
@@ -210,70 +210,44 @@
             this.panelMenu.Size = new System.Drawing.Size(860, 537);
             this.panelMenu.TabIndex = 14;
             // 
-            // labelUser
+            // panelLogin
             // 
-            this.labelUser.AutoSize = true;
-            this.labelUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelUser.Location = new System.Drawing.Point(365, 40);
-            this.labelUser.Name = "labelUser";
-            this.labelUser.Size = new System.Drawing.Size(81, 25);
-            this.labelUser.TabIndex = 0;
-            this.labelUser.Text = "Gracz: ";
+            this.panelLogin.Controls.Add(this.buttonLogin);
+            this.panelLogin.Controls.Add(this.textBoxUsername);
+            this.panelLogin.Controls.Add(this.labelLoginTitle);
+            this.panelLogin.Location = new System.Drawing.Point(77, 38);
+            this.panelLogin.Name = "panelLogin";
+            this.panelLogin.Size = new System.Drawing.Size(714, 458);
+            this.panelLogin.TabIndex = 7;
             // 
-            // buttonContinue
+            // buttonLogin
             // 
-            this.buttonContinue.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonContinue.Location = new System.Drawing.Point(237, 100);
-            this.buttonContinue.Name = "buttonContinue";
-            this.buttonContinue.Size = new System.Drawing.Size(413, 46);
-            this.buttonContinue.TabIndex = 1;
-            this.buttonContinue.Text = "Kontynuuj grę";
-            this.buttonContinue.UseVisualStyleBackColor = true;
-            this.buttonContinue.Click += new System.EventHandler(this.buttonContinue_Click);
+            this.buttonLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonLogin.Location = new System.Drawing.Point(273, 225);
+            this.buttonLogin.Name = "buttonLogin";
+            this.buttonLogin.Size = new System.Drawing.Size(146, 39);
+            this.buttonLogin.TabIndex = 2;
+            this.buttonLogin.Text = "Potwierdź";
+            this.buttonLogin.UseVisualStyleBackColor = true;
+            this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
             // 
-            // buttonNewGame
+            // textBoxUsername
             // 
-            this.buttonNewGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonNewGame.Location = new System.Drawing.Point(237, 152);
-            this.buttonNewGame.Name = "buttonNewGame";
-            this.buttonNewGame.Size = new System.Drawing.Size(413, 46);
-            this.buttonNewGame.TabIndex = 2;
-            this.buttonNewGame.Text = "Nowa gra";
-            this.buttonNewGame.UseVisualStyleBackColor = true;
-            this.buttonNewGame.Click += new System.EventHandler(this.buttonNewGame_Click);
+            this.textBoxUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxUsername.Location = new System.Drawing.Point(225, 166);
+            this.textBoxUsername.Name = "textBoxUsername";
+            this.textBoxUsername.Size = new System.Drawing.Size(248, 31);
+            this.textBoxUsername.TabIndex = 1;
             // 
-            // buttonHighScores
+            // labelLoginTitle
             // 
-            this.buttonHighScores.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonHighScores.Location = new System.Drawing.Point(237, 204);
-            this.buttonHighScores.Name = "buttonHighScores";
-            this.buttonHighScores.Size = new System.Drawing.Size(413, 46);
-            this.buttonHighScores.TabIndex = 3;
-            this.buttonHighScores.Text = "Najlepsze wyniki";
-            this.buttonHighScores.UseVisualStyleBackColor = true;
-            this.buttonHighScores.Click += new System.EventHandler(this.buttonHighScores_Click);
-            // 
-            // buttonSettings
-            // 
-            this.buttonSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonSettings.Location = new System.Drawing.Point(237, 256);
-            this.buttonSettings.Name = "buttonSettings";
-            this.buttonSettings.Size = new System.Drawing.Size(413, 46);
-            this.buttonSettings.TabIndex = 4;
-            this.buttonSettings.Text = "Opcje";
-            this.buttonSettings.UseVisualStyleBackColor = true;
-            this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
-            // 
-            // buttonHelp
-            // 
-            this.buttonHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonHelp.Location = new System.Drawing.Point(237, 308);
-            this.buttonHelp.Name = "buttonHelp";
-            this.buttonHelp.Size = new System.Drawing.Size(413, 46);
-            this.buttonHelp.TabIndex = 5;
-            this.buttonHelp.Text = "Pomoc";
-            this.buttonHelp.UseVisualStyleBackColor = true;
-            this.buttonHelp.Click += new System.EventHandler(this.buttonHelp_Click);
+            this.labelLoginTitle.AutoSize = true;
+            this.labelLoginTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLoginTitle.Location = new System.Drawing.Point(288, 111);
+            this.labelLoginTitle.Name = "labelLoginTitle";
+            this.labelLoginTitle.Size = new System.Drawing.Size(119, 25);
+            this.labelLoginTitle.TabIndex = 0;
+            this.labelLoginTitle.Text = "Podaj login";
             // 
             // buttonExit
             // 
@@ -286,44 +260,70 @@
             this.buttonExit.UseVisualStyleBackColor = true;
             this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             // 
-            // panelLogin
+            // buttonHelp
             // 
-            this.panelLogin.Controls.Add(this.buttonLogin);
-            this.panelLogin.Controls.Add(this.textBoxUsername);
-            this.panelLogin.Controls.Add(this.labelLoginTitle);
-            this.panelLogin.Location = new System.Drawing.Point(77, 38);
-            this.panelLogin.Name = "panelLogin";
-            this.panelLogin.Size = new System.Drawing.Size(714, 458);
-            this.panelLogin.TabIndex = 7;
+            this.buttonHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonHelp.Location = new System.Drawing.Point(237, 308);
+            this.buttonHelp.Name = "buttonHelp";
+            this.buttonHelp.Size = new System.Drawing.Size(413, 46);
+            this.buttonHelp.TabIndex = 5;
+            this.buttonHelp.Text = "Pomoc";
+            this.buttonHelp.UseVisualStyleBackColor = true;
+            this.buttonHelp.Click += new System.EventHandler(this.buttonHelp_Click);
             // 
-            // labelLoginTitle
+            // buttonSettings
             // 
-            this.labelLoginTitle.AutoSize = true;
-            this.labelLoginTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelLoginTitle.Location = new System.Drawing.Point(288, 111);
-            this.labelLoginTitle.Name = "labelLoginTitle";
-            this.labelLoginTitle.Size = new System.Drawing.Size(119, 25);
-            this.labelLoginTitle.TabIndex = 0;
-            this.labelLoginTitle.Text = "Podaj login";
+            this.buttonSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonSettings.Location = new System.Drawing.Point(237, 256);
+            this.buttonSettings.Name = "buttonSettings";
+            this.buttonSettings.Size = new System.Drawing.Size(413, 46);
+            this.buttonSettings.TabIndex = 4;
+            this.buttonSettings.Text = "Opcje";
+            this.buttonSettings.UseVisualStyleBackColor = true;
+            this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
             // 
-            // textBoxUsername
+            // buttonHighScores
             // 
-            this.textBoxUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxUsername.Location = new System.Drawing.Point(225, 166);
-            this.textBoxUsername.Name = "textBoxUsername";
-            this.textBoxUsername.Size = new System.Drawing.Size(248, 31);
-            this.textBoxUsername.TabIndex = 1;
+            this.buttonHighScores.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonHighScores.Location = new System.Drawing.Point(237, 204);
+            this.buttonHighScores.Name = "buttonHighScores";
+            this.buttonHighScores.Size = new System.Drawing.Size(413, 46);
+            this.buttonHighScores.TabIndex = 3;
+            this.buttonHighScores.Text = "Najlepsze wyniki";
+            this.buttonHighScores.UseVisualStyleBackColor = true;
+            this.buttonHighScores.Click += new System.EventHandler(this.buttonHighScores_Click);
             // 
-            // buttonLogin
+            // buttonNewGame
             // 
-            this.buttonLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonLogin.Location = new System.Drawing.Point(273, 225);
-            this.buttonLogin.Name = "buttonLogin";
-            this.buttonLogin.Size = new System.Drawing.Size(146, 39);
-            this.buttonLogin.TabIndex = 2;
-            this.buttonLogin.Text = "Potwierdź";
-            this.buttonLogin.UseVisualStyleBackColor = true;
-            this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
+            this.buttonNewGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonNewGame.Location = new System.Drawing.Point(237, 152);
+            this.buttonNewGame.Name = "buttonNewGame";
+            this.buttonNewGame.Size = new System.Drawing.Size(413, 46);
+            this.buttonNewGame.TabIndex = 2;
+            this.buttonNewGame.Text = "Nowa gra";
+            this.buttonNewGame.UseVisualStyleBackColor = true;
+            this.buttonNewGame.Click += new System.EventHandler(this.buttonNewGame_Click);
+            // 
+            // buttonContinue
+            // 
+            this.buttonContinue.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonContinue.Location = new System.Drawing.Point(237, 100);
+            this.buttonContinue.Name = "buttonContinue";
+            this.buttonContinue.Size = new System.Drawing.Size(413, 46);
+            this.buttonContinue.TabIndex = 1;
+            this.buttonContinue.Text = "Kontynuuj grę";
+            this.buttonContinue.UseVisualStyleBackColor = true;
+            this.buttonContinue.Click += new System.EventHandler(this.buttonContinue_Click);
+            // 
+            // labelUser
+            // 
+            this.labelUser.AutoSize = true;
+            this.labelUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelUser.Location = new System.Drawing.Point(365, 40);
+            this.labelUser.Name = "labelUser";
+            this.labelUser.Size = new System.Drawing.Size(81, 25);
+            this.labelUser.TabIndex = 0;
+            this.labelUser.Text = "Gracz: ";
             // 
             // GameForm
             // 
@@ -349,7 +349,6 @@
             this.Name = "GameForm";
             this.Text = "Digger";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GameForm_FormClosed);
-            this.Load += new System.EventHandler(this.gameForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGuy)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMissile)).EndInit();
