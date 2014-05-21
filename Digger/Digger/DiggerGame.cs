@@ -132,6 +132,70 @@ namespace Digger
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            updateOptions(gameTime);
+            updateHelp(gameTime);
+            if (updatePause(gameTime))
+                return;
+
+            gameState.update(gameTime.TotalGameTime.Subtract(pauseMilis));
+
+            if (gameState.guy.getHp() < 1)
+            {
+                pause = true;
+            }
+
+            updateForm();
+        }
+
+        /// <summary>
+        /// Obsługuje wyświetlanie pomocy
+        /// </summary>
+        /// <param name="gameTime">Czas gry</param>
+        private void updateHelp(GameTime gameTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Settings.help))
+            {
+                if (!pause)
+                {
+                    if (gameTime.TotalGameTime - lastPause > delay)
+                    {
+                        pause = true;
+                        lastPause = gameTime.TotalGameTime;
+                    }
+                }
+
+                gameForm.openHelp();
+            }
+        }
+
+        /// <summary>
+        /// Obsługuje wyświetlanie ustawień
+        /// </summary>
+        /// <param name="gameTime">Czas gry</param>
+        private void updateOptions(GameTime gameTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Settings.options))
+            {
+                if (!pause)
+                {
+                    if (gameTime.TotalGameTime - lastPause > delay)
+                    {
+                        pause = true;
+                        lastPause = gameTime.TotalGameTime;
+                    }
+                }
+
+                gameForm.openSettings();
+            }
+        }
+
+        /// <summary>
+        /// Obsługuje zatrzymywanie i startowanie rozgrywki
+        /// </summary>
+        /// <param name="gameTime">Czas gry</param>
+        /// <returns>Informację czy gra została zatrzymana</returns>
+        private bool updatePause(GameTime gameTime)
+        {
             if (!pause)
             {
                 if (Keyboard.GetState().IsKeyDown(Settings.pause))
@@ -154,17 +218,10 @@ namespace Digger
                         lastPause = gameTime.TotalGameTime;
                     }
                 }
-                return;
+                return true;
             }
 
-            gameState.update(gameTime.TotalGameTime.Subtract(pauseMilis));
-
-            if (gameState.guy.getHp() < 1)
-            {
-                pause = true;
-            }
-
-            updateForm();
+            return false;
         }
 
         /// <summary>

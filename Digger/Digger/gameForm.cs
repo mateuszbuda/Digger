@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.Xna.Framework.Input;
 
 namespace Digger
 {
@@ -34,6 +35,8 @@ namespace Digger
             pictureBoxBomb.Image = graphics.bomb;
             pictureBoxInvicloak.Image = graphics.invicloak;
             pictureBoxBonus.Image = graphics.bonustime;
+            richTextBoxHelp.Text = "Plansza gry składa się z pól, z których część jest odkopana a część zakopana. Wchodząc na pole zakopane gracz odkopuje to pole. Niektórzy przeciwnicy również mają możliwość odkopywania pól.Głównym celem gry na każdym poziomie jest zebranie wszystkich diamentów, które są na planszy. Po ich zebraniu, gracz automatycznie przechodzi do następnego poziomu i otrzymuje k∙300 punktów, gdzie k to numer ukończonego poziomu. Dodatkowo, jeśli gracz zniszczył co najmniej 90% przeciwników na danym poziomie, otrzymuje dodatkowe życie. Z każdym poziomem na planszy jest coraz więcej trudniejszych przeciwników.";
+            richTextBoxHelp.Text += "Początkowo bohater ma trzy życia i nie ma do dyspozycji żadnej broni. Jego zadaniem jest zebranie wszystkich diamentów na kolejnych poziomach. Próbują mu w tym przeszkodzić przeciwnicy, których liczba i trudność wzrastają z kolejnymi poziomami.";
         }
 
         /// <summary>
@@ -118,6 +121,24 @@ namespace Digger
         }
 
         /// <summary>
+        /// Otwiera panel ustawień
+        /// </summary>
+        public void openSettings()
+        {
+            if (!panelLogin.Visible)
+                panelSettings.Visible = true;
+        }
+
+        /// <summary>
+        /// Otwiera panel pomocy
+        /// </summary>
+        public void openHelp()
+        {
+            if (!panelLogin.Visible)
+                panelHelp.Visible = true;
+        }
+
+        /// <summary>
         /// Obsługa przycisku kontynuacji poprzedniej gry
         /// </summary>
         /// <param name="sender">Przycisk</param>
@@ -156,7 +177,7 @@ namespace Digger
         /// <param name="e">Argumenty zdarzenia</param>
         private void buttonSettings_Click(object sender, EventArgs e)
         {
-
+            panelSettings.Visible = true;
         }
 
         /// <summary>
@@ -166,7 +187,7 @@ namespace Digger
         /// <param name="e">Argumenty zdarzenia</param>
         private void buttonHelp_Click(object sender, EventArgs e)
         {
-
+            panelHelp.Visible = true;
         }
 
         /// <summary>
@@ -200,5 +221,180 @@ namespace Digger
         {
             Application.Exit();
         }
+
+        /// <summary>
+        /// Wyjście z panelu Ustawień
+        /// </summary>
+        /// <param name="sender">Nadawca zradzenia</param>
+        /// <param name="e">Argumenty zdarzenia</param>
+        private void button1_Click(object sender, EventArgs e)
+        {
+            panelSettings.Visible = false;
+        }
+
+        /// <summary>
+        /// Obsługa pojawienia się panelu ustawień
+        /// </summary>
+        /// <param name="sender">Nadawca</param>
+        /// <param name="e">Argumenty zdarzenia</param>
+        private void panelSettings_VisibleChanged(object sender, EventArgs e)
+        {
+            if (panelSettings.Visible)
+            {
+                textSettingsBomb.Text = Settings.bomb.ToString();
+                textSettingsCloak.Text = Settings.invclk.ToString();
+                textSettingsDown.Text = Settings.down.ToString();
+                textSettingsFire.Text = Settings.fire.ToString();
+                textSettingsHelp.Text = Settings.help.ToString();
+                textSettingsLeft.Text = Settings.left.ToString();
+                textSettingsPause.Text = Settings.pause.ToString();
+                textSettingsRight.Text = Settings.right.ToString();
+                textSettingsSave.Text = Settings.save.ToString();
+                textSettingsSettings.Text = Settings.options.ToString();
+                textSettingsUp.Text = Settings.up.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Konwerter przycisku WinFormsów na Przyciski XNA.
+        /// </summary>
+        /// <param name="k">Przeycisk WinFormsowy</param>
+        /// <returns>Przycisk XNA</returns>
+        private Microsoft.Xna.Framework.Input.Keys getKey(System.Windows.Forms.Keys k)
+        {
+            return (Microsoft.Xna.Framework.Input.Keys)Enum.Parse(typeof(Microsoft.Xna.Framework.Input.Keys), k.ToString());
+        }
+
+        /// <summary>
+        /// Zmiana ustwienia przycisku ruchu w lewo
+        /// </summary>
+        /// <param name="sender">Nadawca</param>
+        /// <param name="e">Argumenty zdarzenia z nowym przyciskiem</param>
+        private void textSettingsLeft_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == System.Windows.Forms.Keys.Left)
+                textSettingsLeft.Text = "Left";
+            Settings.left = getKey(e.KeyCode);
+        }
+
+        /// <summary>
+        /// Zmiana ustwienia przycisku ruchu w prawo
+        /// </summary>
+        /// <param name="sender">Nadawca</param>
+        /// <param name="e">Argumenty zdarzenia z nowym przyciskiem</param>
+        private void textSettingsRight_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == System.Windows.Forms.Keys.Right)
+                textSettingsRight.Text = "Right";
+            Settings.right = getKey(e.KeyCode);
+        }
+
+
+        /// <summary>
+        /// Zmiana ustwienia przycisku ruchu do góry
+        /// </summary>
+        /// <param name="sender">Nadawca</param>
+        /// <param name="e">Argumenty zdarzenia z nowym przyciskiem</param>
+        private void textSettingsUp_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == System.Windows.Forms.Keys.Up)
+                textSettingsUp.Text = "Up";
+            Settings.up = getKey(e.KeyCode);
+        }
+
+        /// <summary>
+        /// Zmiana ustwienia przycisku ruchu w dół
+        /// </summary>
+        /// <param name="sender">Nadawca</param>
+        /// <param name="e">Argumenty zdarzenia z nowym przyciskiem</param>
+        private void textSettingsDown_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == System.Windows.Forms.Keys.Down)
+                textSettingsDown.Text = "Down";
+            Settings.down = getKey(e.KeyCode);
+        }
+
+        /// <summary>
+        /// Zmiana ustwienia przycisku zastwienia bomby
+        /// </summary>
+        /// <param name="sender">Nadawca</param>
+        /// <param name="e">Argumenty zdarzenia z nowym przyciskiem</param>
+        private void textSettingsBomb_KeyDown(object sender, KeyEventArgs e)
+        {
+            Settings.bomb = getKey(e.KeyCode);
+        }
+
+        /// <summary>
+        /// Zmiana ustwienia przycisku użycia peleryny
+        /// </summary>
+        /// <param name="sender">Nadawca</param>
+        /// <param name="e">Argumenty zdarzenia z nowym przyciskiem</param>
+        private void textSettingsCloak_KeyDown(object sender, KeyEventArgs e)
+        {
+            Settings.invclk = getKey(e.KeyCode);
+        }
+
+        /// <summary>
+        /// Zmiana ustwienia przycisku wystrzału
+        /// </summary>
+        /// <param name="sender">Nadawca</param>
+        /// <param name="e">Argumenty zdarzenia z nowym przyciskiem</param>
+        private void textSettingsFire_KeyDown(object sender, KeyEventArgs e)
+        {
+            Settings.fire = getKey(e.KeyCode);
+        }
+
+        /// <summary>
+        /// Zmiana ustwienia przycisku pauzy
+        /// </summary>
+        /// <param name="sender">Nadawca</param>
+        /// <param name="e">Argumenty zdarzenia z nowym przyciskiem</param>
+        private void textSettingsPause_KeyDown(object sender, KeyEventArgs e)
+        {
+            Settings.pause = getKey(e.KeyCode);
+        }
+
+        /// <summary>
+        /// Zmiana ustwienia przycisku pomocy
+        /// </summary>
+        /// <param name="sender">Nadawca</param>
+        /// <param name="e">Argumenty zdarzenia z nowym przyciskiem</param>
+        private void textSettingsHelp_KeyDown(object sender, KeyEventArgs e)
+        {
+            Settings.help = getKey(e.KeyCode);
+        }
+
+        /// <summary>
+        /// Zmiana ustwienia przycisku ustwień
+        /// </summary>
+        /// <param name="sender">Nadawca</param>
+        /// <param name="e">Argumenty zdarzenia z nowym przyciskiem</param>
+        private void textSettingsSettings_KeyDown(object sender, KeyEventArgs e)
+        {
+            Settings.options = getKey(e.KeyCode);
+        }
+
+
+        /// <summary>
+        /// Zmiana ustwienia przycisku zapisu gry
+        /// </summary>
+        /// <param name="sender">Nadawca</param>
+        /// <param name="e">Argumenty zdarzenia z nowym przyciskiem</param>
+        private void textSettingsSave_KeyDown(object sender, KeyEventArgs e)
+        {
+            Settings.save = getKey(e.KeyCode);
+        }
+
+
+        /// <summary>
+        /// Zamknięcie panelu pomocy
+        /// </summary>
+        /// <param name="sender">Nadawca</param>
+        /// <param name="e">Argumenty zdarzenia</param>
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            panelHelp.Visible = false;
+        }
+
     }
 }

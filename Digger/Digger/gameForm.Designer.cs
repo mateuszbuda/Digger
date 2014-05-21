@@ -54,6 +54,34 @@
             this.buttonNewGame = new System.Windows.Forms.Button();
             this.buttonContinue = new System.Windows.Forms.Button();
             this.labelUser = new System.Windows.Forms.Label();
+            this.panelSettings = new System.Windows.Forms.Panel();
+            this.labelSettingsTitle = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.buttonOK = new System.Windows.Forms.Button();
+            this.textSettingsLeft = new System.Windows.Forms.TextBox();
+            this.textSettingsUp = new System.Windows.Forms.TextBox();
+            this.textSettingsRight = new System.Windows.Forms.TextBox();
+            this.textSettingsDown = new System.Windows.Forms.TextBox();
+            this.textSettingsBomb = new System.Windows.Forms.TextBox();
+            this.textSettingsFire = new System.Windows.Forms.TextBox();
+            this.textSettingsCloak = new System.Windows.Forms.TextBox();
+            this.textSettingsPause = new System.Windows.Forms.TextBox();
+            this.textSettingsHelp = new System.Windows.Forms.TextBox();
+            this.textSettingsSettings = new System.Windows.Forms.TextBox();
+            this.textSettingsSave = new System.Windows.Forms.TextBox();
+            this.panelHelp = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.richTextBoxHelp = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGuy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMissile)).BeginInit();
@@ -62,6 +90,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBonus)).BeginInit();
             this.panelMenu.SuspendLayout();
             this.panelLogin.SuspendLayout();
+            this.panelSettings.SuspendLayout();
+            this.panelHelp.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox
@@ -89,7 +119,7 @@
             // 
             this.labelPoints.AutoSize = true;
             this.labelPoints.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPoints.Location = new System.Drawing.Point(95, 13);
+            this.labelPoints.Location = new System.Drawing.Point(105, 13);
             this.labelPoints.Name = "labelPoints";
             this.labelPoints.Size = new System.Drawing.Size(18, 20);
             this.labelPoints.TabIndex = 2;
@@ -325,11 +355,305 @@
             this.labelUser.TabIndex = 0;
             this.labelUser.Text = "Gracz: ";
             // 
+            // panelSettings
+            // 
+            this.panelSettings.Controls.Add(this.textSettingsSave);
+            this.panelSettings.Controls.Add(this.textSettingsSettings);
+            this.panelSettings.Controls.Add(this.textSettingsHelp);
+            this.panelSettings.Controls.Add(this.textSettingsPause);
+            this.panelSettings.Controls.Add(this.textSettingsCloak);
+            this.panelSettings.Controls.Add(this.textSettingsFire);
+            this.panelSettings.Controls.Add(this.textSettingsBomb);
+            this.panelSettings.Controls.Add(this.textSettingsDown);
+            this.panelSettings.Controls.Add(this.textSettingsRight);
+            this.panelSettings.Controls.Add(this.textSettingsUp);
+            this.panelSettings.Controls.Add(this.textSettingsLeft);
+            this.panelSettings.Controls.Add(this.buttonOK);
+            this.panelSettings.Controls.Add(this.label11);
+            this.panelSettings.Controls.Add(this.label10);
+            this.panelSettings.Controls.Add(this.label9);
+            this.panelSettings.Controls.Add(this.label8);
+            this.panelSettings.Controls.Add(this.label7);
+            this.panelSettings.Controls.Add(this.label6);
+            this.panelSettings.Controls.Add(this.label5);
+            this.panelSettings.Controls.Add(this.label4);
+            this.panelSettings.Controls.Add(this.label3);
+            this.panelSettings.Controls.Add(this.label2);
+            this.panelSettings.Controls.Add(this.label1);
+            this.panelSettings.Controls.Add(this.labelSettingsTitle);
+            this.panelSettings.Location = new System.Drawing.Point(0, 0);
+            this.panelSettings.Name = "panelSettings";
+            this.panelSettings.Size = new System.Drawing.Size(884, 559);
+            this.panelSettings.TabIndex = 8;
+            this.panelSettings.Visible = false;
+            this.panelSettings.VisibleChanged += new System.EventHandler(this.panelSettings_VisibleChanged);
+            // 
+            // labelSettingsTitle
+            // 
+            this.labelSettingsTitle.AutoSize = true;
+            this.labelSettingsTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSettingsTitle.Location = new System.Drawing.Point(389, 22);
+            this.labelSettingsTitle.Name = "labelSettingsTitle";
+            this.labelSettingsTitle.Size = new System.Drawing.Size(78, 29);
+            this.labelSettingsTitle.TabIndex = 0;
+            this.labelSettingsTitle.Text = "Opcje";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(168, 99);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(56, 24);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Lewo";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(168, 151);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(51, 24);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Góra";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(168, 215);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(70, 24);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Bomba";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(168, 262);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(59, 24);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Strzał";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(508, 99);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(63, 24);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "Prawo";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(508, 151);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(42, 24);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "Dół";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(508, 215);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(84, 24);
+            this.label7.TabIndex = 7;
+            this.label7.Text = "Peleryna";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(168, 341);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(62, 24);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "Pauza";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(168, 398);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(61, 24);
+            this.label9.TabIndex = 9;
+            this.label9.Text = "Opcje";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(498, 341);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(70, 24);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "Pomoc";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(498, 398);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(56, 24);
+            this.label11.TabIndex = 11;
+            this.label11.Text = "Zapis";
+            // 
+            // buttonOK
+            // 
+            this.buttonOK.Location = new System.Drawing.Point(367, 460);
+            this.buttonOK.Name = "buttonOK";
+            this.buttonOK.Size = new System.Drawing.Size(100, 35);
+            this.buttonOK.TabIndex = 12;
+            this.buttonOK.Text = "OK";
+            this.buttonOK.UseVisualStyleBackColor = true;
+            this.buttonOK.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // textSettingsLeft
+            // 
+            this.textSettingsLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textSettingsLeft.Location = new System.Drawing.Point(252, 94);
+            this.textSettingsLeft.Name = "textSettingsLeft";
+            this.textSettingsLeft.Size = new System.Drawing.Size(100, 29);
+            this.textSettingsLeft.TabIndex = 13;
+            this.textSettingsLeft.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textSettingsLeft_KeyDown);
+            // 
+            // textSettingsUp
+            // 
+            this.textSettingsUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textSettingsUp.Location = new System.Drawing.Point(252, 146);
+            this.textSettingsUp.Name = "textSettingsUp";
+            this.textSettingsUp.Size = new System.Drawing.Size(100, 29);
+            this.textSettingsUp.TabIndex = 14;
+            this.textSettingsUp.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textSettingsUp_KeyDown);
+            // 
+            // textSettingsRight
+            // 
+            this.textSettingsRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textSettingsRight.Location = new System.Drawing.Point(610, 96);
+            this.textSettingsRight.Name = "textSettingsRight";
+            this.textSettingsRight.Size = new System.Drawing.Size(100, 29);
+            this.textSettingsRight.TabIndex = 15;
+            this.textSettingsRight.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textSettingsRight_KeyDown);
+            // 
+            // textSettingsDown
+            // 
+            this.textSettingsDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textSettingsDown.Location = new System.Drawing.Point(610, 144);
+            this.textSettingsDown.Name = "textSettingsDown";
+            this.textSettingsDown.Size = new System.Drawing.Size(100, 29);
+            this.textSettingsDown.TabIndex = 16;
+            this.textSettingsDown.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textSettingsDown_KeyDown);
+            // 
+            // textSettingsBomb
+            // 
+            this.textSettingsBomb.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textSettingsBomb.Location = new System.Drawing.Point(252, 212);
+            this.textSettingsBomb.Name = "textSettingsBomb";
+            this.textSettingsBomb.Size = new System.Drawing.Size(100, 29);
+            this.textSettingsBomb.TabIndex = 17;
+            this.textSettingsBomb.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textSettingsBomb_KeyDown);
+            // 
+            // textSettingsFire
+            // 
+            this.textSettingsFire.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textSettingsFire.Location = new System.Drawing.Point(252, 259);
+            this.textSettingsFire.Name = "textSettingsFire";
+            this.textSettingsFire.Size = new System.Drawing.Size(100, 29);
+            this.textSettingsFire.TabIndex = 18;
+            this.textSettingsFire.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textSettingsFire_KeyDown);
+            // 
+            // textSettingsCloak
+            // 
+            this.textSettingsCloak.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textSettingsCloak.Location = new System.Drawing.Point(610, 212);
+            this.textSettingsCloak.Name = "textSettingsCloak";
+            this.textSettingsCloak.Size = new System.Drawing.Size(100, 29);
+            this.textSettingsCloak.TabIndex = 19;
+            this.textSettingsCloak.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textSettingsCloak_KeyDown);
+            // 
+            // textSettingsPause
+            // 
+            this.textSettingsPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textSettingsPause.Location = new System.Drawing.Point(252, 341);
+            this.textSettingsPause.Name = "textSettingsPause";
+            this.textSettingsPause.Size = new System.Drawing.Size(100, 29);
+            this.textSettingsPause.TabIndex = 20;
+            this.textSettingsPause.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textSettingsPause_KeyDown);
+            // 
+            // textSettingsHelp
+            // 
+            this.textSettingsHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textSettingsHelp.Location = new System.Drawing.Point(610, 338);
+            this.textSettingsHelp.Name = "textSettingsHelp";
+            this.textSettingsHelp.Size = new System.Drawing.Size(100, 29);
+            this.textSettingsHelp.TabIndex = 21;
+            this.textSettingsHelp.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textSettingsHelp_KeyDown);
+            // 
+            // textSettingsSettings
+            // 
+            this.textSettingsSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textSettingsSettings.Location = new System.Drawing.Point(252, 395);
+            this.textSettingsSettings.Name = "textSettingsSettings";
+            this.textSettingsSettings.Size = new System.Drawing.Size(100, 29);
+            this.textSettingsSettings.TabIndex = 22;
+            this.textSettingsSettings.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textSettingsSettings_KeyDown);
+            // 
+            // textSettingsSave
+            // 
+            this.textSettingsSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textSettingsSave.Location = new System.Drawing.Point(610, 395);
+            this.textSettingsSave.Name = "textSettingsSave";
+            this.textSettingsSave.Size = new System.Drawing.Size(100, 29);
+            this.textSettingsSave.TabIndex = 23;
+            this.textSettingsSave.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textSettingsSave_KeyDown);
+            // 
+            // panelHelp
+            // 
+            this.panelHelp.Controls.Add(this.richTextBoxHelp);
+            this.panelHelp.Controls.Add(this.button1);
+            this.panelHelp.Location = new System.Drawing.Point(0, 0);
+            this.panelHelp.Name = "panelHelp";
+            this.panelHelp.Size = new System.Drawing.Size(881, 556);
+            this.panelHelp.TabIndex = 24;
+            this.panelHelp.Visible = false;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(392, 523);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "OK";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // richTextBoxHelp
+            // 
+            this.richTextBoxHelp.Enabled = false;
+            this.richTextBoxHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBoxHelp.Location = new System.Drawing.Point(4, 4);
+            this.richTextBoxHelp.Name = "richTextBoxHelp";
+            this.richTextBoxHelp.Size = new System.Drawing.Size(874, 513);
+            this.richTextBoxHelp.TabIndex = 2;
+            this.richTextBoxHelp.Text = "";
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(884, 561);
+            this.Controls.Add(this.panelHelp);
+            this.Controls.Add(this.panelSettings);
             this.Controls.Add(this.panelMenu);
             this.Controls.Add(this.labelBonus);
             this.Controls.Add(this.labelInvicloak);
@@ -359,6 +683,9 @@
             this.panelMenu.PerformLayout();
             this.panelLogin.ResumeLayout(false);
             this.panelLogin.PerformLayout();
+            this.panelSettings.ResumeLayout(false);
+            this.panelSettings.PerformLayout();
+            this.panelHelp.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -392,5 +719,33 @@
         private System.Windows.Forms.Button buttonLogin;
         private System.Windows.Forms.TextBox textBoxUsername;
         private System.Windows.Forms.Label labelLoginTitle;
+        private System.Windows.Forms.Panel panelSettings;
+        private System.Windows.Forms.Button buttonOK;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelSettingsTitle;
+        private System.Windows.Forms.TextBox textSettingsSave;
+        private System.Windows.Forms.TextBox textSettingsSettings;
+        private System.Windows.Forms.TextBox textSettingsHelp;
+        private System.Windows.Forms.TextBox textSettingsPause;
+        private System.Windows.Forms.TextBox textSettingsCloak;
+        private System.Windows.Forms.TextBox textSettingsFire;
+        private System.Windows.Forms.TextBox textSettingsBomb;
+        private System.Windows.Forms.TextBox textSettingsDown;
+        private System.Windows.Forms.TextBox textSettingsRight;
+        private System.Windows.Forms.TextBox textSettingsUp;
+        private System.Windows.Forms.TextBox textSettingsLeft;
+        private System.Windows.Forms.Panel panelHelp;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.RichTextBox richTextBoxHelp;
     }
 }

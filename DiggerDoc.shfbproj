@@ -14,7 +14,7 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
-    <OutputPath>Help_new\</OutputPath>
+    <OutputPath>Doc\</OutputPath>
     <HtmlHelpName>Digger_Doc</HtmlHelpName>
     <Language>en-US</Language>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>

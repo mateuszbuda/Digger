@@ -41,7 +41,7 @@ namespace Digger.Objects
         /// <summary>
         /// Metoda aktualizująca stan obiektu, implementowana przez obiekty według ich przeznaczenia
         /// </summary>
-        /// <param name="gameTime"></param>
+        /// <param name="gameTime">Czas gry</param>
         public override void update(TimeSpan gameTime)
         {
             if (texture == null)
